@@ -16,6 +16,7 @@ curated dataset land next.
 - [x] PostgreSQL schema, staging tables, reference data
 - [x] Source/licence audit and attribution rules
 - [x] Deployment target chosen (Render)
+- [x] Technical system documentation (Typst, ADRs, data model, sources)
 - [ ] GCAT loader and identity resolver
 - [ ] Curated artifacts across all four zones
 - [ ] Next.js app and live-tracking UI
@@ -74,10 +75,12 @@ docker compose down -v && docker compose up -d db
 ├── docs/
 │   ├── ARCHITECTURE.md         stack, Render decision, live tracking
 │   ├── DATABASE.md             data dictionary and identity rules
-│   └── DATA-SOURCES.md         licences, endpoints, column maps
+│   ├── DATA-SOURCES.md         licences, endpoints, column maps
+│   └── technical/              full technical documentation (Typst, 89 pp, PDF)
 ├── etl/                        loader pipeline (phase 1)
 ├── hackathonWoes.md            original product architecture
 ├── resources.md                original source notes
+├── AGENTS.md                   repository rules for humans and coding agents
 ├── render.yaml                 deployment blueprint
 ├── docker-compose.yml          local PostgreSQL
 ├── ATTRIBUTION.md
