@@ -13,9 +13,9 @@ Mass, dates, coordinates, status and comparison diffs are deterministic reads.
 Narration is generated from a frozen facts snapshot and never feeds facts,
 comparisons or quiz answers.
 
-Current state: **phase 2 (curate)**. Schema, docs, the ETL loader and a starter
-set of 8 curated artifacts are in place. Curation expansion and the web
-application are next.
+Current state: **phase 3 (frontend integration)**. Schema, docs and the ETL are
+in place, with a curated starter set of 8 artifacts. A Next.js 15 prototype is
+merged and runs on fixtures; wiring it to PostgreSQL is next.
 
 ## Repository map
 
@@ -28,6 +28,10 @@ application are next.
 | `db/migrations/` | Forward-only numbered migrations after the baseline |
 | `etl/` | Python ingestion pipeline (`download → staging → transform → curate → validate`) |
 | `curation/artifacts.json` | Curated identity, mission, sourced facts, media and relations |
+| `app/` | Next.js routes and visual theme (prototype, fixture-backed) |
+| `components/` | Archive, mission workspace, 3D map and lab widgets |
+| `lib/` | API adapter, fixture data and TypeScript contracts |
+| `API_CONTRACT.md` | REST endpoint and JSON response contract |
 | `docs/` | Short-form Markdown docs and the Typst technical document |
 | `docs/technical/` | Full technical system documentation, ADRs, sources, data models |
 | `render.yaml` | Production blueprint (web, PostgreSQL, cron) |
@@ -52,9 +56,11 @@ python -m etl.curate
 python -m etl.validate
 python -m etl.celestrak_refresh
 
-# Application (when scaffolded)
-npm ci && npm run dev
-npm run typecheck && npm test
+# Frontend (fixture-backed until the API is wired)
+npm ci
+npm run dev
+npm run build
+npm start
 
 # Documentation
 cd docs/technical && typst compile main.typ

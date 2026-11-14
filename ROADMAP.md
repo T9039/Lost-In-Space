@@ -18,8 +18,8 @@ Related documents:
 | 0 | Foundation | Done |
 | 1 | Ingest | Done; one live check outstanding |
 | 2 | Curate | In progress — starter set done, expansion next |
-| 3 | Application shell | Not started |
-| 4 | Artifact experience | Not started |
+| 3 | Application shell | Prototype merged; database integration next |
+| 4 | Artifact experience | Partly prototyped on fixtures |
 | 5 | Live tracking | Not started |
 | 6 | Narration | Not started |
 | 7 | Hardening and release | Not started |
@@ -123,19 +123,25 @@ catalog phase.
 
 ## Phase 3 — Application shell
 
-- [ ] Scaffold Next.js + TypeScript + Tailwind
-- [ ] `src/lib/db.ts` — one `pg` pool per process
-- [ ] `src/lib/queries/` — typed card, timeline, lineage, live queries
-- [ ] Layout, navigation, footer with attribution
-- [ ] Home page: four zones, live counts from `v_artifact_card`
-- [ ] `/archive?zone=` grid and filters
-- [ ] `/sources` page rendered from the `source` table
+The `Frontend` branch was merged. It provides the visual shell on fixture data.
+
+- [x] Next.js 15 + TypeScript + Tailwind prototype (merged from `Frontend`)
+- [x] Home, `/archive`, `/item/[id]`, `/compare`, `/test` and `/sources` routes
+- [x] 3D solar map, model viewer, compare tray and mission workspace
+- [x] Frontend API contract (`API_CONTRACT.md`)
+- [ ] `lib/db.ts` — one `pg` pool per process, server-only
+- [ ] Typed query layer over `v_artifact_card`, `v_artifact_timeline`, `v_artifact_edge`
+- [ ] Implement `/api/zones`, `/api/items`, `/api/items/:id`, `/api/items/:id/lineage`,
+      `/api/sources` and `/api/compare` to the contract
+- [ ] Replace fixture loading with the API, keeping fixtures as an offline fallback
 - [ ] `/api/health`
 - [ ] Cache headers for curated facts
-- [ ] Empty, loading and error states
+- [ ] Loading, empty and error states in the DB-backed flow
+- [ ] Accessibility pass on the prototype
 
 **Exit criterion:** a reader can browse all four zones and open any curated
-artifact; the Sources page lists every licence and credit line.
+artifact from PostgreSQL rather than fixtures; the Sources page lists every
+licence and credit line.
 
 ---
 
