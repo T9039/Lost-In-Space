@@ -9,10 +9,11 @@ reads. Narration is generated separately from a frozen snapshot of those facts.
 
 ## Status
 
-Phase 0 — database and stack pinned. The ETL loader and a curated starter set
-(8 artifacts, 2 per zone) are implemented and tested. Expanding curation and
-building the application are next. See [`ROADMAP.md`](ROADMAP.md) for the
-phased plan and the task list.
+Phases 0–2 are in place: schema, documentation, the GCAT ETL, and a curated
+starter set of 8 artifacts (2 per zone). A Next.js 15 prototype of the Cosmic
+Relic Museum exists and currently runs on sourced NASA fixture data. The
+production API, DB-backed UI and live-tracking layer are next. See
+[`ROADMAP.md`](ROADMAP.md) for the phased plan and the task list.
 
 - [x] Repository connected to `T9039/Lost-In-Space`
 - [x] PostgreSQL schema, staging tables, reference data
@@ -21,8 +22,11 @@ phased plan and the task list.
 - [x] Technical system documentation (Typst, ADRs, data model, sources)
 - [x] GCAT loader and identity resolver
 - [x] Curated starter set across all four zones
+- [x] Next.js 15 + TypeScript museum frontend prototype
+- [x] 3D Solar System map, archive, mission workspace, compare, test and sources screens
+- [x] Frontend API contract (`API_CONTRACT.md`)
 - [ ] Expand curation to 6–10 artifacts per zone
-- [ ] Next.js app and live-tracking UI
+- [ ] Production API, DB-backed UI and live tracking
 
 ## Stack
 
@@ -40,6 +44,22 @@ Everything in the runtime path is open source. See
 [`docs/DATA-SOURCES.md`](docs/DATA-SOURCES.md) for licences and ingestion details.
 
 ## Quick start
+
+### Frontend
+
+Requires Node.js and npm.
+
+```bash
+npm ci
+npm run dev
+```
+
+The frontend runs on fixture data by default. To connect it to an API, set
+`NEXT_PUBLIC_API_BASE` to the API origin and implement the JSON shapes in
+[`API_CONTRACT.md`](API_CONTRACT.md). Verify the production bundle with
+`npm run build`.
+
+### Database
 
 Requires Docker and `psql`.
 
@@ -83,6 +103,11 @@ docker compose down -v && docker compose up -d db
 ├── etl/                        loader pipeline (download, transform, curate)
 ├── curation/
 │   └── artifacts.json          curated identity, mission, facts, media
+├── app/                        Next.js routes and visual theme
+├── components/                 archive, mission workspace, 3D map and labs
+├── lib/                        API adapter, fixture data, TypeScript contracts
+├── public/                     NASA imagery and 3D model assets
+├── API_CONTRACT.md             REST endpoint and JSON response contract
 ├── hackathonWoes.md            original product architecture
 ├── resources.md                original source notes
 ├── AGENTS.md                   repository rules for humans and coding agents
