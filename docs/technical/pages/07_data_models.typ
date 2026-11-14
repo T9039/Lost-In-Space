@@ -144,7 +144,9 @@ and an orbit category.
 
 Rules:
 
-- `jcat_id` is unique and belongs to the phase, not to the artifact.
+- `jcat_id` is the GCAT key for the phase, not for the artifact. It is *not
+  unique*: deep-space catalogs reuse one JCAT across successive rows, so
+  `phase_key` (`<jcat>:<n>`) is the stable unique row key.
 - `(artifact_id, seq)` is unique; `seq` orders the phases.
 - `parent_ref_raw` preserves GCAT's `Parent` string exactly.
 - `parent_artifact_id` is the resolved link, nullable until curation confirms it.

@@ -105,7 +105,7 @@ from a phase to a launch is `artifact_phase.launch_id` → `launch.launch_id`.
 |---|---|---|
 | `artifact` | A physical object | Internal UUID. `slug` is the stable public URL key. `primary_zone` is required for navigation. |
 | `artifact_catalog_id` | One external identifier | Unique per `(artifact, scheme, value)`. At most one primary per scheme (partial unique index). Not unique across artifacts: one SATCAT can describe several GCAT objects. |
-| `artifact_phase` | One GCAT catalog row | `jcat_id` is unique and belongs to the phase. `seq` orders phases. Dates are raw + normalised + precision + approximate flag. |
+| `artifact_phase` | One GCAT catalog row | `phase_key` is unique (`<jcat>:<n>`); `jcat_id` is not, because deep-space catalogs reuse one JCAT across several phases. `seq` orders phases. Dates are raw + normalised + precision + approximate flag. |
 | `artifact_relation` | One curated edge | Explicit genealogy (`deployed_from`, `component_of`, …). `parent_ref_raw` is evidence; this table is the resolved answer. |
 
 ### Narrative

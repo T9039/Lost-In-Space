@@ -268,12 +268,15 @@ CREATE UNIQUE INDEX artifact_catalog_id_one_primary_idx
     ON artifact_catalog_id (artifact_id, scheme) WHERE is_primary;
 
 -- A phase is one GCAT catalog row: the object in one state between two events.
--- `jcat_id` is the GCAT key for this phase, not for the artifact.
+-- `jcat_id` is the GCAT key for this phase, but it is NOT unique: deep-space
+-- catalogs reuse one JCAT across successive rows (Voyager 1 has four phases
+-- under D00578). `phase_key` is the stable row key: `<jcat>:<n>`.
 CREATE TABLE artifact_phase (
     phase_id            bigserial PRIMARY KEY,
     artifact_id         uuid NOT NULL REFERENCES artifact(artifact_id) ON DELETE CASCADE,
     seq                 integer NOT NULL,
-    jcat_id             text UNIQUE,
+    jcat_id             text,
+    phase_key           text NOT NULL UNIQUE,
     launch_id           text REFERENCES launch(launch_id),
     parent_ref_raw      text,                  -- GCAT Parent: EJCAT, body, or extended ref
     parent_artifact_id  uuid REFERENCES artifact(artifact_id),
@@ -305,6 +308,7 @@ CREATE TABLE artifact_phase (
 );
 
 CREATE INDEX artifact_phase_artifact_idx ON artifact_phase (artifact_id, seq);
+CREATE INDEX artifact_phase_jcat_idx ON artifact_phase (jcat_id);
 CREATE INDEX artifact_phase_launch_idx ON artifact_phase (launch_id);
 CREATE INDEX artifact_phase_status_idx ON artifact_phase (status_code);
 CREATE INDEX artifact_phase_parent_idx ON artifact_phase (parent_artifact_id);
@@ -477,6 +481,43 @@ CREATE TRIGGER artifact_set_updated_at
     FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
 -- ---------------------------------------------------------------------------
+-- 8b. Zone derivation
+-- ---------------------------------------------------------------------------
+-- One function used by both the ETL and the API so the two cannot disagree.
+-- Order: Moon, Mars, Earth orbit, deep space, other.
+
+CREATE FUNCTION derive_zone(
+    primary_body text,
+    op_orbit     text,
+    world        text DEFAULT NULL
+) RETURNS zone_kind
+LANGUAGE sql
+IMMUTABLE
+AS $$
+    SELECT CASE
+        WHEN world IN ('Luna', 'Moon') OR primary_body = 'Moon'
+            THEN 'moon'::zone_kind
+        WHEN world = 'Mars' OR primary_body = 'Mars'
+            THEN 'mars'::zone_kind
+        WHEN op_orbit = 'CLO'
+            THEN 'moon'::zone_kind
+        WHEN primary_body = 'Earth' AND (
+                op_orbit LIKE 'LLEO%'
+             OR op_orbit LIKE 'LEO%'
+             OR op_orbit IN ('MEO', 'HEO', 'HEO/M', 'GTO', 'VHEO')
+             OR op_orbit LIKE 'GEO%'
+            )
+            THEN 'earth_orbit'::zone_kind
+        WHEN op_orbit IN ('DSO', 'EEO', 'HCO', 'SSE')
+            THEN 'deep_space'::zone_kind
+        WHEN primary_body IS NOT NULL
+         AND primary_body NOT IN ('Earth', 'Moon', 'Mars')
+            THEN 'deep_space'::zone_kind
+        ELSE 'other'::zone_kind
+    END
+$$;
+
+-- ---------------------------------------------------------------------------
 -- 9. Read models
 -- ---------------------------------------------------------------------------
 
@@ -516,6 +557,7 @@ LEFT JOIN LATERAL (
     SELECT ph.location_id
     FROM artifact_phase ph
     WHERE ph.artifact_id = a.artifact_id
+      AND ph.location_id IS NOT NULL
     ORDER BY ph.seq DESC
     LIMIT 1
 ) last_phase ON true
@@ -542,6 +584,7 @@ SELECT
     a.canonical_name,
     ph.seq,
     ph.jcat_id,
+    ph.phase_key,
     ph.launch_id,
     ph.start_raw,
     ph.start_best,
