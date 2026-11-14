@@ -38,7 +38,11 @@ adding a source and curating an artifact.
 │   ├── DATABASE.md             data dictionary and identity rules
 │   ├── DATA-SOURCES.md         endpoints, column maps, licences
 │   └── technical/              this document (Typst)
-├── src/                        Next.js application (phase 1)
+├── app/                        Next.js routes and visual theme
+├── components/                 archive, workspace, 3D map and labs
+├── lib/                        API adapter, fixtures, TypeScript contracts
+├── public/                     imagery and 3D model assets
+├── API_CONTRACT.md             REST endpoint and JSON response contract
 ├── render.yaml                 production blueprint
 ├── docker-compose.yml          local PostgreSQL
 ├── .env.example                configuration shape
@@ -145,7 +149,7 @@ schema during development.
 - `strict` is enabled; do not add `any` to silence a real union.
 - Server components fetch data; client components receive plain serialisable
   props.
-- SQL lives in `src/lib/queries/` and returns typed rows.
+- SQL lives in `lib/queries/` and returns typed rows.
 - Every user input that reaches SQL is a parameter. String interpolation into SQL
   is a review blocker.
 - Dates cross the boundary as ISO strings with an explicit precision field, never

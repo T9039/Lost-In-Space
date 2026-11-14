@@ -18,9 +18,9 @@ export default async function HomePage() {
       <section className="home-hero targeting-frame">
         <div className="home-hero-media" aria-hidden="true" />
         <div className="home-hero-content">
-          <div className="hero-collection-mark"><Orbit size={14} /> NASA SPACE MUSEUM <span>·</span> COSMIC RELIC ARCHIVE</div>
-          <h1>ABANDONED BUT<br />NOT FORGOTTEN</h1>
-          <div className="home-hero-subtitle">A JOURNEY THROUGH LEGACY &amp; EXPLORATION IN THE COSMOS</div>
+          <div className="hero-collection-mark"><Orbit size={14} /> LOST IN SPACE <span>·</span> ABANDONED HARDWARE ARCHIVE</div>
+          <h1>LOST IN<br />SPACE</h1>
+          <div className="home-hero-subtitle">THE HARDWARE HUMANS LEFT BEHIND</div>
           <p className="hero-hook">
             Discover the silent sentinels, forgotten outposts, and enduring missions that paved the way
             for humanity&apos;s future among the stars. Explore the real machines and the places they still call home.

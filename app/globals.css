@@ -1111,7 +1111,7 @@ a.card {
   }
 }
 
-/* ---------- Cosmic Relic Museum: doc alignment ---------- */
+/* ---------- Lost in Space: doc alignment ---------- */
 :root {
   --starlight: #f8fafc;
 }
@@ -1170,7 +1170,7 @@ h3 {
 }
 
 /* ================================================================== */
-/* Cosmic Relic Museum � landing, halls, tray, workspace              */
+/* Lost in Space � landing, halls, tray, workspace              */
 /* ================================================================== */
 
 .starfield {
@@ -2109,7 +2109,7 @@ h3 {
 }
 
 /* =====================================================================
-   Museum finish — editorial exhibit surfaces + mission-control detail
+   Archive finish — editorial exhibit surfaces + mission-control detail
    ===================================================================== */
 :root {
   --bg: #04060d;
@@ -2782,7 +2782,7 @@ h3 {
   }
 }
 
-/* Museum identity system: Cormorant display / Jakarta body / JetBrains telemetry. */
+/* Archive identity system: Cormorant display / Jakarta body / JetBrains telemetry. */
 :root {
   --bg: #04060d;
   --bg-2: #0b1120;

@@ -14,7 +14,7 @@ Narration is generated from a frozen facts snapshot and never feeds facts,
 comparisons or quiz answers.
 
 Current state: **phase 3 (frontend integration)**. Schema, docs and the ETL are
-in place, with a curated starter set of 8 artifacts. A Next.js 15 prototype is
+in place, with a curated set of 12 artifacts. A Next.js 15 prototype is
 merged and runs on fixtures; wiring it to PostgreSQL is next.
 
 ## Repository map

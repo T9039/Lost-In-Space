@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import ArchiveView from "@/components/ArchiveView";
 
 export const metadata = {
-  title: "Archive — Abandoned but not Forgotten",
+  title: "Archive — Lost in Space",
 };
 
 export default function ArchivePage() {

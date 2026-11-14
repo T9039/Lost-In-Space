@@ -6,7 +6,11 @@
       "short_name": "Eagle",
       "primary_zone": "moon",
       "is_curated": true,
-      "jcats": ["S04041", "D00274", "D01052"],
+      "jcats": [
+        "S04041",
+        "D00274",
+        "D01052"
+      ],
       "mission": {
         "mission_name": "Apollo 11",
         "program": "Apollo",
@@ -51,7 +55,10 @@
       "short_name": "Surveyor 3",
       "primary_zone": "moon",
       "is_curated": true,
-      "jcats": ["S02756", "D00150"],
+      "jcats": [
+        "S02756",
+        "D00150"
+      ],
       "mission": {
         "mission_name": "Surveyor 3",
         "program": "Surveyor",
@@ -96,7 +103,10 @@
       "short_name": "Perseverance",
       "primary_zone": "mars",
       "is_curated": true,
-      "jcats": ["S45983", "D01038"],
+      "jcats": [
+        "S45983",
+        "D01038"
+      ],
       "mission": {
         "mission_name": "Mars 2020 Perseverance",
         "program": "Mars Exploration Program",
@@ -141,7 +151,10 @@
       "short_name": "Viking 1",
       "primary_zone": "mars",
       "is_curated": true,
-      "jcats": ["S09024", "D00545"],
+      "jcats": [
+        "S09024",
+        "D00545"
+      ],
       "mission": {
         "mission_name": "Viking 1",
         "program": "Viking",
@@ -186,7 +199,9 @@
       "short_name": "Vanguard 1",
       "primary_zone": "earth_orbit",
       "is_curated": true,
-      "jcats": ["S00005"],
+      "jcats": [
+        "S00005"
+      ],
       "mission": {
         "mission_name": "Vanguard 1",
         "program": "Vanguard",
@@ -231,7 +246,9 @@
       "short_name": "Hubble",
       "primary_zone": "earth_orbit",
       "is_curated": true,
-      "jcats": ["S20580"],
+      "jcats": [
+        "S20580"
+      ],
       "mission": {
         "mission_name": "Hubble Space Telescope",
         "program": "Great Observatories",
@@ -276,7 +293,9 @@
       "short_name": "Voyager 1",
       "primary_zone": "deep_space",
       "is_curated": true,
-      "jcats": ["D00578"],
+      "jcats": [
+        "D00578"
+      ],
       "mission": {
         "mission_name": "Voyager 1",
         "program": "Voyager",
@@ -321,7 +340,10 @@
       "short_name": "Pioneer 10",
       "primary_zone": "deep_space",
       "is_curated": true,
-      "jcats": ["S05860", "D00431"],
+      "jcats": [
+        "S05860",
+        "D00431"
+      ],
       "mission": {
         "mission_name": "Pioneer 10",
         "program": "Pioneer",
@@ -356,6 +378,196 @@
           "media_type": "image",
           "is_primary": true,
           "source_id": "nssdca"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "slug": "opportunity",
+      "canonical_name": "Opportunity Rover",
+      "short_name": "Opportunity",
+      "primary_zone": "mars",
+      "is_curated": true,
+      "jcats": [
+        "S27849",
+        "D00815"
+      ],
+      "mission": {
+        "mission_name": "Mars Exploration Rover B (Opportunity)",
+        "program": "Mars Exploration Program",
+        "agency_org_code": "NASA",
+        "summary_text": "A Mars Exploration Rover that far outlived its 90-day design life and found evidence of ancient water.",
+        "abandonment_reason": "Contact was lost after a planet-wide dust storm in June 2018; the rover remains in Perseverance Valley.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Opportunity landed in Meridiani Planum on 25 January 2004.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/mer-opportunity/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "The rover operated for more than 14 years and last contacted Earth in June 2018.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/mer-opportunity/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/PIA20285/PIA20285~orig.jpg",
+          "title": "Mars rover Opportunity at rock abrasion target Potts",
+          "credit": "NASA/JPL-Caltech",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "slug": "apollo-15-rover",
+      "canonical_name": "Apollo 15 Lunar Roving Vehicle",
+      "short_name": "Apollo 15 LRV",
+      "primary_zone": "moon",
+      "is_curated": true,
+      "jcats": [
+        "D00394"
+      ],
+      "mission": {
+        "mission_name": "Apollo 15",
+        "program": "Apollo",
+        "agency_org_code": "NASA",
+        "summary_text": "The first lunar roving vehicle, used by the Apollo 15 crew to explore the Hadley-Apennine region.",
+        "abandonment_reason": "Left on the Moon at the Hadley-Apennine landing site.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "The Lunar Roving Vehicle was first used on Apollo 15 in July 1971.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/apollo-15/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "Astronauts David Scott and James Irwin drove it 27.8 km across the Hadley-Apennine region.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/apollo-15/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/as15-86-11603/as15-86-11603~medium.jpg",
+          "title": "Astronaut James Irwin works at the Lunar Roving Vehicle during Apollo 15",
+          "credit": "NASA",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "slug": "insight",
+      "canonical_name": "InSight Lander",
+      "short_name": "InSight",
+      "primary_zone": "mars",
+      "is_curated": true,
+      "jcats": [
+        "S43457",
+        "D00997"
+      ],
+      "mission": {
+        "mission_name": "InSight",
+        "program": "Discovery Program",
+        "agency_org_code": "NASA",
+        "summary_text": "A Mars lander that studied the planet's interior and detected marsquakes.",
+        "abandonment_reason": "The mission ended in December 2022 after dust reduced the lander's power; it remains on Mars.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "InSight landed in Elysium Planitia on 26 November 2018.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/insight/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "Its seismometer detected more than 1,300 marsquakes before the mission ended in December 2022.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/insight/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/PIA19811/PIA19811~medium.jpg",
+          "title": "Artist concept of the InSight lander on Mars",
+          "credit": "NASA/JPL-Caltech",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "slug": "skylab",
+      "canonical_name": "Skylab",
+      "short_name": "Skylab",
+      "primary_zone": "earth_orbit",
+      "is_curated": true,
+      "jcats": [
+        "S06633"
+      ],
+      "mission": {
+        "mission_name": "Skylab",
+        "program": "Skylab",
+        "agency_org_code": "NASA",
+        "summary_text": "The first United States space station, occupied by three crews in 1973–74.",
+        "abandonment_reason": "Abandoned after three crewed visits; it reentered on 11 July 1979.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Skylab was launched on 14 May 1973 as the United States' first space station.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/skylab/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "It reentered Earth's atmosphere over the Indian Ocean and Western Australia on 11 July 1979.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/skylab/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/sl3-114-1682/sl3-114-1682~medium.jpg",
+          "title": "View of the Skylab space station cluster against black sky",
+          "credit": "NASA",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
         }
       ],
       "relations": []

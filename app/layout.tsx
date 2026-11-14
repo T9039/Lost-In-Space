@@ -27,9 +27,9 @@ const telemetryFont = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Abandoned but not Forgotten — The Cosmic Relic Museum",
+  title: "Lost in Space — The hardware humans left behind",
   description:
-    "An interactive museum of the machines humans left behind on the Moon, Mars, in Earth orbit and beyond — built on real NASA data.",
+    "An open archive of the machines humans left behind on the Moon, Mars, in Earth orbit and beyond — built on real NASA data.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

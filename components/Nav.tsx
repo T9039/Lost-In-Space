@@ -10,7 +10,7 @@ export default async function Nav() {
       <div className="container nav-inner">
         <Link href="/" className="brand group inline-flex items-center gap-3">
           <span className="brand-mark"><Orbit size={17} strokeWidth={1.5} /></span>
-          <span className="brand-name">Cosmic Relic <span>Museum</span></span>
+          <span className="brand-name">Lost in <span>Space</span></span>
         </Link>
         <nav className="nav-links">
           <Link href="/">Home</Link>

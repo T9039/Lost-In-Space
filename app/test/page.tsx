@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Mission Test — Abandoned but not Forgotten",
+  title: "Mission Test — Lost in Space",
 };
 
 export default function TestPage() {

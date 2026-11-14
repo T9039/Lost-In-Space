@@ -9,7 +9,7 @@ const KIND_LABEL: Record<string, string> = {
 };
 
 export const metadata = {
-  title: "Sources — Abandoned but not Forgotten",
+  title: "Sources — Lost in Space",
 };
 
 export default async function SourcesPage() {

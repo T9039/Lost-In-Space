@@ -9,10 +9,10 @@ reads. Narration is generated separately from a frozen snapshot of those facts.
 
 ## Status
 
-Phases 0–2 are in place: schema, documentation, the GCAT ETL, and a curated
-starter set of 8 artifacts (2 per zone). A Next.js 15 prototype of the Cosmic
-Relic Museum exists and currently runs on sourced NASA fixture data. The
-production API, DB-backed UI and live-tracking layer are next. See
+Phases 0–2 are in place: schema, documentation, the GCAT ETL, and a curated set
+of 12 artifacts across the four zones. A Next.js 15 prototype of Lost in Space
+exists and currently runs on sourced NASA fixture data. The production API,
+DB-backed UI and live-tracking layer are next. See
 [`ROADMAP.md`](ROADMAP.md) for the phased plan and the task list.
 
 - [x] Repository connected to `T9039/Lost-In-Space`

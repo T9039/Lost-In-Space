@@ -1,6 +1,6 @@
 # Frontend API contract
 
-This document is the frontend/backend handoff for the Cosmic Relic Museum. The JSON types below mirror `lib/types.ts`; the local deterministic comparison result mirrors `lib/compare.ts`.
+This document is the frontend/backend handoff for Lost in Space. The JSON types below mirror `lib/types.ts`; the local deterministic comparison result mirrors `lib/compare.ts`.
 
 ## Connecting the live backend
 

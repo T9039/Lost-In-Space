@@ -4,7 +4,7 @@ import { compareItems, KIND_LABEL } from "@/lib/compare";
 import type { Item } from "@/lib/types";
 
 export const metadata = {
-  title: "Compare — Abandoned but not Forgotten",
+  title: "Compare — Lost in Space",
 };
 
 type SearchParams = Promise<{ a?: string; b?: string; deep?: string }>;

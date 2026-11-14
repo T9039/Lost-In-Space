@@ -18,7 +18,7 @@ Related documents:
 |---|---|---|
 | 0 | Foundation | Done |
 | 1 | Ingest | Done; one live check outstanding |
-| 2 | Curate | In progress — starter set done; set alignment needed |
+| 2 | Curate | In progress — 12 artifacts, aligned with the UI |
 | 3 | Application shell | Prototype merged; database/API integration next |
 | 4 | Artifact experience | Prototyped on fixtures; DB-backed work next |
 | 5 | Live tracking | Not started |
@@ -64,7 +64,7 @@ design is documented. Met.
 - [x] `derive_zone()` SQL function used by the ETL
 - [x] `phase_key` handles deep-space JCAT reuse (Voyager 1: four phases)
 - [x] 26 unit tests
-- [x] End-to-end: 258,367 staging rows, 392 launch files, 8 artifacts, 21 phases
+- [x] End-to-end: 258,367 staging rows, 392 launch files, 12 artifacts, 29 phases
 - [x] Idempotency: identical counts after a second run
 - [ ] Exercise `celestrak_refresh` against the live CelesTrak API
 - [ ] Decide whether to load `lcat`/`rcat` (30 lander rows unmatched)
@@ -76,40 +76,39 @@ design is documented. Met.
 
 ## Phase 2 — Curate
 
-Starter set is done. The next decision is **set alignment with the UI**.
+The set is aligned with the UI fixtures.
 
 - [x] `curation/artifacts.json` and `etl.curate`
-- [x] 8 curated artifacts, 2 per zone
-- [x] 16 facts with source URLs; 8 credited media rows
+- [x] 12 curated artifacts: 3 Moon, 4 Mars, 3 Earth orbit, 2 deep space
+- [x] 24 facts with source URLs; 12 credited media rows
 - [x] Mission summaries and abandonment reasons
 - [x] `is_curated = true` only after sourcing
-- [x] Balanced zones: Moon, Mars, Earth orbit, deep space
-- [ ] **Decide the artifact set** (see below)
-- [ ] Expand to roughly 6–10 per zone
+- [x] **Align the artifact set with the UI** — added Opportunity, Apollo 15 LRV,
+      InSight and Skylab
+- [ ] Expand to roughly 6–10 per zone (Moon and deep space are thinnest)
 - [ ] Add `artifact_relation` edges (`deployed_from`, `component_of`,
       `left_behind_by`, `landed_with`)
 - [ ] Resolve parent links across selected artifacts
 - [ ] Review every fact against its source page
 - [ ] Add model rows to `media` (`media_type = 'model'`) or keep them static
 
-### Set mismatch with the frontend fixtures
+### Fixture coverage
 
-| Frontend fixtures | In database? |
-|---|---|
-| Opportunity | No |
-| Apollo 11 Eagle | Yes, different slug (`apollo-11-eagle` vs `apollo-11-lunar-module-eagle`) |
-| Apollo 15 Rover | No |
-| InSight | No |
-| Vanguard 1 | Yes |
-| Skylab debris | No |
-| Voyager 1 | Yes |
-| Pioneer 10 | Yes |
-| — | Surveyor 3, Perseverance, Viking Lander 1, Hubble (not in UI) |
+| Frontend fixture | Database slug | Note |
+|---|---|---|
+| `opportunity` | `opportunity` | aligned |
+| `apollo-11-eagle` | `apollo-11-lunar-module-eagle` | slug alias needed |
+| `apollo-15-rover` | `apollo-15-rover` | aligned |
+| `insight` | `insight` | aligned |
+| `vanguard-1` | `vanguard-1` | aligned |
+| `skylab-debris` | `skylab` | slug and scope alias needed |
+| `voyager-1` | `voyager-1` | aligned |
+| `pioneer-10` | `pioneer-10` | aligned |
 
-**Recommendation:** expand curation to the five fixture objects the UI was
-designed around (Opportunity, Apollo 15 Rover, InSight, Skylab, and keep Eagle).
-That preserves the visual work and makes the DB the source of truth. Otherwise
-the UI loses its sample data on the first API switch.
+Database-only additions: `surveyor-3`, `perseverance-rover`,
+`viking-lander-1`, `hubble-space-telescope`.
+
+The remaining alias work belongs in `lib/contract.ts`, not in the database.
 
 ---
 
@@ -208,7 +207,7 @@ reads from PostgreSQL; no generated text is used.
 
 ## Phase 7 — Hardening and release
 
-- [ ] `.github/workflows` — app build, DB tests, ETL tests, docs compile
+- [ ] Enable the drafted CI workflow (`.github/workflows` needs workflow scope)
 - [ ] Add `lint`, `typecheck`, `test` scripts (Vitest, Playwright assumed)
 - [ ] Backup and restore drill
 - [ ] Accessibility, responsive and performance passes
@@ -220,14 +219,16 @@ reads from PostgreSQL; no generated text is used.
 
 ## Cross-cutting gaps
 
-- [ ] `.github/` CI does not exist yet
-- [ ] `db/migrations/` directory is referenced but absent
+- [x] CI workflow drafted at `docs/ci-workflow.yml`
+- [ ] Enable CI after `gh auth refresh -s workflow` (workflow files need that scope)
+- [x] `db/migrations/README.md` documents the forward-only convention
 - [ ] No `app/api/` routes and no `lib/db.ts`
-- [ ] No frontend tests, lint or typecheck scripts
-- [ ] `.env.example` lacks `NEXT_PUBLIC_API_BASE`
-- [ ] `ATTRIBUTION.md` lacks the NASA mission-pages source
-- [ ] Technical docs still mention `src/` and an older page count
-- [ ] Branding: “Cosmic Relic Museum” vs “Lost in Space” needs one decision
+- [x] `npm run typecheck` added
+- [ ] No frontend tests or lint script
+- [x] `.env.example` documents `NEXT_PUBLIC_API_BASE`
+- [x] `ATTRIBUTION.md` includes NASA mission pages
+- [x] Technical docs point at `app/`, `components/` and `lib/`
+- [x] Branding is Lost in Space; the museum name is gone from the UI
 - [ ] The 30 unmatched lander rows and `UNK` launch tag are still open
 - [ ] CelesTrak refresh is not exercised live
 - [ ] Image proxy is not implemented; images are bundled in `public/`
@@ -237,9 +238,9 @@ reads from PostgreSQL; no generated text is used.
 
 ## Next three actions
 
-1. **Align the artifact set** — add Opportunity, Apollo 15 Rover, InSight and
-   Skylab to curation so the UI keeps its data.
-2. **Build the adapter and DB layer** — `lib/contract.ts`, `lib/db.ts`, typed
+1. **Build the adapter and DB layer** — `lib/contract.ts`, `lib/db.ts`, typed
    queries, then `/api/items`, `/api/items/:id` and `/api/sources`.
-3. **Switch one page at a time** — archive first, then home, item, sources;
+2. **Switch one page at a time** — archive first, then home, item, sources;
    keep fixtures as the offline fallback.
+3. **Expand curation** — Moon and deep space to 6–10 artifacts, then add
+   `artifact_relation` edges.

@@ -46,6 +46,14 @@ rate-limited; see <https://celestrak.org/usage-policy.php>.
 Imagery is generally public domain, but each asset keeps its published credit
 line. Third-party material is not relicensed here.
 
+## NASA mission pages
+
+> NASA mission pages. <https://science.nasa.gov/> and <https://www.nasa.gov/>.
+
+Used for mission summaries, fact sheets and outcomes. NASA material is generally
+public domain, but individual pages can include third-party text or imagery;
+the page is checked before a fact is copied.
+
 ## JPL Horizons
 
 > JPL Horizons System, NASA Jet Propulsion Laboratory.
