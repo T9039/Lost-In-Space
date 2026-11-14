@@ -19,7 +19,7 @@ have() { command -v "$1" >/dev/null 2>&1; }
 
 say "Tools"
 missing=()
-for tool in git node npm python3 typst; do
+for tool in git node npm python3; do
   if have "$tool"; then
     printf '  %-8s %s\n' "$tool" "$("$tool" --version 2>/dev/null | head -1)"
   else
@@ -27,6 +27,11 @@ for tool in git node npm python3 typst; do
     missing+=("$tool")
   fi
 done
+if have typst; then
+  printf '  %-8s %s\n' typst "$(typst --version 2>/dev/null | head -1)"
+else
+  printf '  %-8s optional, missing (documentation build will be skipped)\n' typst
+fi
 
 if ((${#missing[@]})); then
   cat <<'EOF'
@@ -68,8 +73,12 @@ npm run typecheck
 say "Build"
 npm run build
 
-say "Documentation"
-(cd docs/technical && typst compile main.typ)
+if have typst; then
+  say "Documentation"
+  (cd docs/technical && typst compile main.typ)
+else
+  say "Documentation skipped (typst is not installed)"
+fi
 
 cat <<EOF
 
