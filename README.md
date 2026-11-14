@@ -76,7 +76,7 @@ docker compose down -v && docker compose up -d db
 │   ├── ARCHITECTURE.md         stack, Render decision, live tracking
 │   ├── DATABASE.md             data dictionary and identity rules
 │   ├── DATA-SOURCES.md         licences, endpoints, column maps
-│   └── technical/              full technical documentation (Typst, 89 pp, PDF)
+│   └── technical/              full technical documentation (Typst source + PDF)
 ├── etl/                        loader pipeline (phase 1)
 ├── hackathonWoes.md            original product architecture
 ├── resources.md                original source notes

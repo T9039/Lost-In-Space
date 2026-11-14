@@ -35,7 +35,7 @@ A source that fails criterion 5 is cached aggressively or treated as optional.
   caption: [Source matrix],
   table(
     columns: (2.4cm, 3.0cm, 3.4cm, 1fr),
-    inset: 7pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left, left),
     table.header([*Source*], [*Role*], [*Licence / terms*], [*Ingest mode*]),
@@ -76,7 +76,7 @@ than an enrichment.
   caption: [GCAT endpoints used by the loader],
   table(
     columns: (3.2cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Resource*], [*URL*]),
@@ -97,13 +97,13 @@ than an enrichment.
 #figure(
   kind: "table",
   supplement: "Table",
-  caption: [GCAT files and their role],
+  caption: [GCAT files and their role. Row counts are from 2026-11-13.],
   table(
-    columns: (2.8cm, 2.2cm, 1fr),
-    inset: 8pt,
+    columns: (3.6cm, 2.4cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, right, left),
-    table.header([*File*], [*Rows (2026-11-13)*], [*Role*]),
+    table.header([*File*], [*Rows*], [*Role*]),
     [`cat/satcat.tsv`], [69,999], [Earth-orbit objects and phases],
     [`cat/deepcat.tsv`], [1,238], [Deep-space, Moon, Mars and planetary phases],
     [`cat/hcocat.tsv`], [—], [Heliocentric and escape objects],
@@ -310,8 +310,8 @@ The following rules are enforced in code and review:
   supplement: "Table",
   caption: [Refresh schedule],
   table(
-    columns: (3.4cm, 2.2cm, 1fr),
-    inset: 8pt,
+    columns: (3.6cm, 2.6cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, center, left),
     table.header([*Job*], [*Cadence*], [*Action*]),
@@ -330,8 +330,8 @@ The following rules are enforced in code and review:
   supplement: "Table",
   caption: [Source failure policy],
   table(
-    columns: (2.6cm, 1fr, 1fr),
-    inset: 8pt,
+    columns: (3.0cm, 1fr, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Source*], [*If it is unavailable*], [*If it changes format*]),

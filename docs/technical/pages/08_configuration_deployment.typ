@@ -28,8 +28,8 @@ when a component fails.
   supplement: "Table",
   caption: [Environment variables],
   table(
-    columns: (4.6cm, 1.2cm, 1.6cm, 1fr),
-    inset: 8pt,
+    columns: (4.8cm, 2.0cm, 1.8cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, center, left, left),
     table.header([*Variable*], [*Required*], [*Scope*], [*Purpose and default*]),
@@ -52,7 +52,7 @@ when a component fails.
   caption: [Local `.env` shape],
   table(
     columns: (1fr, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Key*], [*Local value*]),
@@ -125,7 +125,7 @@ services:
   caption: [Render resource decisions],
   table(
     columns: (3.0cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Resource*], [*Reason*]),
@@ -188,7 +188,7 @@ image and a PostgreSQL instance.
   caption: [Self-hosted topology],
   table(
     columns: (3.0cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Component*], [*Implementation*]),
@@ -252,7 +252,7 @@ process does not crash-loop:
   caption: [Scaling levers in order],
   table(
     columns: (3.0cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Lever*], [*When to use it*]),
@@ -277,7 +277,7 @@ possible without a session store.
   caption: [Deployment failure modes],
   table(
     columns: (3.2cm, 1fr, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Failure*], [*Symptom*], [*Response*]),
@@ -318,8 +318,8 @@ psql lost_in_space_restore -c "select count(*) from v_artifact_card;"
   supplement: "Table",
   caption: [Pre-release checklist],
   table(
-    columns: (1.0cm, 1fr),
-    inset: 8pt,
+    columns: (1.5cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (center, left),
     table.header([*Done*], [*Item*]),

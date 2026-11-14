@@ -15,6 +15,8 @@ source URL.
 == Pipeline stages
 
 #figure(
+  kind: "figure",
+  supplement: "Figure",
   canvas({
     import draw: *
     set-style(stroke: 0.7pt, fill: rgb("#eef3f6"))
@@ -63,7 +65,7 @@ re-runnable, and none of them writes to a canonical table except `transform`.
   caption: [Pipeline commands and their side effects],
   table(
     columns: (7.2cm, 1fr, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Command*], [*Reads*], [*Writes*]),
@@ -108,8 +110,8 @@ CSV/TSV manipulation.
   supplement: "Table",
   caption: [Ingestion runtime alternatives],
   table(
-    columns: (2.6cm, 2.2cm, 1fr),
-    inset: 8pt,
+    columns: (3.2cm, 2.8cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Option*], [*Licence*], [*Why it was not chosen*]),
@@ -158,8 +160,8 @@ mechanical and keeps every value auditable.
   supplement: "Table",
   caption: [Staging strategies],
   table(
-    columns: (2.6cm, 1fr),
-    inset: 8pt,
+    columns: (3.0cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Strategy*], [*Why it was not chosen*]),
@@ -204,8 +206,8 @@ the distinction between “known to the year” and “known to the second”.
   supplement: "Table",
   caption: [Date parsing alternatives],
   table(
-    columns: (2.6cm, 2.2cm, 1fr),
-    inset: 8pt,
+    columns: (4.0cm, 2.4cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Option*], [*Licence*], [*Why it was not chosen*]),
@@ -257,8 +259,8 @@ launch, a command module, a service module and a lunar module.
   supplement: "Table",
   caption: [Identity resolution alternatives],
   table(
-    columns: (2.6cm, 2.2cm, 1fr),
-    inset: 8pt,
+    columns: (3.2cm, 2.6cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Option*], [*Licence*], [*Why it was not chosen*]),
@@ -307,8 +309,8 @@ reference frame and time system.
   supplement: "Table",
   caption: [Element-set source and format alternatives],
   table(
-    columns: (2.4cm, 2.2cm, 1fr),
-    inset: 8pt,
+    columns: (3.0cm, 2.6cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Option*], [*Licence / terms*], [*Why it was not chosen*]),
@@ -357,8 +359,8 @@ comfortably in a browser tab.
   supplement: "Table",
   caption: [Propagation alternatives],
   table(
-    columns: (2.4cm, 2.2cm, 1fr),
-    inset: 8pt,
+    columns: (3.4cm, 2.6cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Option*], [*Licence*], [*Why it was not chosen*]),
@@ -407,7 +409,7 @@ fails when NASA is slow. The archive also needs stable URLs for `media` rows.
   caption: [Imagery delivery alternatives],
   table(
     columns: (2.8cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Option*], [*Why it was not chosen*]),
@@ -452,8 +454,8 @@ much larger client bundle.
   supplement: "Table",
   caption: [Map and 3D alternatives],
   table(
-    columns: (2.4cm, 2.2cm, 1fr),
-    inset: 8pt,
+    columns: (3.0cm, 2.6cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Option*], [*Licence*], [*Why it was not chosen*]),
@@ -503,8 +505,8 @@ that receives a frozen, complete fact set can only phrase, not discover.
   supplement: "Table",
   caption: [Narration generation alternatives],
   table(
-    columns: (2.6cm, 2.2cm, 1fr),
-    inset: 8pt,
+    columns: (3.2cm, 2.6cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Option*], [*Licence / terms*], [*Why it was not chosen*]),
@@ -549,8 +551,8 @@ that can simply be retried on the next schedule.
   supplement: "Table",
   caption: [Scheduling alternatives],
   table(
-    columns: (2.4cm, 2.2cm, 1fr),
-    inset: 8pt,
+    columns: (3.0cm, 2.6cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Option*], [*Licence*], [*Why it was not chosen*]),
@@ -581,7 +583,7 @@ return no rows:
   caption: [Pre-promotion checks],
   table(
     columns: (4.4cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Check*], [*Failure means*]),
@@ -608,7 +610,7 @@ written in a separate short transaction so the failure is visible.
   caption: [Pipeline failure modes and responses],
   table(
     columns: (3.4cm, 1fr, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Failure*], [*Detection*], [*Response*]),

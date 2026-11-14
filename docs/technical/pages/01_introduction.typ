@@ -30,7 +30,7 @@ Each decision in this document carries one of four statuses:
   caption: [Decision status vocabulary],
   table(
     columns: (2.4cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Status*], [*Meaning*]),
@@ -78,8 +78,8 @@ Sections 3–5 use a consistent structure:
   supplement: "Table",
   caption: [Decision record structure],
   table(
-    columns: (2.6cm, 1fr),
-    inset: 8pt,
+    columns: (3.0cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Field*], [*Meaning*]),
@@ -115,7 +115,7 @@ unambiguously.
   caption: [System summary],
   table(
     columns: (3.2cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Dimension*], [*Summary*]),

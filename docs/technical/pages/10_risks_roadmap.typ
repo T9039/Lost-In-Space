@@ -16,13 +16,13 @@ mitigation is the action that keeps the risk from becoming a failure.
 #figure(
   kind: "table",
   supplement: "Table",
-  caption: [Risk register],
+  caption: [Risk register: identity, licensing and data],
   table(
-    columns: (0.7cm, 3.4cm, 1.4cm, 1.4cm, 1fr),
-    inset: 7pt,
+    columns: (0.9cm, 4.4cm, 1.9cm, 1.7cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (center, left, center, center, left),
-    table.header([*ID*], [*Risk*], [*Likelihood*], [*Impact*], [*Mitigation*]),
+    table.header([*ID*], [*Risk*], [*Likely*], [*Impact*], [*Mitigation*]),
     [R1], [Identity resolution merges unrelated hardware], [Medium], [High], [Rule proposals only; human confirmation; every merge reversible; fixture tests],
     [R2], [A licence is misread and data is relicensed], [Medium], [High], [Licence recorded per source; review step; explicit “not CC-BY” notes in the docs and UI],
     [R3], [GCAT changes its column layout], [Medium], [Medium], [Text staging with a field-count assertion; validation fails loudly; previous release retained],
@@ -31,6 +31,19 @@ mitigation is the action that keeps the risk from becoming a failure.
     [R6], [Curation is slower than expected], [High], [Medium], [Smaller curated set, balanced by zone, sourced facts first],
     [R7], [LLM narration invents a fact], [Medium], [High], [Frozen facts snapshot, fact hash, no browsing, generated text labelled, never used for comparisons or quizzes],
     [R8], [A dependency changes to a non-open licence], [Low], [High], [Lockfile, licence check in CI, alternatives recorded for every core component],
+  ),
+)
+
+#figure(
+  kind: "table",
+  supplement: "Table",
+  caption: [Risk register: operations, delivery and documentation],
+  table(
+    columns: (0.9cm, 4.4cm, 1.9cm, 1.7cm, 1fr),
+    inset: 6pt,
+    stroke: 0.5pt,
+    align: (center, left, center, center, left),
+    table.header([*ID*], [*Risk*], [*Likely*], [*Impact*], [*Mitigation*]),
     [R9], [Map tiles carry restrictive terms], [Medium], [Medium], [Self-hostable style; coordinates stored independently of the tile provider; Cesium optional],
     [R10], [Schema drift between code and database], [Medium], [Medium], [Migrations in CI from empty; typed row mapping; no ORM to hide the schema],
     [R11], [SQL injection through a dynamic filter], [Low], [High], [Parameterised queries only; review rule; no string interpolation],
@@ -49,7 +62,7 @@ mitigation is the action that keeps the risk from becoming a failure.
   caption: [Load-bearing assumptions],
   table(
     columns: (3.2cm, 1fr, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Assumption*], [*If false*], [*Response*]),
@@ -70,8 +83,8 @@ These are deliberately unresolved. Each has an owner, a trigger and a default.
   supplement: "Table",
   caption: [Open decisions],
   table(
-    columns: (0.7cm, 3.0cm, 1fr, 1fr),
-    inset: 7pt,
+    columns: (0.9cm, 3.0cm, 1fr, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (center, left, left, left),
     table.header([*ID*], [*Question*], [*Trigger to decide*], [*Default until then*]),
@@ -99,7 +112,7 @@ something demonstrable.
   caption: [Roadmap],
   table(
     columns: (1.2cm, 3.0cm, 1fr, 1fr),
-    inset: 7pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (center, left, left, left),
     table.header([*Phase*], [*Theme*], [*Deliverables*], [*Exit criterion*]),
@@ -150,7 +163,7 @@ on the curated pages.
   caption: [Success criteria],
   table(
     columns: (2.8cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Criterion*], [*Measure*]),

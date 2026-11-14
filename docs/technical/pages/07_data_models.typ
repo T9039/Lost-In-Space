@@ -27,6 +27,8 @@ this, and the flagship Moon narrative would be wrong.
 *How it is used.*
 
 #figure(
+  kind: "figure",
+  supplement: "Figure",
   canvas({
     import draw: *
     set-style(stroke: 0.7pt, fill: rgb("#eef3f6"))
@@ -68,7 +70,7 @@ this, and the flagship Moon narrative would be wrong.
   caption: [Apollo 11 lunar module as one artifact with three phases],
   table(
     columns: (4.2cm, 2.4cm, 2.0cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left, left),
     table.header([*Event*], [*Launch tag*], [*JCAT*], [*Why a new identity*]),
@@ -90,7 +92,7 @@ phases; the lineage is one node.
   caption: [Identity model alternatives],
   table(
     columns: (2.8cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Option*], [*Why it was not chosen*]),
@@ -118,7 +120,7 @@ phases; the lineage is one node.
   caption: [Canonical tables by concern],
   table(
     columns: (2.8cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Concern*], [*Tables*]),
@@ -168,7 +170,7 @@ Rules for casting:
   caption: [Catalog value handling],
   table(
     columns: (2.2cm, 2.6cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Scheme*], [*Shape*], [*Rule*]),
@@ -188,8 +190,8 @@ Every date that comes from a catalog is stored four ways:
   supplement: "Table",
   caption: [VagueDate columns],
   table(
-    columns: (2.6cm, 1fr, 1fr),
-    inset: 8pt,
+    columns: (3.0cm, 1fr, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Column*], [*Example*], [*Meaning*]),
@@ -200,9 +202,8 @@ Every date that comes from a catalog is stored four ways:
   ),
 )
 
-The same pattern applies to `launch.date_*`, `artifact_catalog_id.valid_*`,
-`artifact_phase.start_*` / `end_*` / `epoch_*` and `mission.tlast_*` / `top_*` /
-`tdate_*`.
+The same four columns appear on the date fields of `launch`,
+`artifact_catalog_id`, `artifact_phase` and `mission`.
 
 Three rules make the pattern work:
 
@@ -224,7 +225,7 @@ Three rules make the pattern work:
   caption: [Zone derivation, first match wins],
   table(
     columns: (2.9cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Zone*], [*Rule*]),
@@ -252,8 +253,8 @@ curator carry `source_id = 'curated'`.
   supplement: "Table",
   caption: [Provenance fields],
   table(
-    columns: (2.6cm, 1fr),
-    inset: 8pt,
+    columns: (4.0cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Field*], [*Meaning*]),
@@ -292,7 +293,7 @@ Nothing that answers “what is true?” reads `story`.
   caption: [Element-set fields],
   table(
     columns: (4.0cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Field*], [*Meaning*]),
@@ -326,7 +327,7 @@ The graph is a projection, not a system of record.
   caption: [Graph projection rules],
   table(
     columns: (2.8cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Rule*], [*Consequence*]),
@@ -346,8 +347,8 @@ Three views keep common joins out of application code:
   supplement: "Table",
   caption: [Read views],
   table(
-    columns: (3.8cm, 1fr),
-    inset: 8pt,
+    columns: (4.6cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*View*], [*Shape*]),
@@ -372,7 +373,7 @@ shapes:
   caption: [Selected constraints and indexes],
   table(
     columns: (7.6cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Object*], [*Purpose*]),
@@ -416,8 +417,8 @@ record shape.
   supplement: "Table",
   caption: [Storage shape alternatives],
   table(
-    columns: (2.6cm, 1fr),
-    inset: 8pt,
+    columns: (3.0cm, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Option*], [*Why it was not chosen*]),
@@ -458,7 +459,7 @@ scheduling and staleness to the system of record.
   caption: [Read-model alternatives],
   table(
     columns: (2.8cm, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left),
     table.header([*Option*], [*Why it was not chosen*]),

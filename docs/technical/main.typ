@@ -29,6 +29,12 @@
 #set heading(numbering: "1.1")
 #set raw(tab-size: 2)
 
+// Tables use a slightly smaller size than body text so that identifiers and
+// column headings fit their cells. Cells are not justified: narrow columns
+// otherwise stretch words apart into unreadable gaps.
+#show table: set text(size: 9.5pt)
+#show table: set par(justify: false)
+
 // ============================================================================
 // TITLE PAGE
 // ============================================================================
@@ -145,6 +151,6 @@
 // ============================================================================
 
 #pagebreak()
-#heading(level: 1, outlined: false, numbering: none)[References]
-
-#bibliography("references.bib", style: "ieee")
+#show bibliography: set text(size: 10pt)
+#show bibliography: set par(leading: 0.45em)
+#bibliography("references.bib", style: "ieee", title: [References])

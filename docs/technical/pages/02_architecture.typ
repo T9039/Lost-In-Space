@@ -20,6 +20,8 @@ graph server, a message queue, or a per-user upstream API call.
 == Runtime topology
 
 #figure(
+  kind: "figure",
+  supplement: "Figure",
   canvas({
     import draw: *
     set-style(stroke: 0.7pt, fill: rgb("#eef3f6"))
@@ -64,8 +66,8 @@ graph server, a message queue, or a per-user upstream API call.
   supplement: "Table",
   caption: [Logical layers and their responsibilities],
   table(
-    columns: (2.6cm, 1fr, 1fr),
-    inset: 8pt,
+    columns: (3.0cm, 1fr, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Layer*], [*Responsibility*], [*Technology*]),
@@ -81,6 +83,8 @@ graph server, a message queue, or a per-user upstream API call.
 == Component diagram
 
 #figure(
+  kind: "figure",
+  supplement: "Figure",
   canvas({
     import draw: *
     set-style(stroke: 0.7pt, fill: rgb("#eef3f6"))
@@ -98,10 +102,10 @@ graph server, a message queue, or a per-user upstream API call.
     content("tr", align(center, text(size: 8pt)[Transform\ and validate]))
 
     rect((5.0, 1.6), (8.0, 2.5), name: "can", radius: 2pt)
-    content("can", align(center, text(size: 8pt)[Canonical tables\ artifacts · phases · facts]))
+    content("can", align(center, text(size: 7.5pt)[Canonical tables\ artifacts · phases · facts]))
 
     rect((9.4, 1.6), (12.4, 2.5), name: "view", radius: 2pt)
-    content("view", align(center, text(size: 8pt)[Read views\ cards · timeline · edges]))
+    content("view", align(center, text(size: 7.5pt)[Read views\ cards · timeline · edges]))
 
     rect((5.0, -0.5), (8.0, 0.4), name: "app", radius: 2pt)
     content("app", align(center, text(size: 8pt)[Next.js app]))
@@ -169,8 +173,8 @@ layers:
   supplement: "Table",
   caption: [Facts versus narration],
   table(
-    columns: (2.6cm, 1fr, 1fr),
-    inset: 8pt,
+    columns: (3.0cm, 1fr, 1fr),
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Layer*], [*Owns*], [*Produced by*]),
@@ -218,7 +222,7 @@ The following rules hold regardless of implementation detail:
   caption: [Environments],
   table(
     columns: (3.2cm, 1fr, 1fr),
-    inset: 8pt,
+    inset: 6pt,
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Environment*], [*Purpose*], [*Data*]),
