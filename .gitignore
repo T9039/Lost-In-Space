@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Next.js
+.next/
+out/
+build/
+dist/
+coverage/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# Local data dumps and caches
+data/gcat/
+data/celestrak/
+*.tar.gz
+
+# Local database volume
+.pgdata/
+pgdata/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.log
