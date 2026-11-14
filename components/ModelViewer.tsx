@@ -41,7 +41,7 @@ export default function ModelViewer({ src, poster, fallback, alt, credit }: Prop
   if (!src || failed) {
     const img = fallback ?? poster;
     return (
-      <div className="viewer viewer-fallback">
+      <div className="viewer viewer-fallback targeting-frame">
         {img ? <img src={img} alt={alt} /> : <div style={{ height: "100%" }} />}
         <span className="viewer-label">
           {failed ? "3D model unavailable — showing NASA imagery" : "Showing NASA imagery"}
@@ -68,7 +68,7 @@ export default function ModelViewer({ src, poster, fallback, alt, credit }: Prop
   if (poster) attrs.poster = poster;
 
   return (
-    <div className="viewer">
+    <div className="viewer targeting-frame">
       <Mv ref={ref as unknown as React.Ref<HTMLElement>} {...attrs} />
       <span className="viewer-hint">drag to rotate</span>
       <span className="viewer-label">{credit ?? "NASA 3D Resources"}</span>

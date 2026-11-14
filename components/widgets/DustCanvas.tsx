@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
  */
 export default function DustCanvas({
   image,
-  minPower = 140,
+  minPower = 132,
   maxPower = 600,
 }: {
   image?: string;
@@ -106,7 +106,18 @@ export default function DustCanvas({
     ctx.globalCompositeOperation = "source-over";
   };
 
+  const operateWindCleaner = () => {
+    const rect = wrapRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    for (const fraction of [0.22, 0.5, 0.78]) {
+      const y = rect.top + rect.height * fraction;
+      for (let x = rect.left - 24; x < rect.right + 24; x += 18) erase(x, y);
+    }
+  };
+
   const power = Math.round(minPower + (maxPower - minPower) * Math.min(efficiency / 0.85, 1));
+  const powerEfficiency = Math.round((power / maxPower) * 100);
+  const soilCoverage = Math.round(78 * (1 - Math.min(efficiency / 0.85, 1)));
   const done = efficiency >= 0.85;
 
   return (
@@ -116,9 +127,10 @@ export default function DustCanvas({
           <div className="widget-title">Opportunity · solar array recovery</div>
           <div className="widget-sub">Drag to sweep away simulated Martian regolith · 85 μm dust layer</div>
         </div>
-        <button className="btn btn-sm" onClick={() => { setCompletionToast(false); setSeed((s) => s + 1); }}>
-          Reset dust
-        </button>
+        <div className="dust-actions">
+          <button className="btn btn-blue btn-sm" onClick={operateWindCleaner}>OPERATE WIND CLEANER</button>
+          <button className="btn btn-sm" onClick={() => { setCompletionToast(false); setSeed((s) => s + 1); }}>RESET DUST</button>
+        </div>
       </div>
 
       <div className="dust-wrap" ref={wrapRef}>
@@ -149,15 +161,15 @@ export default function DustCanvas({
 
       <div className="widget-stats">
         <div className="widget-stat">
-          <span className="widget-stat-value">{Math.round(efficiency * 100)}%</span>
-          <span className="widget-stat-label">Solar exposure</span>
+          <span className="widget-stat-value">{soilCoverage}%</span>
+          <span className="widget-stat-label">SOIL COVERAGE</span>
         </div>
         <div className="widget-stat">
-          <span className="widget-stat-value">{power} Wh/day</span>
-          <span className="widget-stat-label">Power output</span>
+          <span className="widget-stat-value power-efficiency">{powerEfficiency}%</span>
+          <span className="widget-stat-label">POWER EFFICIENCY</span>
         </div>
         <div className={`widget-status ${done ? "is-ok" : ""}`}>
-          {done ? "Arrays cleared. Power restored." : "Critical power deficit — keep wiping."}
+          {done ? `Arrays cleared · ${power} Wh/day restored.` : `Power output ${power} Wh/day · clear dust to recharge.`}
         </div>
       </div>
       {completionToast ? <div className="dust-toast" role="status">Solar arrays cleared · power restored to {maxPower} Wh/day</div> : null}

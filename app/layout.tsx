@@ -1,8 +1,30 @@
 import type { Metadata } from "next";
+import { Cormorant_Garamond, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import { CompareProvider } from "@/components/CompareProvider";
 import CompareTray from "@/components/CompareTray";
+
+const displayFont = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const bodyFont = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
+  display: "swap",
+});
+
+const telemetryFont = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-telemetry",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Abandoned but not Forgotten — The Cosmic Relic Museum",
@@ -13,7 +35,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>
+      <body className={`${displayFont.variable} ${bodyFont.variable} ${telemetryFont.variable}`}>
         <div className="starfield" aria-hidden="true" />
         <CompareProvider>
           <Nav />

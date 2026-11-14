@@ -3,9 +3,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import ItemCard from "./ItemCard";
+import SectorMap from "./SectorMap";
 import { getItems, getZones } from "@/lib/api";
 import { ZONES, type Item, type Zone, type ZoneSummary } from "@/lib/types";
 import { hallTelemetry, zoneMeta } from "@/lib/zones";
+import { GalleryVerticalEnd, MapPinned } from "lucide-react";
 
 const ZONE_IDS = Object.keys(ZONES) as Zone[];
 
@@ -21,6 +23,13 @@ export default function ArchiveView() {
   const [zones, setZones] = useState<ZoneSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
+  const [view, setView] = useState<"map" | "gallery" | "data">(
+    params.get("view") === "map" ? "map" : params.get("view") === "data" ? "data" : "gallery"
+  );
+
+  useEffect(() => {
+    setView(params.get("view") === "map" ? "map" : params.get("view") === "data" ? "data" : "gallery");
+  }, [params]);
 
   useEffect(() => {
     let alive = true;
@@ -48,15 +57,32 @@ export default function ArchiveView() {
   }, [items, query]);
 
   const selectZone = (zone: Zone | null) => {
-    router.replace(zone ? `/archive?zone=${zone}` : "/archive", { scroll: false });
+    const next = new URLSearchParams();
+    if (zone) next.set("zone", zone);
+    if (view !== "gallery" && zone) next.set("view", view);
+    router.replace(next.size ? `/archive?${next}` : "/archive", { scroll: false });
+  };
+
+  const selectView = (nextView: "map" | "gallery" | "data") => {
+    setView(nextView);
+    const next = new URLSearchParams();
+    if (activeZone) next.set("zone", activeZone);
+    if (nextView !== "gallery") next.set("view", nextView);
+    router.replace(next.size ? `/archive?${next}` : "/archive", { scroll: false });
   };
 
   const meta = activeZone ? zoneMeta(activeZone) : null;
   const telemetry = activeZone ? hallTelemetry(activeZone, allItems.filter((i) => i.zone === activeZone)) : [];
 
   return (
-    <div className="stack">
-      <div className="tabs">
+    <div className="stack archive-explorer">
+      <header className="archive-title-block">
+        <div className="eyebrow">MISSION ARCHIVE <span>/</span> EXHIBIT GALLERY</div>
+        <h1>ZONE EXPLORER:<br /><span>ABANDONED ARTIFACTS ON {meta?.label.toUpperCase() ?? "ALL ZONES"}</span></h1>
+        <p>Explore the historic traces of robotic exploration across the solar system.</p>
+      </header>
+
+      <div className="tabs zone-select-tabs">
         <button
           className={`tab ${activeZone === null ? "is-active" : ""}`}
           onClick={() => selectZone(null)}
@@ -123,6 +149,23 @@ export default function ArchiveView() {
         </section>
       )}
 
+      {activeZone ? (
+        <div className="archive-toolbar">
+          <div className="archive-view-switch" role="group" aria-label="Archive view">
+            <button className={view === "map" ? "is-active" : ""} onClick={() => selectView("map")} aria-pressed={view === "map"}>
+              <MapPinned size={15} /> [ SURFACE MAP ]
+            </button>
+            <button className={view === "gallery" ? "is-active" : ""} onClick={() => selectView("gallery")} aria-pressed={view === "gallery"}>
+              <GalleryVerticalEnd size={15} /> [ ARTIFACT LIST ]
+            </button>
+            <button className={view === "data" ? "is-active" : ""} onClick={() => selectView("data")} aria-pressed={view === "data"}>
+              [ EXPLORER DATA ]
+            </button>
+          </div>
+          <span className="archive-view-caption">{meta?.hall.toUpperCase()} <span>/</span> {view.toUpperCase()}</span>
+        </div>
+      ) : null}
+
       <div className="row" style={{ justifyContent: "space-between" }}>
         <input
           className="input"
@@ -144,11 +187,26 @@ export default function ArchiveView() {
           </button>
         </div>
       ) : (
-        <div className="grid grid-3">
-          {filtered.map((item) => (
-            <ItemCard key={item.id} item={item} />
-          ))}
-        </div>
+        <>
+          {activeZone && view === "map" ? <SectorMap key={activeZone} zone={activeZone} items={filtered} zones={zones} onZoneSelect={selectZone} /> : null}
+          {activeZone && view === "data" ? (
+            <section className="explorer-data-panel">
+              <div className="explorer-data-heading"><div className="eyebrow">EXPLORER DATA</div><h2>{meta?.label} / Mission Telemetry</h2></div>
+              <div className="explorer-data-grid">
+                {telemetry.map((t) => <div key={t.label} className="explorer-data-cell"><span>{t.label.toUpperCase()}</span><b>{t.value}</b></div>)}
+                <div className="explorer-data-cell"><span>CATALOGUE RECORDS</span><b>{filtered.length} ARTIFACTS</b></div>
+                <div className="explorer-data-cell"><span>FACTS WITH PROVENANCE</span><b>{filtered.reduce((count, item) => count + item.facts.length, 0)} SOURCED</b></div>
+                <div className="explorer-data-cell"><span>MISSION CHAPTERS</span><b>{filtered.reduce((count, item) => count + item.phases.length, 0)} PHASES</b></div>
+              </div>
+            </section>
+          ) : null}
+          {activeZone && view === "map" ? <div className="archive-gallery-heading"><div><span className="eyebrow">THE COLLECTION</span><h2>Artifacts in this sector</h2></div><span>{filtered.length} OBJECTS</span></div> : null}
+          {view !== "data" ? (
+            <div className={`grid grid-3 archive-gallery ${activeZone && view === "map" ? "is-map-gallery" : ""}`}>
+              {filtered.map((item) => <ItemCard key={item.id} item={item} />)}
+            </div>
+          ) : null}
+        </>
       )}
     </div>
   );

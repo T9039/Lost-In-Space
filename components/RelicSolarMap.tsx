@@ -271,14 +271,14 @@ function LabelSprite({
     if (!ctx) return null;
 
     ctx.font = `600 ${fontSize}px system-ui, -apple-system, Segoe UI, sans-serif`;
-    ctx.fillStyle = active ? "rgba(245, 158, 11, 0.96)" : "rgba(15, 23, 42, 0.82)";
+    ctx.fillStyle = active ? "rgba(251, 191, 36, 0.96)" : "rgba(4, 6, 13, 0.86)";
     roundedRect(ctx, 3, 3, width - 6, height - 6, height / 2);
     ctx.fill();
-    ctx.strokeStyle = active ? "#FDE68A" : "rgba(148, 163, 184, 0.4)";
+    ctx.strokeStyle = active ? "#FEF3C7" : "rgba(56, 189, 248, 0.38)";
     ctx.lineWidth = 3;
     ctx.stroke();
 
-    ctx.fillStyle = active ? "#1a1206" : color;
+    ctx.fillStyle = active ? "#04060D" : color;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(text, width / 2, height / 2 + 1);
@@ -515,74 +515,55 @@ function SectorBody({
   );
 }
 
-function EscapeTrajectories({
-  origin,
-  onSelect,
-}: {
-  origin: [number, number, number];
-  onSelect: (id: string) => void;
-}) {
-  const { paths, ends } = useMemo(() => {
-    const target = new THREE.Vector3(...origin);
-    const build = (spread: number) => {
-      const pts: THREE.Vector3[] = [];
-      const start = new THREE.Vector3(2.2, 0, 0.6);
-      for (let i = 0; i <= 60; i++) {
-        const t = i / 60;
-        const base = start.clone().lerp(target, t);
-        pts.push(
-          new THREE.Vector3(
-            base.x + Math.sin(t * 3.1) * spread * (1 - t) * 0.6,
-            base.y + Math.sin(t * 2.4 + spread) * 0.5 * (1 - t) + t * 0.3,
-            base.z + Math.cos(t * 2.1 + spread) * spread * (1 - t) * 0.7
-          )
-        );
-      }
-      return pts;
-    };
-    const a = build(1);
-    const b = build(-1.4);
-    return { paths: [a, b], ends: [a[a.length - 1], b[b.length - 1]] };
-  }, [origin]);
+function EscapeTrajectories({ items, onSelect }: { items: Item[]; onSelect: (id: string) => void }) {
+  const routes = useMemo(() => items.map((item, index) => {
+    const pair = Math.floor(index / 2);
+    const angle = 0.52 + pair * 0.42 + (index % 2) * Math.PI;
+    const direction = new THREE.Vector3(Math.cos(angle), 0, Math.sin(angle));
+    const normal = new THREE.Vector3(-direction.z, index % 2 ? 0.2 : -0.2, direction.x).normalize();
+    const start = new THREE.Vector3(2.05, 0.12 + (index % 3) * 0.08, 0.5);
+    const distance = 10.5 + pair * 2.4 + (index % 2) * 0.7;
+    const points: THREE.Vector3[] = [];
+    for (let step = 0; step <= 80; step++) {
+      const t = step / 80;
+      // A swept conic that accelerates outward and bends away from the Sun.
+      const radius = distance * (0.12 * t + 0.88 * t * t);
+      const bend = Math.sinh(t * 1.25) * 0.38;
+      points.push(start.clone().addScaledVector(direction, radius).addScaledVector(normal, bend));
+    }
+    return { item, points, end: points[points.length - 1], normal, index };
+  }), [items]);
 
   return (
     <group>
-      {paths.map((pts, i) => (
-        <Line
-          key={i}
-          points={pts}
-          color={i === 0 ? "#A78BFA" : "#8B5CF6"}
-          lineWidth={1.3}
-          transparent
-          opacity={0.65}
-          dashed
-          dashSize={0.3}
-          gapSize={0.24}
-        />
-      ))}
-      {ends.map((p, i) => (
-        <group
-          key={i}
-          position={p}
-          onPointerDown={(e) => {
-            e.stopPropagation();
-            onSelect("deep-space");
-          }}
-          onPointerOver={() => {
-            document.body.style.cursor = "pointer";
-          }}
-          onPointerOut={() => {
-            document.body.style.cursor = "auto";
-          }}
-        >
-          <ProbeCraft pioneer={i === 1} />
-          <pointLight color={i === 0 ? "#60A5FA" : "#F59E0B"} intensity={0.55} distance={1.5} />
-          <LabelSprite
-            text={i === 0 ? "VOYAGER 1" : "PIONEER 10"}
-            color="#C4B5FD"
-            size={0.16}
-            position={[0, 0.4, 0]}
+      {routes.map(({ item, points, end, normal, index }) => (
+        <group key={item.id}>
+          <Line
+            points={points}
+            color={index % 2 === 0 ? "#38BDF8" : "#A78BFA"}
+            lineWidth={1.45}
+            transparent
+            opacity={0.78}
           />
+          <Line points={points.slice(0, 2)} color="#F8FAFC" lineWidth={2} transparent opacity={0.9} />
+          <group
+            position={end}
+            onPointerDown={(event) => {
+              event.stopPropagation();
+              onSelect("deep-space");
+            }}
+            onPointerOver={() => { document.body.style.cursor = "pointer"; }}
+            onPointerOut={() => { document.body.style.cursor = "auto"; }}
+          >
+            <ProbeCraft pioneer={/pioneer/i.test(item.id + item.short_name)} />
+            <pointLight color={index % 2 === 0 ? "#38BDF8" : "#A78BFA"} intensity={0.7} distance={1.8} />
+            <LabelSprite
+              text={item.short_name.toUpperCase()}
+              color={index % 2 === 0 ? "#BAE6FD" : "#DDD6FE"}
+              size={0.15}
+              position={[normal.x * 0.72, 0.38 + (index % 3) * 0.15, normal.z * 0.72]}
+            />
+          </group>
         </group>
       ))}
     </group>
@@ -669,7 +650,7 @@ export default function RelicSolarMap({
   );
 
   const activeMeta = active ? zoneMeta(active) : null;
-  const deepSpace = liveZones.find((z) => z.meta.id === "deep-space");
+  const deepSpaceItems = useMemo(() => items.filter((item) => item.zone === "deep-space"), [items]);
 
   const orbitRadii = useMemo(
     () => Array.from(new Set(liveZones.filter((z) => z.meta.hasBody).map((z) => z.meta.orbitRadius))),
@@ -683,14 +664,13 @@ export default function RelicSolarMap({
   }, [zones]);
 
   return (
-    <div className="relic-map">
+    <div className="relic-map targeting-frame">
       <div className="map-canvas">
-        <Canvas camera={{ position: [0, 12, 26], fov: 45 }} dpr={[1, 2]}>
-          <color attach="background" args={["#0F172A"]} />
-          <fog attach="fog" args={["#0F172A", 34, 78]} />
+        <Canvas camera={{ position: [0, 12, 26], fov: 45 }} dpr={[1, 2]} gl={{ alpha: true }}>
+          <fog attach="fog" args={["#04060D", 34, 78]} />
 
-          <ambientLight intensity={0.38} />
-          <directionalLight position={[6, 10, 8]} intensity={0.8} color="#fff1d1" />
+          <ambientLight intensity={0.48} color="#a8b8ff" />
+          <directionalLight position={[6, 10, 8]} intensity={0.92} color="#fff0cf" />
           <Stars radius={110} depth={50} count={2600} factor={3.4} fade speed={0.45} />
 
           <Sun />
@@ -709,9 +689,7 @@ export default function RelicSolarMap({
             )
           )}
 
-          {deepSpace ? (
-            <EscapeTrajectories origin={sectorPosition(deepSpace.meta)} onSelect={setActive} />
-          ) : null}
+          {deepSpaceItems.length ? <EscapeTrajectories items={deepSpaceItems} onSelect={setActive} /> : null}
 
           <Rig target={activeMeta} />
 

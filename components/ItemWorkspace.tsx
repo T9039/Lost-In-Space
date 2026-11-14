@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { ArrowLeftRight, Expand, RotateCcw, X } from "lucide-react";
 import AIPane from "./AIPane";
 import LabPane from "./LabPane";
 import { useCompare } from "./CompareProvider";
@@ -41,6 +42,7 @@ export default function ItemWorkspace({
 
       <header className="item-head">
         <div>
+          <div className="eyebrow mission-eyebrow">MISSION PROFILE <span>/</span> EXHIBIT {item.id.toUpperCase()}</div>
           <div className="row" style={{ marginBottom: 12 }}>
             <span className={`chip status-${item.status}`}>
               {item.status === "inactive" ? "Went Silent" : item.status === "derelict" ? "Inactive" : item.status === "destroyed" ? "Destroyed" : "Active"}
@@ -49,10 +51,12 @@ export default function ItemWorkspace({
             <span className="chip">{item.zone.replace("-", " ")}</span>
             {item.catalog ? <span className="chip">{item.catalog}</span> : null}
           </div>
-          <h1 className="detail-title">{item.name}</h1>
-          <p className="lead" style={{ marginBottom: 0 }}>
-            {item.abandonment_reason}
-          </p>
+          <h1 className="detail-title"><span>MISSION PROFILE:</span> <em>{item.name}</em></h1>
+          <div className="mission-readouts">
+            <div><span>MISSION WINDOW</span><b>{item.years_active}</b></div>
+            <div><span>LAST KNOWN LOCATION</span><b>{item.location.label}</b></div>
+            <div><span>LAUNCH MASS</span><b>{item.specs["Launch mass"] ?? "—"}</b></div>
+          </div>
         </div>
       </header>
 
@@ -93,26 +97,26 @@ export default function ItemWorkspace({
           disabled={mode !== "split"}
           title="Swap panes"
         >
-          ⇄ Swap Sides
+          <ArrowLeftRight size={14} /> Swap Sides
         </button>
         {mode === "split" ? (
           <>
             <button className="toolbar-btn" onClick={() => setMode("ai")}>
-              ⤢ Maximize AI
+              <Expand size={14} /> Maximize AI
             </button>
             <button className="toolbar-btn" onClick={() => setMode("lab")}>
-              ⤢ Maximize Lab
+              <Expand size={14} /> Maximize Lab
             </button>
             <button className="toolbar-btn" onClick={() => setMode("lab")}>
-              ✕ Close AI
+              <X size={14} /> Close AI
             </button>
             <button className="toolbar-btn" onClick={() => setMode("ai")}>
-              ✕ Close Lab
+              <X size={14} /> Close Lab
             </button>
           </>
         ) : (
           <button className="toolbar-btn is-primary" onClick={() => setMode("split")}>
-            ⟲ Restore Split View
+            <RotateCcw size={14} /> Restore Split View
           </button>
         )}
       </div>

@@ -9,6 +9,12 @@ out/
 build/
 dist/
 coverage/
+test-results/
+playwright-report/
+blob-report/
+.nyc_output/
+*.tmp
+*.temp
 next-env.d.ts
 *.tsbuildinfo
 

@@ -1,187 +1,92 @@
 import Link from "next/link";
 import { getItems, getZones } from "@/lib/api";
 import RelicSolarMapLoader from "@/components/RelicSolarMapLoader";
+import { ArrowRight, Orbit, Satellite, Sparkles } from "lucide-react";
 
-const STEPS = [
-  {
-    n: "01",
-    title: "Explore 3D Sectors",
-    body: "Start on the relic map. It draws a hall for every sector that currently holds abandoned hardware — and it grows automatically as new relics are catalogued.",
-    soon: false,
-  },
-  {
-    n: "02",
-    title: "Inspect 3D Machines",
-    body: "Click a relic to spin a real NASA 3D model, then follow its story from the day it was built to the day it went quiet.",
-    soon: false,
-  },
-  {
-    n: "03",
-    title: "Ask the AI",
-    body: "Ask a question about a machine and get an answer built only from NASA records — never from guesses.",
-    soon: false,
-  },
-  {
-    n: "04",
-    title: "Test Your Knowledge",
-    body: "Finish with a quick mission test so you can see how much you actually remember.",
-    soon: false,
-  },
-];
-
-const HALLS: Record<string, string> = {
-  moon: "The Lunar Regolith Plain",
-  mars: "The Red Planet Dust Bowl",
-  "earth-orbit": "The Orbital Graveyard",
-  "deep-space": "The Deep Space Abyss",
+const PORTAL_COPY: Record<string, { kicker: string; description: string }> = {
+  moon: { kicker: "LUNAR ECHOES", description: "Silent footprints, historic sites, Apollo's enduring legacy." },
+  mars: { kicker: "RED PLANET CHRONICLES", description: "Rusting rovers, orbiters, the ongoing quest for Martian history." },
+  "earth-orbit": { kicker: "ORBITAL FRONTIERS", description: "Satellites, space stations, the hustle above our home." },
+  "deep-space": { kicker: "VOYAGERS & BEYOND", description: "Pioneering probes, nebulae, the endless frontier." },
 };
 
 export default async function HomePage() {
   const [zones, items] = await Promise.all([getZones(), getItems()]);
-  const totalFacts = items.reduce((n, i) => n + i.facts.length, 0);
-  const totalPhases = items.reduce((n, i) => n + i.phases.length, 0);
-  const totalZones = zones.filter((z) => z.item_count > 0).length;
 
   return (
-    <div className="container">
-      <section className="hero hero-gateway">
-        <div className="hero-collection-mark">COSMIC RELIC MUSEUM <span>·</span> FIELD ARCHIVE 001—026</div>
-        <div className="eyebrow">NASA storytelling challenge · for explorers aged 10 and up</div>
-        <h1>
-          We went to space.
-          <br />
-          And then we left our stuff there.
-        </h1>
-        <p className="hero-hook">
-          These machines carried people&apos;s questions into space. Some ran out of power, some
-          were too far away to bring home, and some are still travelling. Explore their real
-          stories, spin the spacecraft in 3D, and discover what happens after a mission ends.
-        </p>
-        <div className="row">
-          <Link href="/archive" className="btn btn-primary">
-            Explore the archive
-          </Link>
-          <Link href="/compare" className="btn btn-blue">
-            Compare two machines
-          </Link>
-        </div>
-        <div className="row" style={{ marginTop: 26, gap: 26 }}>
-          <span className="muted" style={{ fontSize: 13 }}>
-            <strong style={{ color: "var(--text)" }}>{items.length}</strong> catalogued relics
-          </span>
-          <span className="muted" style={{ fontSize: 13 }}>
-            <strong style={{ color: "var(--text)" }}>{totalZones}</strong> sectors
-          </span>
-          <span className="muted" style={{ fontSize: 13 }}>
-            <strong style={{ color: "var(--text)" }}>{totalFacts}</strong> NASA-sourced facts
-          </span>
-          <span className="muted" style={{ fontSize: 13 }}>
-            <strong style={{ color: "var(--text)" }}>{totalPhases}</strong> story phases
-          </span>
+    <div className="museum-home">
+      <section className="home-hero targeting-frame">
+        <div className="home-hero-media" aria-hidden="true" />
+        <div className="home-hero-content">
+          <div className="hero-collection-mark"><Orbit size={14} /> NASA SPACE MUSEUM <span>·</span> COSMIC RELIC ARCHIVE</div>
+          <h1>ABANDONED BUT<br />NOT FORGOTTEN</h1>
+          <div className="home-hero-subtitle">A JOURNEY THROUGH LEGACY &amp; EXPLORATION IN THE COSMOS</div>
+          <p className="hero-hook">
+            Discover the silent sentinels, forgotten outposts, and enduring missions that paved the way
+            for humanity&apos;s future among the stars. Explore the real machines and the places they still call home.
+          </p>
+          <div className="home-hero-actions">
+            <Link href="/archive" className="btn btn-primary"><Satellite size={16} /> START EXPLORATION <ArrowRight size={15} /></Link>
+            <Link href="/#relic-map" className="btn btn-map-link"><Orbit size={16} /> INTERACTIVE MAP</Link>
+          </div>
         </div>
       </section>
 
-      <section className="section">
-        <div className="eyebrow">How it works &amp; what you&apos;ll discover</div>
-        <h2>Why do we leave things in space?</h2>
-        <p className="lead">
-          Spacecraft are usually abandoned for one of three reasons: they run out of power, they
-          are too heavy to bring home, or they simply keep going. Nothing up there gets repaired
-          or recycled. Once a machine is done, it stays — for centuries.
-        </p>
-
-        <div className="steps" style={{ marginTop: 24 }}>
-          {STEPS.map((step) => (
-            <div key={step.n} className="step">
-              <div className="step-num">Step {step.n}</div>
-              <h3>{step.title}</h3>
-              <p>{step.body}</p>
-              {step.soon ? <span className="step-soon">coming next</span> : null}
-            </div>
-          ))}
+      <section id="sector-portals" className="portal-section container">
+        <div className="section-heading-row">
+          <div>
+            <div className="eyebrow">Four halls · one human story</div>
+            <h2>Choose your destination.</h2>
+          </div>
+          <span className="section-index">01 / SECTOR SELECT</span>
         </div>
-
-        <p className="muted" style={{ fontSize: 12.5, marginTop: 14 }}>
-          Every exhibit connects a machine&apos;s mission story to the NASA records behind it.
-        </p>
-      </section>
-
-      <section className="section-tight">
-        <div className="eyebrow">Choose a sector</div>
-        <div className="grid grid-4">
-          {zones.map((zone) => {
+        <div className="portal-grid">
+          {zones.map((zone, index) => {
             const empty = zone.item_count === 0;
-            const inner = (
+            const title = zone.id === "moon" ? "THE MOON" : zone.id === "mars" ? "MARS" : zone.id === "earth-orbit" ? "EARTH ORBIT" : "DEEP SPACE";
+            const portal = PORTAL_COPY[zone.id];
+            const content = (
               <>
-                <div className="card-media">
-                  {zone.hero_image ? (
-                    <img
-                      src={zone.hero_image}
-                      alt=""
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                    />
-                  ) : null}
-                  <span className="zone-count">
-                    {empty ? "soon" : `${zone.item_count} relic${zone.item_count === 1 ? "" : "s"}`}
-                  </span>
-                </div>
-                <div className="card-pad">
-                  <div className="zone-hall">{HALLS[zone.id]}</div>
-                  <div className="card-title">{zone.label}</div>
-                  <div className="card-meta">{zone.blurb}</div>
+                {zone.hero_image ? <img className="portal-image" src={zone.hero_image} alt="" /> : null}
+                <div className="portal-scrim" />
+                <span className="portal-number">0{index + 1} <span>·</span> SECTOR</span>
+                <div className="portal-info">
+                  <span className="portal-kicker">{portal.kicker}</span>
+                  <h3>{title}</h3>
+                  <p>{portal.description}</p>
+                  <div className="portal-bottom">
+                    <span className="portal-count">{String(zone.item_count).padStart(2, "0")} RELICS</span>
+                    <span className="portal-cta">{empty ? "COMING SOON" : <>LEARN MORE <ArrowRight size={14} /></>}</span>
+                  </div>
                 </div>
               </>
             );
-
             return empty ? (
-              <div key={zone.id} className={`card zone-card is-empty zone-${zone.id}`}>
-                {inner}
-              </div>
+              <div key={zone.id} className={`portal-card portal-${zone.id} is-empty`} aria-disabled="true">{content}</div>
             ) : (
-              <Link
-                key={zone.id}
-                href={`/archive?zone=${zone.id}`}
-                className={`card zone-card zone-${zone.id}`}
-              >
-                {inner}
-              </Link>
+              <Link key={zone.id} href={`/archive?zone=${zone.id}`} className={`portal-card portal-${zone.id}`}>{content}</Link>
             );
           })}
         </div>
-
-        <div className="map-cta">
-          <a href="#relic-map" className="btn btn-primary">
-            Launch 3D Solar System Relic Map ↓
-          </a>
-          <span className="map-cta-sub">A living 3D atlas. Choose a world, follow a trajectory, meet the machines.</span>
-        </div>
       </section>
 
-      <section id="relic-map" className="section map-section">
-        <div className="eyebrow">3D Solar System Relic Map</div>
-        <h2>Every hall is generated from the archive</h2>
-        <p className="lead">
-          The map is built from the relic records themselves: a sector appears the moment it has
-          something left in it, and disappears when it does not. Drag to orbit, click a glowing
-          beacon to zoom in, then inspect a relic in the slide-out panel.
-        </p>
-
+      <section id="relic-map" className="section map-section targeting-frame">
+        <div className="map-section-intro">
+          <div className="eyebrow"><Sparkles size={13} /> LIVE SECTOR VISUALIZATION</div>
+          <h2>Our Solar System,<br /><em>scattered with stories.</em></h2>
+          <p className="lead">Follow each orbital trace into the dark. Select a world or probe to open its exhibit.</p>
+        </div>
         <RelicSolarMapLoader items={items} zones={zones} />
       </section>
 
-      <section className="section-tight">
-        <div className="card">
-          <div className="card-pad">
-            <div className="card-title">Straight from NASA</div>
-            <p className="card-meta" style={{ marginTop: 8 }}>
-              Every fact on this site comes from a NASA mission page or NASA&apos;s own records,
-              and every image is NASA public-domain imagery. The 3D models are NASA 3D Resources
-              assets. No AI-generated pictures, no guesswork, no invented numbers.
-            </p>
-            <Link href="/sources" className="btn btn-sm" style={{ marginTop: 12 }}>
-              See every source →
-            </Link>
-          </div>
+      <section className="home-story container">
+        <div className="home-story-image"><img src="/img/opportunity-2.jpg" alt="Dust on a Mars rover solar array" /></div>
+        <div className="home-story-copy">
+          <div className="eyebrow">WHY MACHINES STAY</div>
+          <h2>Space is a one-way museum.</h2>
+          <p>Some spacecraft run out of power. Some are too far away to bring home. Others keep travelling, long after the people who launched them have gone.</p>
+          <p>Every exhibit links its story to sourced facts, mission chapters, and the photographs that brought it back to us.</p>
+          <Link href="/sources" className="text-link">Explore the source archive <ArrowRight size={15} /></Link>
         </div>
       </section>
     </div>

@@ -45,10 +45,10 @@ export default function LaserRange() {
   const distance = roundTrip ? (C_KM_PER_S * roundTrip) / 2 : null;
 
   return (
-    <div className="widget">
+    <div className="widget widget-laser">
       <div className="widget-head">
         <div>
-          <div className="widget-title">Lunar Laser Ranging Experiment</div>
+          <div className="widget-title">Apollo 11 · Lunar Laser Ranging</div>
           <div className="widget-sub">
             Corner-cube array left by Apollo 11 · alignment {offsetDeg.toFixed(2)}°{" "}
             <span className={optimal ? "tag-ok" : "tag-warn"}>{optimal ? "OPTIMAL" : "OFF-AXIS"}</span>

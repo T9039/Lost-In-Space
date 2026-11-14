@@ -5,6 +5,22 @@ import ModelViewer from "./ModelViewer";
 import DustCanvas from "./widgets/DustCanvas";
 import LaserRange from "./widgets/LaserRange";
 import type { Item, Source } from "@/lib/types";
+import { Activity, Orbit, Radio, Rocket, Wrench } from "lucide-react";
+
+const PHASE_ICONS = [Wrench, Rocket, Activity, Radio, Orbit];
+
+function phaseYearLabel(item: Item, phase: Item["phases"][number]) {
+  if (phase.key === "still-there") return "PRESENT";
+  const relatedFacts = item.facts.filter((fact) => fact.phase_key === phase.key);
+  const dates = [phase.body, phase.stat_value, ...relatedFacts.flatMap((fact) => [fact.value, fact.claim])]
+    .join(" ")
+    .match(/\b(?:19|20)\d{2}\b/g) ?? [];
+  const uniqueYears = Array.from(new Set(dates));
+  if (uniqueYears.length > 1) return `${uniqueYears[0]}–${uniqueYears[uniqueYears.length - 1]}`;
+  if (uniqueYears.length === 1) return uniqueYears[0];
+  if (phase.key === "built") return "PRE-LAUNCH";
+  return "DATE NOT RECORDED";
+}
 
 export default function LabPane({ item, sources }: { item: Item; sources: Source[] }) {
   const phases = useMemo(() => [...item.phases].sort((a, b) => a.order - b.order), [item]);
@@ -21,6 +37,7 @@ export default function LabPane({ item, sources }: { item: Item; sources: Source
 
   const showDust = item.zone === "mars" && /solar/i.test(item.specs["Power source"] ?? "");
   const showLaser = item.zone === "moon";
+  const dustImage = item.images.find((image) => /solar|panel|array/i.test(image.caption))?.src ?? item.images[0]?.src;
 
   return (
     <div className="lab-pane">
@@ -37,13 +54,16 @@ export default function LabPane({ item, sources }: { item: Item; sources: Source
       </div>
 
       <div className="lab-top">
-        <ModelViewer
+        <div className="model-stage">
+          <ModelViewer
           src={item.model_url}
           poster={poster}
           fallback={fallbackImage}
           alt={`3D model of ${item.name}`}
           credit={item.model_credit}
-        />
+          />
+          <div className="model-stage-label"><span>INTERACTIVE 3D RELIC</span><span>DRAG TO ROTATE · SCROLL TO ZOOM</span></div>
+        </div>
 
         <div className="chapter-detail">
           <div className="eyebrow" style={{ marginBottom: 6 }}>
@@ -58,18 +78,48 @@ export default function LabPane({ item, sources }: { item: Item; sources: Source
         </div>
       </div>
 
+      <div className="chapter-track-heading">
+        <span>ODYSSEY IN FIVE CHAPTERS</span>
+        <label className="chapter-scrubber">
+          <span>SCRUB TIMELINE</span>
+          <input
+            type="range"
+            min={0}
+            max={Math.max(phases.length - 1, 0)}
+            value={Math.min(activeIndex, Math.max(phases.length - 1, 0))}
+            onChange={(event) => setActiveIndex(Number(event.target.value))}
+            aria-label="Scrub mission timeline"
+          />
+        </label>
+      </div>
       <nav className="chapter-bar" aria-label="Odyssey in five chapters">
-        {phases.map((p, i) => (
-          <button
-            key={p.id}
-            className={`chapter-btn ${i === activeIndex ? "is-active" : ""}`}
-            onClick={() => setActiveIndex(i)}
-          >
-            <span className="chapter-num">{String(i + 1).padStart(2, "0")}</span>
-            <span className="chapter-name">{p.title}</span>
-          </button>
-        ))}
+        {phases.map((p, i) => {
+          return (
+            <button
+              key={p.id}
+              className={`chapter-btn ${i === activeIndex ? "is-active" : ""}`}
+              onClick={() => setActiveIndex(i)}
+              aria-current={i === activeIndex ? "step" : undefined}
+            >
+              <span className="chapter-name">{String(i + 1)}. {p.key === "abandoned" ? "WENT SILENT" : p.key === "still-there" ? "STILL THERE" : p.title.toUpperCase()}</span>
+              <small className="chapter-year">{phaseYearLabel(item, p)}</small>
+            </button>
+          );
+        })}
       </nav>
+      <div className="chapter-progress-track" aria-hidden="true">
+        <span style={{ width: `${phases.length ? ((activeIndex + 1) / phases.length) * 100 : 0}%` }} />
+      </div>
+      <div className="chapter-icon-rail" aria-label="Chapter markers">
+        {phases.map((p, i) => {
+          const Icon = PHASE_ICONS[i] ?? Activity;
+          return (
+            <button key={p.id} className={i === activeIndex ? "is-active" : ""} onClick={() => setActiveIndex(i)} aria-label={`Show chapter ${i + 1}: ${p.title}`}>
+              <Icon size={14} strokeWidth={1.6} />
+            </button>
+          );
+        })}
+      </div>
 
       <div className="lab-grid">
         <div className="lab-block">
@@ -145,7 +195,7 @@ export default function LabPane({ item, sources }: { item: Item; sources: Source
 
       {(showDust || showLaser) && (
         <div className="lab-widgets">
-          {showDust ? <DustCanvas image={item.images[0]?.src} /> : null}
+          {showDust ? <DustCanvas image={dustImage} /> : null}
           {showLaser ? <LaserRange /> : null}
         </div>
       )}

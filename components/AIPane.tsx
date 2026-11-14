@@ -16,6 +16,9 @@ export default function AIPane({ item, sources }: { item: Item; sources: Source[
   const [turns, setTurns] = useState<Turn[]>([]);
   const [input, setInput] = useState("");
   const counter = useRef(0);
+  const storyPhases = [...item.phases].sort((a, b) => a.order - b.order);
+  const sourceById = new Map(sources.map((source) => [source.id, source]));
+  const storyFacts = item.facts.filter((fact) => fact.kind === "mission" || fact.kind === "discovery").slice(0, 2);
 
   const ask = (raw: string) => {
     const question = raw.trim();
@@ -32,6 +35,30 @@ export default function AIPane({ item, sources }: { item: Item; sources: Source[
 
   return (
     <div className="ai-pane">
+      <section className="mission-narrative-card">
+        <div className="story-label">{item.type === "rover" ? "A BOT'S JOURNEY" : "A MISSION'S JOURNEY"} <span>/</span> THE STORY OF {item.short_name.toUpperCase()}</div>
+        <div className="mission-story-copy">
+          {storyPhases.map((phase, index) => (
+            <p key={phase.id} className={phase.key === "abandoned" ? "story-silent-beat" : ""}>
+              <span>{String(index + 1).padStart(2, "0")}</span>{phase.body}
+            </p>
+          ))}
+        </div>
+        {storyFacts.length ? (
+          <div className="story-fact-notes">
+            {storyFacts.map((fact) => {
+              const source = sourceById.get(fact.source_id);
+              return (
+                <div key={fact.id} className="story-fact-note">
+                  <b>{fact.value}</b><span>{fact.claim}</span>
+                  {source ? <a href={source.url} target="_blank" rel="noreferrer">{source.publisher} ↗</a> : null}
+                </div>
+              );
+            })}
+          </div>
+        ) : null}
+      </section>
+
       <div className="pane-head">
         <div>
           <div className="eyebrow" style={{ marginBottom: 2 }}>
