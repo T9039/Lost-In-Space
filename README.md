@@ -9,15 +9,16 @@ reads. Narration is generated separately from a frozen snapshot of those facts.
 
 ## Status
 
-Phase 0 — database and stack pinned. The application scaffold, ETL loader and
-curated dataset land next.
+Phase 0 — database and stack pinned. The ETL loader is implemented and tested;
+curation and the application are next. See [`ROADMAP.md`](ROADMAP.md) for the
+phased plan and the task list.
 
 - [x] Repository connected to `T9039/Lost-In-Space`
 - [x] PostgreSQL schema, staging tables, reference data
 - [x] Source/licence audit and attribution rules
 - [x] Deployment target chosen (Render)
 - [x] Technical system documentation (Typst, ADRs, data model, sources)
-- [ ] GCAT loader and identity resolver
+- [x] GCAT loader and identity resolver
 - [ ] Curated artifacts across all four zones
 - [ ] Next.js app and live-tracking UI
 
