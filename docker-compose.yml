@@ -1,0 +1,24 @@
+services:
+  db:
+    image: postgres:16
+    container_name: lost-in-space-db
+    environment:
+      POSTGRES_DB: lost_in_space
+      POSTGRES_USER: lost_in_space
+      POSTGRES_PASSWORD: lost_in_space
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # Applied once, on an empty volume, in filename order.
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/00-schema.sql:ro
+      - ./db/seed/001_lookups.sql:/docker-entrypoint-initdb.d/01-seed.sql:ro
+      - ./db/staging.sql:/docker-entrypoint-initdb.d/02-staging.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lost_in_space -d lost_in_space"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:

@@ -1,0 +1,607 @@
+% ============================================================================
+%  Lost in Space — Technical System Documentation
+%  Bibliography (BibTeX, rendered with the built-in IEEE CSL style)
+%
+%  Keys are stable. Do not rename a key that a page cites; add a new entry.
+% ============================================================================
+
+% ---------------------------------------------------------------------------
+% Primary data sources
+% ---------------------------------------------------------------------------
+
+@misc{gcat,
+  author       = {McDowell, Jonathan C.},
+  title        = {General Catalog of Artificial Space Objects ({GCAT})},
+  year         = {2026},
+  edition      = {Release 1.8.9},
+  url          = {https://planet4589.org/space/gcat/},
+  note         = {Data updated 13 November 2026. Licensed CC-BY-4.0.}
+}
+
+@misc{nssdca,
+  author       = {{NASA}},
+  title        = {NASA Space Science Data Coordinated Archive ({NSSDCA})},
+  year         = {2026},
+  url          = {https://nssdc.gsfc.nasa.gov/},
+  note         = {Mission pages and spacecraft identifiers.}
+}
+
+@misc{spaceartefacts,
+  author       = {{Space Artefacts}},
+  title        = {Space Artefacts: An Illustrated History of Space Hardware},
+  year         = {2026},
+  url          = {https://spaceartefacts.com/},
+  note         = {Free duplication with citation; not a Creative Commons licence.}
+}
+
+@misc{celestrak,
+  author       = {{CelesTrak}},
+  title        = {CelesTrak: Orbital Data and General Perturbations Elements},
+  year         = {2026},
+  url          = {https://celestrak.org/},
+  note         = {Free-use policy. GP data originated by the US Space Force.}
+}
+
+@misc{celestrakformats,
+  author       = {{CelesTrak}},
+  title        = {GP Data Formats},
+  year         = {2026},
+  url          = {https://celestrak.org/NORAD/documentation/gp-data-formats.php},
+  note         = {OMM, XML, JSON, CSV and legacy TLE formats.}
+}
+
+@misc{nasaimages,
+  author       = {{NASA}},
+  title        = {NASA Image and Video Library},
+  year         = {2026},
+  url          = {https://images.nasa.gov/},
+  note         = {Per-asset credit lines apply.}
+}
+
+@misc{horizons,
+  author       = {{Jet Propulsion Laboratory}},
+  title        = {JPL Horizons On-Line Ephemeris System},
+  year         = {2026},
+  url          = {https://ssd.jpl.nasa.gov/horizons/},
+  note         = {Ephemerides for selected solar-system bodies and spacecraft.}
+}
+
+@misc{spacetrack,
+  author       = {{18th Space Defense Squadron}},
+  title        = {Space-Track},
+  year         = {2026},
+  url          = {https://www.space-track.org/},
+  note         = {Account-gated; User Agreement restricts redistribution. Excluded.}
+}
+
+@misc{keeptrack,
+  author       = {{KeepTrack}},
+  title        = {KeepTrack: Satellite Tracking and Analysis},
+  year         = {2026},
+  url          = {https://keeptrack.space/},
+  note         = {Application code licensed AGPL-3.0. Reference only.}
+}
+
+% ---------------------------------------------------------------------------
+% Datasets and standards
+% ---------------------------------------------------------------------------
+
+@techreport{ccsdsomm,
+  author       = {{Consultative Committee for Space Data Systems}},
+  title        = {Orbit Data Messages},
+  institution  = {CCSDS},
+  number       = {CCSDS 502.0-B-3},
+  year         = {2023},
+  url          = {https://public.ccsds.org/},
+  note         = {Recommendation for Space Data System Standards.}
+}
+
+@article{vallado2013,
+  author       = {Vallado, David A. and Crawford, Paul and Hujsak, Richard and Kelso, T. S.},
+  title        = {Revisiting {Spacetrack} Report No. 3},
+  journal      = {Advances in the Astronautical Sciences},
+  volume       = {150},
+  pages        = {1--16},
+  year         = {2006},
+  note         = {AAS 06-675. Revised SGP4 reference.}
+}
+
+@book{hoots1980,
+  author       = {Hoots, Felix R. and Roehrich, Ronald L.},
+  title        = {Models for Propagation of {NORAD} Element Sets},
+  publisher    = {US Air Force Aerospace Defense Command},
+  series       = {Spacetrack Report No. 3},
+  year         = {1980}
+}
+
+% ---------------------------------------------------------------------------
+% Database and persistence
+% ---------------------------------------------------------------------------
+
+@misc{postgresql,
+  author       = {{PostgreSQL Global Development Group}},
+  title        = {PostgreSQL 16 Documentation},
+  year         = {2026},
+  url          = {https://www.postgresql.org/docs/16/},
+  note         = {Licensed under the PostgreSQL Licence (similar to MIT).}
+}
+
+@misc{postgresjsonb,
+  author       = {{PostgreSQL Global Development Group}},
+  title        = {JSON Types},
+  year         = {2026},
+  url          = {https://www.postgresql.org/docs/16/datatype-json.html}
+}
+
+@misc{pgtrgm,
+  author       = {{PostgreSQL Global Development Group}},
+  title        = {pg\_trgm: Trigram Matching},
+  year         = {2026},
+  url          = {https://www.postgresql.org/docs/16/pgtrgm.html}
+}
+
+@misc{sqlite,
+  author       = {Hipp, D. Richard},
+  title        = {SQLite},
+  year         = {2026},
+  url          = {https://sqlite.org/},
+  note         = {Public domain.}
+}
+
+@misc{mongodb,
+  author       = {{MongoDB Inc.}},
+  title        = {MongoDB},
+  year         = {2026},
+  url          = {https://www.mongodb.com/},
+  note         = {Server Side Public License (SSPL-1.0).}
+}
+
+@misc{cockroachdb,
+  author       = {{Cockroach Labs}},
+  title        = {CockroachDB},
+  year         = {2026},
+  url          = {https://www.cockroachlabs.com/},
+  note         = {Business Source License (BSL-1.1).}
+}
+
+@misc{duckdb,
+  author       = {{DuckDB Foundation}},
+  title        = {DuckDB},
+  year         = {2026},
+  url          = {https://duckdb.org/},
+  note         = {MIT licence. In-process analytical database.}
+}
+
+@misc{age,
+  author       = {{Apache Software Foundation}},
+  title        = {Apache {AGE}: Graph Extension for PostgreSQL},
+  year         = {2026},
+  url          = {https://age.apache.org/},
+  note         = {Apache-2.0.}
+}
+
+@misc{neo4j,
+  author       = {{Neo4j Inc.}},
+  title        = {Neo4j Graph Database},
+  year         = {2026},
+  url          = {https://neo4j.com/},
+  note         = {Community Edition licensed GPL-3.0.}
+}
+
+@misc{kuzu,
+  author       = {{Kuzu}},
+  title        = {Kuzu Embedded Graph Database},
+  year         = {2025},
+  url          = {https://kuzudb.com/},
+  note         = {MIT licence; project archived October 2025.}
+}
+
+@misc{falkordb,
+  author       = {{FalkorDB}},
+  title        = {FalkorDB},
+  year         = {2026},
+  url          = {https://www.falkordb.com/},
+  note         = {Server Side Public License (SSPL-1.0).}
+}
+
+@misc{memgraph,
+  author       = {{Memgraph}},
+  title        = {Memgraph},
+  year         = {2026},
+  url          = {https://memgraph.com/},
+  note         = {Business Source License (BSL-1.1).}
+}
+
+@misc{arangodb,
+  author       = {{ArangoDB GmbH}},
+  title        = {ArangoDB},
+  year         = {2026},
+  url          = {https://arangodb.com/},
+  note         = {Business Source License (BUSL-1.1) since 3.12.}
+}
+
+@misc{surrealdb,
+  author       = {{SurrealDB}},
+  title        = {SurrealDB},
+  year         = {2026},
+  url          = {https://surrealdb.com/},
+  note         = {Business Source License (BUSL-1.1).}
+}
+
+@misc{neo4jcommunity,
+  author       = {{Neo4j Inc.}},
+  title        = {Neo4j Community Edition},
+  year         = {2026},
+  url          = {https://neo4j.com/product/community-edition/},
+  note         = {GPL-3.0.}
+}
+
+% ---------------------------------------------------------------------------
+% Application stack
+% ---------------------------------------------------------------------------
+
+@misc{nextjs,
+  author       = {{Vercel}},
+  title        = {Next.js Documentation},
+  year         = {2026},
+  url          = {https://nextjs.org/docs},
+  note         = {MIT licence.}
+}
+
+@misc{react,
+  author       = {{Meta Open Source}},
+  title        = {React},
+  year         = {2026},
+  url          = {https://react.dev/},
+  note         = {MIT licence.}
+}
+
+@misc{typescript,
+  author       = {{Microsoft}},
+  title        = {TypeScript},
+  year         = {2026},
+  url          = {https://www.typescriptlang.org/},
+  note         = {Apache-2.0.}
+}
+
+@misc{tailwind,
+  author       = {Wathan, Adam and Schoger, Steve},
+  title        = {Tailwind CSS},
+  year         = {2026},
+  url          = {https://tailwindcss.com/},
+  note         = {MIT licence.}
+}
+
+@misc{nodepg,
+  author       = {Hanson, Brian and {node-postgres contributors}},
+  title        = {node-postgres (pg)},
+  year         = {2026},
+  url          = {https://node-postgres.com/},
+  note         = {MIT licence.}
+}
+
+@misc{prisma,
+  author       = {{Prisma Data}},
+  title        = {Prisma ORM},
+  year         = {2026},
+  url          = {https://www.prisma.io/},
+  note         = {Apache-2.0.}
+}
+
+@misc{drizzle,
+  author       = {{Drizzle Team}},
+  title        = {Drizzle ORM},
+  year         = {2026},
+  url          = {https://orm.drizzle.team/},
+  note         = {Apache-2.0.}
+}
+
+@misc{kysely,
+  author       = {Fenn, Sami},
+  title        = {Kysely},
+  year         = {2026},
+  url          = {https://kysely.dev/},
+  note         = {MIT licence.}
+}
+
+@misc{nodeflyway,
+  author       = {{Flyway}},
+  title        = {Flyway Database Migrations},
+  year         = {2026},
+  url          = {https://flywaydb.org/},
+  note         = {Apache-2.0.}
+}
+
+@misc{liquibase,
+  author       = {{Liquibase}},
+  title        = {Liquibase},
+  year         = {2026},
+  url          = {https://www.liquibase.com/},
+  note         = {Apache-2.0.}
+}
+
+@misc{atlas,
+  author       = {{Ariga}},
+  title        = {Atlas Database Schema Management},
+  year         = {2026},
+  url          = {https://atlasgo.io/},
+  note         = {Apache-2.0.}
+}
+
+% ---------------------------------------------------------------------------
+% Search, cache and identity
+% ---------------------------------------------------------------------------
+
+@misc{meilisearch,
+  author       = {{Meilisearch}},
+  title        = {Meilisearch},
+  year         = {2026},
+  url          = {https://www.meilisearch.com/},
+  note         = {MIT licence.}
+}
+
+@misc{typesense,
+  author       = {{Typesense}},
+  title        = {Typesense},
+  year         = {2026},
+  url          = {https://typesense.org/},
+  note         = {GPL-3.0.}
+}
+
+@misc{opensearch,
+  author       = {{OpenSearch Project}},
+  title        = {OpenSearch},
+  year         = {2026},
+  url          = {https://opensearch.org/},
+  note         = {Apache-2.0.}
+}
+
+@misc{valkey,
+  author       = {{Valkey}},
+  title        = {Valkey},
+  year         = {2026},
+  url          = {https://valkey.io/},
+  note         = {BSD-3-Clause.}
+}
+
+@misc{redis,
+  author       = {{Redis Ltd.}},
+  title        = {Redis},
+  year         = {2026},
+  url          = {https://redis.io/},
+  note         = {Licence changed in recent versions; verify before adoption.}
+}
+
+@misc{authjs,
+  author       = {{Auth.js}},
+  title        = {Auth.js},
+  year         = {2026},
+  url          = {https://authjs.dev/},
+  note         = {ISC licence.}
+}
+
+@misc{keycloak,
+  author       = {{Red Hat}},
+  title        = {Keycloak},
+  year         = {2026},
+  url         = {https://www.keycloak.org/},
+  note         = {Apache-2.0.}
+}
+
+% ---------------------------------------------------------------------------
+% Orbital propagation and mapping
+% ---------------------------------------------------------------------------
+
+@misc{satellitejs,
+  author       = {{satellite.js contributors}},
+  title        = {satellite.js: SGP4/SDP4 Propagation in JavaScript},
+  year         = {2026},
+  url          = {https://github.com/shashwatak/satellite-js},
+  note         = {MIT licence.}
+}
+
+@misc{pythonsgp4,
+  author       = {Rhodes, Brandon},
+  title        = {python-sgp4: SGP4 Reference Implementation},
+  year         = {2026},
+  url          = {https://github.com/brandon-rhodes/python-sgp4},
+  note         = {MIT licence.}
+}
+
+@misc{skyfield,
+  author       = {Rhodes, Brandon},
+  title        = {Skyfield: Elegant Astronomy for Python},
+  year         = {2026},
+  url          = {https://rhodesmill.org/skyfield/},
+  note         = {MIT licence.}
+}
+
+@misc{orekit,
+  author       = {{CS Systèmes d'Information}},
+  title        = {Orekit: An Open-source Library for Space Flight Dynamics},
+  year         = {2026},
+  url          = {https://www.orekit.org/},
+  note         = {Apache-2.0.}
+}
+
+@misc{maplibre,
+  author       = {{MapLibre}},
+  title        = {MapLibre GL JS},
+  year         = {2026},
+  url          = {https://maplibre.org/},
+  note         = {BSD-3-Clause.}
+}
+
+@misc{cesium,
+  author       = {{Cesium GS}},
+  title        = {CesiumJS},
+  year         = {2026},
+  url          = {https://cesium.com/platform/cesiumjs/},
+  note         = {Apache-2.0.}
+}
+
+@misc{threejs,
+  author       = {{three.js contributors}},
+  title        = {three.js},
+  year         = {2026},
+  url          = {https://threejs.org/},
+  note         = {MIT licence.}
+}
+
+% ---------------------------------------------------------------------------
+% Narration runtime
+% ---------------------------------------------------------------------------
+
+@misc{ollama,
+  author       = {{Ollama}},
+  title        = {Ollama: Run Open-weight Models Locally},
+  year         = {2026},
+  url          = {https://ollama.com/},
+  note         = {MIT licence for the runtime. Model licences vary.}
+}
+
+@misc{vllm,
+  author       = {{vLLM Project}},
+  title        = {vLLM: High-throughput LLM Serving},
+  year         = {2026},
+  url          = {https://docs.vllm.ai/},
+  note         = {Apache-2.0.}
+}
+
+@misc{mistral,
+  author       = {{Mistral AI}},
+  title        = {Mistral Open-weight Models},
+  year         = {2026},
+  url          = {https://mistral.ai/},
+  note         = {Weights released under Apache-2.0 for several model sizes.}
+}
+
+% ---------------------------------------------------------------------------
+% Delivery, tooling and documentation
+% ---------------------------------------------------------------------------
+
+@misc{docker,
+  author       = {{Docker Inc.}},
+  title        = {Docker Documentation},
+  year         = {2026},
+  url          = {https://docs.docker.com/},
+  note         = {Docker Engine is Apache-2.0; Docker Desktop has separate terms.}
+}
+
+@misc{podman,
+  author       = {{Podman contributors}},
+  title        = {Podman},
+  year         = {2026},
+  url          = {https://podman.io/},
+  note         = {Apache-2.0.}
+}
+
+@misc{render,
+  author       = {{Render}},
+  title        = {Render Platform Documentation},
+  year         = {2026},
+  url          = {https://render.com/docs},
+  note         = {Blueprints, managed PostgreSQL, cron jobs.}
+}
+
+@misc{vercel,
+  author       = {{Vercel}},
+  title        = {Vercel Platform Documentation},
+  year         = {2026},
+  url          = {https://vercel.com/docs}
+}
+
+@misc{githubactions,
+  author       = {{GitHub}},
+  title        = {GitHub Actions Documentation},
+  year         = {2026},
+  url          = {https://docs.github.com/actions}
+}
+
+@misc{vitest,
+  author       = {{Vitest}},
+  title        = {Vitest},
+  year         = {2026},
+  url          = {https://vitest.dev/},
+  note         = {MIT licence.}
+}
+
+@misc{playwright,
+  author       = {{Microsoft}},
+  title        = {Playwright},
+  year         = {2026},
+  url          = {https://playwright.dev/},
+  note         = {Apache-2.0.}
+}
+
+@misc{pytest,
+  author       = {{pytest contributors}},
+  title        = {pytest},
+  year         = {2026},
+  url          = {https://docs.pytest.org/},
+  note         = {MIT licence.}
+}
+
+@misc{psycopg,
+  author       = {Daniele Varrazzo},
+  title        = {psycopg 3},
+  year         = {2026},
+  url          = {https://www.psycopg.org/},
+  note         = {LGPL-3.0.}
+}
+
+@misc{requests,
+  author       = {Reitz, Kenneth},
+  title        = {Requests: HTTP for Humans},
+  year         = {2026},
+  url          = {https://requests.readthedocs.io/},
+  note         = {Apache-2.0.}
+}
+
+@misc{typst,
+  author       = {Haasbroek, Laurenz and {Typst contributors}},
+  title        = {Typst: A New Markup-based Typesetting System},
+  year         = {2026},
+  url          = {https://typst.app/},
+  note         = {Apache-2.0.}
+}
+
+@misc{cetz,
+  author       = {{Cetz contributors}},
+  title        = {Cetz: Drawing with Typst},
+  year         = {2026},
+  url          = {https://github.com/cetz-package/cetz},
+  note         = {MIT licence.}
+}
+
+@misc{plantuml,
+  author       = {Roques, Arnaud},
+  title        = {PlantUML},
+  year         = {2026},
+  url          = {https://plantuml.com/},
+  note         = {GPL-3.0.}
+}
+
+@misc{mermaid,
+  author       = {{Mermaid contributors}},
+  title        = {Mermaid},
+  year         = {2026},
+  url          = {https://mermaid.js.org/},
+  note         = {MIT licence.}
+}
+
+@misc{typstscaffold,
+  author       = {Mokoena, Sipho},
+  title        = {Typst Scaffold: IEEE-style Document Templates},
+  year         = {2026},
+  url          = {https://github.com/sipho-mokoena/typst-scaffold},
+  note         = {Source of the swdocs structure used by this document.}
+}
+
+@misc{spdx,
+  author       = {{Linux Foundation}},
+  title        = {SPDX License List},
+  year         = {2026},
+  url          = {https://spdx.org/licenses/},
+  note         = {Canonical licence identifiers.}
+}

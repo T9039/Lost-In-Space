@@ -1,0 +1,65 @@
+# ---------------------------------------------------------------------------
+# Render blueprint — target deployment
+#
+# The Next.js app is not scaffolded yet, so this file describes the intended
+# topology and will start working once `package.json` and `etl/` exist.
+#
+# Notes:
+#   - Free web services spin down when idle. Use a paid instance for a demo.
+#   - Free PostgreSQL expires after 30 days. Long-lived deployments need a
+#     paid database plan or a self-hosted Postgres service with a disk.
+#   - Cron services require a paid plan on Render.
+#   - Render's managed PostgreSQL cannot install Apache AGE. That is fine:
+#     the graph is optional and lives in recursive SQL.
+# ---------------------------------------------------------------------------
+
+databases:
+  - name: lost-in-space-db
+    databaseName: lost_in_space
+    user: lost_in_space
+    plan: free
+    postgresMajorVersion: "16"
+    region: frankfurt
+
+services:
+  - type: web
+    name: lost-in-space
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    autoDeploy: true
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: lost-in-space-db
+          property: connectionString
+      - key: NODE_VERSION
+        value: "22"
+      - key: NEXT_PUBLIC_APP_URL
+        sync: false
+      - key: NASA_API_KEY
+        sync: false
+
+  - type: cron
+    name: lost-in-space-celestrak
+    runtime: python
+    plan: starter
+    region: frankfurt
+    branch: main
+    autoDeploy: false
+    schedule: "0 */2 * * *"
+    buildCommand: pip install -r etl/requirements.txt
+    startCommand: python -m etl.celestrak_refresh
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: lost-in-space-db
+          property: connectionString
+      - key: PYTHON_VERSION
+        value: "3.13.0"
+      - key: CELESTRAK_USER_AGENT
+        sync: false
