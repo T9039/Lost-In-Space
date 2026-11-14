@@ -12,6 +12,7 @@ and endpoints change.
 | **Space Artefacts** | Component-level detail and surface-object shortlists | **Custom: free duplication with citation** (not CC-BY) | Yes, with citation | Irregular | Curated, with citation |
 | **CelesTrak** | Live Earth-orbit element sets | Free-use policy, not a CC licence | Cache and attribute; do not relicense | ~2 hours | OMM JSON/CSV |
 | **NASA Image API** | Imagery | NASA public domain, per-image credit | Yes, preserve credit | Continuous | API proxy |
+| **NASA mission pages** | Mission prose and fact sheets | NASA public domain unless noted | Yes; credit NASA and the page | Per mission page | Curated |
 | **JPL Horizons** | Selected Moon/Mars/deep-space ephemerides | NASA/JPL public domain | Yes, credit | On demand | API, selected objects only |
 | **Space-Track** | — | Account + User Agreement | **No** | — | **Excluded** |
 | **KeepTrack** | Code reference only | AGPL-3.0 | Code reuse triggers AGPL | — | **No content scraping** |
@@ -202,6 +203,11 @@ cached. Preserve `credit`, `title` and the asset page URL in `media`.
 
 NASA does not license all assets identically. Do not assume every image on a
 NASA page is public domain; read the credit.
+
+Mission prose and fact sheets are read from NASA mission pages
+(`science.nasa.gov`, `www.nasa.gov`) under `source_id = 'nasa'`. The exact page
+is recorded in `fact.source_url`. These pages are generally public domain, but a
+page can include third-party text or imagery; check the credit before copying.
 
 ---
 

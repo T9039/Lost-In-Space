@@ -13,8 +13,9 @@ Mass, dates, coordinates, status and comparison diffs are deterministic reads.
 Narration is generated from a frozen facts snapshot and never feeds facts,
 comparisons or quiz answers.
 
-Current state: **phase 0**. Schema, source audit, attribution and deployment
-target are pinned. The web application and ETL loader are not implemented yet.
+Current state: **phase 2 (curate)**. Schema, docs, the ETL loader and a starter
+set of 8 curated artifacts are in place. Curation expansion and the web
+application are next.
 
 ## Repository map
 
@@ -25,7 +26,8 @@ target are pinned. The web application and ETL loader are not implemented yet.
 | `db/seed/001_lookups.sql` | Sources, SatType codes, orbit categories, phase statuses |
 | `db/queries/` | Card, lineage and live-tracking SQL |
 | `db/migrations/` | Forward-only numbered migrations after the baseline |
-| `etl/` | Python ingestion pipeline (`download → staging → transform → validate`) |
+| `etl/` | Python ingestion pipeline (`download → staging → transform → curate → validate`) |
+| `curation/artifacts.json` | Curated identity, mission, sourced facts, media and relations |
 | `docs/` | Short-form Markdown docs and the Typst technical document |
 | `docs/technical/` | Full technical system documentation, ADRs, sources, data models |
 | `render.yaml` | Production blueprint (web, PostgreSQL, cron) |
@@ -42,10 +44,11 @@ psql "$DATABASE_URL" -f db/schema.sql
 psql "$DATABASE_URL" -f db/seed/001_lookups.sql
 psql "$DATABASE_URL" -f db/staging.sql
 
-# ETL (when implemented)
+# ETL
 python -m etl.download_gcat
 python -m etl.load_staging
 python -m etl.transform
+python -m etl.curate
 python -m etl.validate
 python -m etl.celestrak_refresh
 

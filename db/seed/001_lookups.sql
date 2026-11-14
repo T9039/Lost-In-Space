@@ -63,6 +63,16 @@ INSERT INTO source (
  'continuous',
  NULL),
 
+('nasa',
+ 'NASA mission pages',
+ 'https://science.nasa.gov/',
+ 'NASA public domain (unless otherwise noted)',
+ 'https://www.nasa.gov/nasa-brand-center/images-and-media/',
+ 'NASA mission pages, https://science.nasa.gov/ and https://www.nasa.gov/.',
+ 'Mission prose and fact sheets. Individual images and contributed text may carry separate credits.',
+ 'per mission page',
+ NULL),
+
 ('jpl_horizons',
  'JPL Horizons',
  'https://ssd.jpl.nasa.gov/horizons/',

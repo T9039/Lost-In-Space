@@ -44,6 +44,7 @@ A source that fails criterion 5 is cached aggressively or treated as optional.
     [Space Artefacts], [Component detail, surface-object shortlists], [Custom: free duplication with citation], [Curated, cited],
     [CelesTrak], [Live Earth-orbit element sets], [Free-use policy, not CC], [OMM JSON/CSV, two-hourly],
     [NASA Images], [Imagery], [Mostly public domain, per-asset credit], [Server proxy, cached],
+    [NASA mission pages], [Mission prose and fact sheets], [NASA public domain unless noted], [Curated, cited],
     [JPL Horizons], [Selected ephemerides], [NASA/JPL public domain], [API, selected objects],
     [Space-Track], [—], [Account + User Agreement], [Excluded],
     [KeepTrack], [Code reference only], [AGPL-3.0], [No content ingest],
@@ -242,6 +243,23 @@ omit it.
 across users. Re-hosting binaries shifts licence and takedown responsibility onto
 the project. A third-party image CDN adds a proprietary dependency for a
 non-core path.
+
+== NASA mission pages
+
+*Provider.* NASA @nasa.
+
+*Terms.* Generally NASA public domain, but a page can include third-party text
+or imagery. The exact page is stored in `fact.source_url`; the per-asset credit
+is checked before copying.
+
+*What it provides.* Mission summaries, fact sheets, outcomes and dates for the
+narrative layer.
+
+*Ingest mode.* Curated. A human reads the page, writes the fact, and records the
+URL. There is no bulk API for prose.
+
+*Why not a bulk source.* Mission pages are HTML written for readers, not a
+catalog. Prose extraction would need review anyway, so the review is the ingest.
 
 == JPL Horizons — selected ephemerides
 

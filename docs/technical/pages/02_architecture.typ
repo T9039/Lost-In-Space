@@ -148,6 +148,8 @@ model inspectable and makes the provenance joins obvious.
    and unresolved parents.
 6. One transaction promotes the release into the canonical tables and records an
    `etl_run`.
+7. Curation adds mission metadata, sourced facts, credited media and explicit
+   relations, then marks an artifact `is_curated`.
 
 Staging is never read by the application. It exists so a failed transform never
 requires a re-download, and so a release can be audited after the fact.

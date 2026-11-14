@@ -394,6 +394,14 @@ def _location_for(
     name = site_name if site_name else f"{parse.clean(lander['name']) or 'Unknown'} site"
     lat = parse.parse_float(lander["lat"])
     lon = parse.parse_float(lander["lon"])
+    # GCAT publishes some Mars longitudes in 0..360; store -180..180 so map
+    # libraries and the API agree on one convention.
+    if lon is not None and lon > 180:
+        lon -= 360
+    if lat is not None:
+        lat = round(lat, 4)
+    if lon is not None:
+        lon = round(lon, 4)
     precision = "approx" if lat is not None and lon is not None else "none"
     slug = _slugify(f"{body} {name}")
     cur.execute(
@@ -763,7 +771,9 @@ def load_manifest(data_dir: Path) -> dict[str, Any]:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--targets", type=Path, default=Path("etl/targets.json"))
+    parser.add_argument(
+        "--targets", type=Path, default=Path("curation/artifacts.json")
+    )
     parser.add_argument("--data-dir", type=Path, default=config.DATA_DIR)
     args = parser.parse_args(argv)
 

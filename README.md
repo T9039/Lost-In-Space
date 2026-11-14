@@ -9,8 +9,9 @@ reads. Narration is generated separately from a frozen snapshot of those facts.
 
 ## Status
 
-Phase 0 — database and stack pinned. The ETL loader is implemented and tested;
-curation and the application are next. See [`ROADMAP.md`](ROADMAP.md) for the
+Phase 0 — database and stack pinned. The ETL loader and a curated starter set
+(8 artifacts, 2 per zone) are implemented and tested. Expanding curation and
+building the application are next. See [`ROADMAP.md`](ROADMAP.md) for the
 phased plan and the task list.
 
 - [x] Repository connected to `T9039/Lost-In-Space`
@@ -19,7 +20,8 @@ phased plan and the task list.
 - [x] Deployment target chosen (Render)
 - [x] Technical system documentation (Typst, ADRs, data model, sources)
 - [x] GCAT loader and identity resolver
-- [ ] Curated artifacts across all four zones
+- [x] Curated starter set across all four zones
+- [ ] Expand curation to 6–10 artifacts per zone
 - [ ] Next.js app and live-tracking UI
 
 ## Stack
@@ -78,7 +80,9 @@ docker compose down -v && docker compose up -d db
 │   ├── DATABASE.md             data dictionary and identity rules
 │   ├── DATA-SOURCES.md         licences, endpoints, column maps
 │   └── technical/              full technical documentation (Typst source + PDF)
-├── etl/                        loader pipeline (phase 1)
+├── etl/                        loader pipeline (download, transform, curate)
+├── curation/
+│   └── artifacts.json          curated identity, mission, facts, media
 ├── hackathonWoes.md            original product architecture
 ├── resources.md                original source notes
 ├── AGENTS.md                   repository rules for humans and coding agents

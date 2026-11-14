@@ -1,14 +1,14 @@
 # ETL pipeline
 
-The loader is not implemented yet. This document pins the pipeline so the code
-has one obvious shape.
+The pipeline is implemented. The stages are:
 
 ```
 download → staging (text) → normalise → resolve → curate → read models
 ```
 
 Never write directly to canonical tables from a parsed file. Every step is
-re-runnable and idempotent.
+re-runnable and idempotent. `transform` owns catalog identity; `curate` adds the
+sourced narrative layer.
 
 ---
 
@@ -138,36 +138,44 @@ phase that is on the surface.
 
 ---
 
+## 5b. Curate
+
+`curation/artifacts.json` is the human decision file. Each entry names a slug,
+its JCAT phases, a zone, and the narrative layer:
+
+- `mission` — mission name, program, summary, sourced abandonment reason
+- `facts` — each with `source_id`, `source_url` and confidence
+- `media` — each with licence and credit
+- `relations` — explicit edges between curated artifacts
+
+`python -m etl.curate` replaces the facts and media for each artifact, upserts
+the mission row and sets `is_curated = true`. It refuses a fact without a source
+URL and media without credit. Running it twice is idempotent.
+
+---
+
 ## 6. Validate before promoting
 
-Run these after every load. None should return rows for a healthy release.
+`etl.validate` separates hard integrity checks from data-completeness warnings.
+A healthy run prints `all checks passed` and may print `WARN` lines.
 
-```sql
--- Duplicate JCAT within staging
-SELECT jcat, count(*) FROM staging.gcat_object
-GROUP BY jcat HAVING count(*) > 1;
+Hard checks include:
 
--- Object rows whose launch tag has no launch record
-SELECT DISTINCT o.launch_tag
-FROM staging.gcat_object o
-LEFT JOIN staging.gcat_launch l ON l.launch_tag = o.launch_tag
-WHERE o.launch_tag IS NOT NULL
-  AND o.launch_tag <> '-'
-  AND l.launch_tag IS NULL;
+- object rows with no JCAT
+- SATCAT values containing digits that would fail a numeric cast
+- artifacts with no phase, or phases with no artifact
+- curated artifacts with no sourced fact
+- media without a licence or credit
+- stories without a facts snapshot or hash
+- element sets with no epoch
+- catalog identifiers with an empty value
+- relations pointing at themselves
 
--- Lander rows that do not appear in any object catalog
-SELECT l.jcat, l.name
-FROM staging.gcat_lander l
-LEFT JOIN staging.gcat_object o ON o.jcat = l.jcat
-WHERE o.jcat IS NULL;
+Warnings, because they depend on how many GCAT catalogs were downloaded:
 
--- Catalog values that would fail a numeric cast
-SELECT DISTINCT satcat FROM staging.gcat_object
-WHERE satcat IS NOT NULL AND satcat !~ '^[0-9]+$';
-
--- Phases with no resolved artifact (promotion check)
-SELECT jcat_id FROM artifact_phase WHERE artifact_id IS NULL;
-```
+- launch tags with no launch file (`UNK` is the known case)
+- lander rows that do not appear in the loaded object catalogs (`lcat`/`rcat`
+  are not loaded yet)
 
 Also assert:
 
@@ -180,7 +188,7 @@ Also assert:
 
 ## 7. CelesTrak job
 
-`etl/celestrak_refresh.py` (to implement):
+`etl/celestrak_refresh.py`:
 
 1. Read the curated SATCAT list:
    ```sql
@@ -217,12 +225,32 @@ Staging keeps the evidence, so a retry never needs a re-download.
 
 ---
 
-## 9. Commands (target)
+## 9. Commands
 
 ```bash
+# 1. Fetch GCAT (catalogs, tables, 392 launch files)
 python -m etl.download_gcat
+
+# 2. Load raw TSVs into staging
 python -m etl.load_staging
+
+# 3. Build artifacts and phases from curation/artifacts.json
 python -m etl.transform
+
+# 4. Add mission, facts, media and relations; set is_curated
+python -m etl.curate
+
+# 5. Refresh live Earth-orbit element sets
 python -m etl.celestrak_refresh
+
+# 6. Check invariants
 python -m etl.validate
 ```
+
+`transform` and `curate` are separate on purpose: the first is deterministic and
+reproducible from a GCAT release, the second records human decisions and
+sources. Running both twice must leave the same row counts.
+
+`phase_key` is the stable phase key (`<jcat>:<n>`). `jcat_id` is **not** unique:
+deep-space catalogs reuse one JCAT across several phases (Voyager 1 has four
+rows under `D00578`).

@@ -28,8 +28,11 @@ adding a source and curating an artifact.
 │   ├── load_staging.py         clean and COPY into staging
 │   ├── vague_date.py           single date parser
 │   ├── transform.py            normalise, resolve, promote
+│   ├── curate.py               mission, facts, media, relations
 │   ├── celestrak_refresh.py    OMM upsert
 │   └── validate.py             invariant checks
+├── curation/
+│   └── artifacts.json          curated identity and narrative layer
 ├── docs/
 │   ├── ARCHITECTURE.md         short-form architecture reference
 │   ├── DATABASE.md             data dictionary and identity rules
@@ -127,6 +130,7 @@ schema during development.
     [`python -m etl.download_gcat`], [Fetch the current GCAT TSV tree],
     [`python -m etl.load_staging`], [Load raw files into `staging.*`],
     [`python -m etl.transform`], [Normalise, resolve and promote],
+    [`python -m etl.curate`], [Apply mission, facts, media and relations],
     [`python -m etl.validate`], [Run the invariant checks],
     [`python -m etl.celestrak_refresh`], [Refresh `gp_element`],
     [`typst compile docs/technical/main.typ`], [Build the documentation PDF],
@@ -216,7 +220,9 @@ Sources that fail step 1 are not added, regardless of technical quality.
 
 == Curating an artifact
 
-Curation is a reviewed data change, not a code change.
+Curation is a reviewed data change, not a code change. The decisions live in
+`curation/artifacts.json`; `python -m etl.curate` applies them and refuses a fact
+without a source URL or media without credit.
 
 #figure(
   kind: "table",

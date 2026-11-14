@@ -72,6 +72,7 @@ re-runnable, and none of them writes to a canonical table except `transform`.
     [`python -m etl.download_gcat`], [GCAT HTTP endpoints], [`data/gcat/`, `source.last_release`, `etl_run`],
     [`python -m etl.load_staging`], [`data/gcat/`], [`staging.*`],
     [`python -m etl.transform`], [`staging.*`, seed vocabularies], [Canonical tables, `etl_run`],
+    [`python -m etl.curate`], [`curation/artifacts.json`], [`mission`, `fact`, `media`, `artifact_relation`, `is_curated`],
     [`python -m etl.validate`], [Canonical tables], [Report only],
     [`python -m etl.celestrak_refresh`], [CelesTrak OMM, curated SATCAT list], [`gp_element`, `etl_run`],
   ),

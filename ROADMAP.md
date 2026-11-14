@@ -16,15 +16,15 @@ Related documents:
 | Phase | Theme | State |
 |---|---|---|
 | 0 | Foundation | Done |
-| 1 | Ingest | Done, one live check outstanding |
-| 2 | Curate | In progress — next |
+| 1 | Ingest | Done; one live check outstanding |
+| 2 | Curate | In progress — starter set done, expansion next |
 | 3 | Application shell | Not started |
 | 4 | Artifact experience | Not started |
 | 5 | Live tracking | Not started |
 | 6 | Narration | Not started |
 | 7 | Hardening and release | Not started |
 
-Last commit: `3d3c651` — ETL, schema correction and documentation.
+Run `git log -1` for the current commit.
 
 ---
 
@@ -59,20 +59,20 @@ the design is documented. Met.
 - [x] `etl/transform.py` — lookups plus curated artifact targets
 - [x] `etl/validate.py` — hard checks and data-completeness warnings
 - [x] `etl/celestrak_refresh.py` — OMM fetch and upsert
-- [x] `etl/targets.json` — four seed artifacts across the four zones
+- [x] `curation/artifacts.json` — starter set, two artifacts per zone
 - [x] `derive_zone()` SQL function used by the ETL
 - [x] `phase_key` corrects deep-space JCAT reuse (Voyager 1: four phases)
 - [x] 26 unit tests (`pytest etl/tests`)
 - [x] End-to-end run against GCAT 1.8.9: 258,367 staging rows, 392 launch files,
-      4 artifacts, 11 phases, validation passes
-- [ ] Update `etl/README.md` with the implemented CLI usage and `phase_key`
-- [ ] Formal idempotency check: dump canonical counts, run twice, diff
+      8 artifacts, 21 phases, validation passes
+- [x] Update `etl/README.md` with the implemented CLI, `phase_key` and curate step
+- [x] Formal idempotency check: identical counts after a second run
 - [ ] Exercise `celestrak_refresh` against the live CelesTrak API
 - [ ] Decide whether to load `lcat`/`rcat` (30 lander rows currently unmatched)
 - [ ] Add a CI job that applies schema and runs the ETL against fixtures
 
 **Exit criterion:** a full GCAT release loads twice with identical canonical
-rows. In reach; the formal diff is the remaining step.
+rows. Met for the starter set.
 
 **Known gaps**
 
@@ -87,24 +87,32 @@ rows. In reach; the formal diff is the remaining step.
 
 Goal: a balanced, sourced set of artifacts, not a dump of the catalog.
 
-- [ ] Expand `etl/targets.json` to roughly 6–10 artifacts per zone
-- [ ] Moon: Eagle, Surveyor 3, Lunokhod 1, Apollo 17 LRV, Chang'e 4
-- [ ] Mars: Perseverance, Curiosity, InSight, Viking Lander 1, Opportunity
-- [ ] Earth orbit: Vanguard 1, Hubble, Envisat, the IIS, a rocket stage
-- [ ] Deep space: Voyager 1, Pioneer 10, New Horizons, a heliocentric stage
-- [ ] Resolve all phases for each target and re-run `transform`
-- [ ] Add `mission` rows (program, class, category, result)
-- [ ] Add `fact` rows with `source_url` for every user-visible claim
-- [ ] Record the abandonment reason per artifact
-- [ ] Add `media` rows with licence and credit
+- [x] `etl/curate.py` and `curation/artifacts.json`
+- [x] Starter set: 8 artifacts, two per zone
+- [x] Moon: Eagle, Surveyor 3
+- [x] Mars: Perseverance, Viking Lander 1
+- [x] Earth orbit: Vanguard 1, Hubble
+- [x] Deep space: Voyager 1, Pioneer 10
+- [x] Resolve all phases and re-run `transform` (21 phases)
+- [x] Add `mission` rows with summary and abandonment reason
+- [x] Add `fact` rows with `source_url` for every user-visible claim (16)
+- [x] Add `media` rows with licence and credit (8)
+- [x] Set `is_curated = true` only after every claim is sourced
+- [x] Zone-balance check: 2 Moon, 2 Mars, 2 Earth orbit, 2 deep space
+- [x] `validate` passes; only the two known data-completeness warnings remain
+- [ ] Expand to roughly 6–10 artifacts per zone:
+      Moon — Lunokhod 1, Apollo 17 LRV, Chang'e 4;
+      Mars — Curiosity, InSight, Opportunity;
+      Earth orbit — Envisat, the ISS, a rocket stage;
+      deep space — New Horizons, a heliocentric stage
 - [ ] Add `artifact_relation` edges (`deployed_from`, `component_of`,
       `left_behind_by`, `landed_with`)
 - [ ] Resolve parent links across selected artifacts
-- [ ] Set `is_curated = true` only after every claim is sourced
-- [ ] Zone-balance review: no zone left thin
+- [ ] Review every fact against its source page before calling the set complete
 
 **Exit criterion:** every curated artifact has at least one sourced fact, a
-zone, a resolved phase list and credited media.
+zone, a resolved phase list and credited media. Met for the starter set; the
+expansion is next.
 
 **Open question:** Perseverance and the Mars landers have no distinct surface
 phase in GCAT; the lander row provides coordinates and landing date. Decide

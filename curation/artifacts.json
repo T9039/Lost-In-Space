@@ -1,0 +1,364 @@
+{
+  "artifacts": [
+    {
+      "slug": "apollo-11-lunar-module-eagle",
+      "canonical_name": "Apollo 11 Lunar Module Eagle",
+      "short_name": "Eagle",
+      "primary_zone": "moon",
+      "is_curated": true,
+      "jcats": ["S04041", "D00274", "D01052"],
+      "mission": {
+        "mission_name": "Apollo 11",
+        "program": "Apollo",
+        "agency_org_code": "NASA",
+        "summary_text": "The Apollo 11 lunar module ascent stage, the first crewed vehicle to lift off from the Moon.",
+        "abandonment_reason": "Left in lunar orbit after the Apollo 11 rendezvous; the ascent stage was never recovered.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Eagle lifted off from the Moon on 21 July 1969 and returned Armstrong and Aldrin to Columbia in lunar orbit.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/apollo-11/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "abandonment",
+          "fact_text": "After docking, the ascent stage was jettisoned and left in lunar orbit.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/apollo-11/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/as11-40-5903/as11-40-5903~medium.jpg",
+          "title": "Astronaut Buzz Aldrin beside the Apollo 11 lunar module Eagle",
+          "credit": "NASA",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "slug": "surveyor-3",
+      "canonical_name": "Surveyor 3",
+      "short_name": "Surveyor 3",
+      "primary_zone": "moon",
+      "is_curated": true,
+      "jcats": ["S02756", "D00150"],
+      "mission": {
+        "mission_name": "Surveyor 3",
+        "program": "Surveyor",
+        "agency_org_code": "NASA",
+        "summary_text": "A robotic lunar lander visited by the Apollo 12 crew, providing the first on-site inspection of another spacecraft on the Moon.",
+        "abandonment_reason": "Left on the Moon after its mission; Apollo 12 removed parts for study.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Surveyor 3 landed in Oceanus Procellarum on 20 April 1967.",
+          "source_id": "nssdca",
+          "source_url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1967-035A",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "The Apollo 12 crew visited the lander in November 1969 and returned parts to Earth for analysis.",
+          "source_id": "nssdca",
+          "source_url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1967-035A",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/AS12-48-7133/AS12-48-7133~medium.jpg",
+          "title": "Surveyor 3 and the Apollo 12 lunar module on the Moon",
+          "credit": "NASA",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "slug": "perseverance-rover",
+      "canonical_name": "Perseverance Rover",
+      "short_name": "Perseverance",
+      "primary_zone": "mars",
+      "is_curated": true,
+      "jcats": ["S45983", "D01038"],
+      "mission": {
+        "mission_name": "Mars 2020 Perseverance",
+        "program": "Mars Exploration Program",
+        "agency_org_code": "NASA",
+        "summary_text": "A Mars rover exploring Jezero Crater and caching samples for a possible return to Earth.",
+        "abandonment_reason": null,
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Perseverance landed in Jezero Crater on 18 February 2021.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/mars-2020-perseverance/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "The rover is collecting rock and soil samples for a possible future Mars Sample Return mission.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/mars-2020-perseverance/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/PIA24542/PIA24542~medium.jpg",
+          "title": "Perseverance's selfie with Ingenuity",
+          "credit": "NASA/JPL-Caltech",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "slug": "viking-lander-1",
+      "canonical_name": "Viking Lander 1",
+      "short_name": "Viking 1",
+      "primary_zone": "mars",
+      "is_curated": true,
+      "jcats": ["S09024", "D00545"],
+      "mission": {
+        "mission_name": "Viking 1",
+        "program": "Viking",
+        "agency_org_code": "NASA",
+        "summary_text": "The first successful long-lived lander on Mars, and the first to return images from the surface.",
+        "abandonment_reason": "Contact was lost in November 1982; the lander remains on Mars.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Viking 1 landed in Chryse Planitia on 20 July 1976.",
+          "source_id": "nssdca",
+          "source_url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1975-075C",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "The lander returned images and weather data until November 1982.",
+          "source_id": "nssdca",
+          "source_url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1975-075C",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/PIA10738/PIA10738~orig.jpg",
+          "title": "Mars surface near the Viking Lander 1 footpad",
+          "credit": "NASA/JPL",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "slug": "vanguard-1",
+      "canonical_name": "Vanguard I",
+      "short_name": "Vanguard 1",
+      "primary_zone": "earth_orbit",
+      "is_curated": true,
+      "jcats": ["S00005"],
+      "mission": {
+        "mission_name": "Vanguard 1",
+        "program": "Vanguard",
+        "agency_org_code": "NASA",
+        "summary_text": "A 1958 engineering satellite and the oldest human-made object still in orbit.",
+        "abandonment_reason": "Transmissions ended in 1964; the satellite remains in orbit.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Vanguard 1 was launched on 17 March 1958.",
+          "source_id": "nssdca",
+          "source_url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1958-002B",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "trivia",
+          "fact_text": "It stopped transmitting in 1964 and remains the oldest human-made object in orbit.",
+          "source_id": "nssdca",
+          "source_url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1958-002B",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/58PD-06149A/58PD-06149A~medium.jpg",
+          "title": "Waiting for the Vanguard 1 launch at Cape Canaveral",
+          "credit": "NASA",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "slug": "hubble-space-telescope",
+      "canonical_name": "Hubble Space Telescope",
+      "short_name": "Hubble",
+      "primary_zone": "earth_orbit",
+      "is_curated": true,
+      "jcats": ["S20580"],
+      "mission": {
+        "mission_name": "Hubble Space Telescope",
+        "program": "Great Observatories",
+        "agency_org_code": "NASA",
+        "summary_text": "A space telescope that has observed the universe from low Earth orbit since 1990.",
+        "abandonment_reason": null,
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Hubble was deployed from Space Shuttle Discovery on 25 April 1990.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/hubble/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "Five servicing missions between 1993 and 2009 repaired and upgraded the telescope.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/hubble/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/s31-04-027/s31-04-027~medium.jpg",
+          "title": "Hubble Space Telescope above Space Shuttle Discovery's payload bay during STS-31",
+          "credit": "NASA",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "slug": "voyager-1",
+      "canonical_name": "Voyager 1",
+      "short_name": "Voyager 1",
+      "primary_zone": "deep_space",
+      "is_curated": true,
+      "jcats": ["D00578"],
+      "mission": {
+        "mission_name": "Voyager 1",
+        "program": "Voyager",
+        "agency_org_code": "NASA",
+        "summary_text": "A spacecraft that toured Jupiter and Saturn and is now in interstellar space.",
+        "abandonment_reason": null,
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Voyager 1 flew past Jupiter in 1979 and Saturn in 1980.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/voyager/voyager-1/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "It crossed the heliopause in August 2012 and is now in interstellar space.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/voyager/voyager-1/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/PIA14111/PIA14111~orig.jpg",
+          "title": "Voyager spacecraft artist concept",
+          "credit": "NASA/JPL-Caltech",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "slug": "pioneer-10",
+      "canonical_name": "Pioneer 10",
+      "short_name": "Pioneer 10",
+      "primary_zone": "deep_space",
+      "is_curated": true,
+      "jcats": ["S05860", "D00431"],
+      "mission": {
+        "mission_name": "Pioneer 10",
+        "program": "Pioneer",
+        "agency_org_code": "NASA",
+        "summary_text": "The first spacecraft to cross the asteroid belt and fly past Jupiter, now leaving the Solar System.",
+        "abandonment_reason": "Contact was lost in January 2003; the spacecraft is coasting out of the Solar System.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Pioneer 10 was the first spacecraft to cross the asteroid belt and the first to fly past Jupiter, in December 1973.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/pioneer-10/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "NASA lost contact with Pioneer 10 in January 2003.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/pioneer-10/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://nssdc.gsfc.nasa.gov/thumbnail/spacecraft/pioneer10-11.gif",
+          "title": "Pioneer 10 and 11 spacecraft",
+          "credit": "NASA/NSSDCA",
+          "license_name": "NASA public domain",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nssdca"
+        }
+      ],
+      "relations": []
+    }
+  ]
+}
