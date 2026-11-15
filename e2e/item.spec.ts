@@ -11,6 +11,6 @@ test("item profile shows facts, abandonment, position and provenance", async ({ 
 });
 
 test("Earth-orbit items show live tracking or an explicit pending state", async ({ page }) => {
-  await page.goto("/item/hubble-space-telescope");
+  await page.goto("/item/vanguard-1");
   await expect(page.getByText(/LIVE ELEMENT SET|LIVE ELEMENTS PENDING/)).toBeVisible();
 });
