@@ -66,7 +66,7 @@ design is documented. Met.
 - [x] 26 unit tests
 - [x] End-to-end: 258,367 staging rows, 392 launch files, 12 artifacts, 29 phases
 - [x] Idempotency: identical counts after a second run
-- [ ] Exercise `celestrak_refresh` against the live CelesTrak API
+- [x] Exercise `celestrak_refresh` against the live CelesTrak API
 - [ ] Decide whether to load `lcat`/`rcat` (30 lander rows unmatched)
 - [ ] Add a CI job that applies the schema and runs the ETL on fixtures
 
@@ -237,7 +237,7 @@ reads from PostgreSQL; no generated text is used.
 - [x] Technical docs point at `app/`, `components/` and `lib/`
 - [x] Branding is Lost in Space; the museum name is gone from the UI
 - [ ] The 30 unmatched lander rows and `UNK` launch tag are still open
-- [ ] CelesTrak refresh is not exercised live
+- [x] CelesTrak refresh exercised live (manual run; scheduling remains open)
 - [x] Image proxy implemented for remote NASA assets; bundled images stay local
 - [x] Countermeasure for blocked TCP/5432: HTTPS SQL runner + SSH tunnel helper
 - [ ] No narration provider or snapshot builder

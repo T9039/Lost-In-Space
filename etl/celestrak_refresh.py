@@ -13,12 +13,15 @@ from __future__ import annotations
 
 import argparse
 import sys
+import time
 from datetime import datetime, timezone
 from typing import Any, Iterable
 
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+
+from psycopg.types.json import Jsonb
 
 from etl import config, db
 
@@ -57,21 +60,35 @@ def chunks(values: list[int], size: int) -> Iterable[list[int]]:
 
 
 def fetch_batch(http: requests.Session, satcats: list[int]) -> list[dict[str, Any]]:
-    response = http.get(
-        GP_URL,
-        params={
-            "CATNR": ",".join(str(value) for value in satcats),
-            "FORMAT": "JSON",
-        },
-        timeout=60,
-    )
-    response.raise_for_status()
-    if not response.content.strip():
-        return []
-    payload = response.json()
-    if isinstance(payload, dict):
-        return [payload]
-    return list(payload)
+    """Fetch each catalog number separately.
+
+    CelesTrak's gp.php accepts one CATNR per request; comma-separated values are
+    rejected. A batch is still one ETL unit, so the caller keeps its batching.
+    """
+    records: list[dict[str, Any]] = []
+    for index, satcat in enumerate(satcats):
+        if index:
+            time.sleep(0.2)
+        response = http.get(
+            GP_URL,
+            params={"CATNR": str(satcat), "FORMAT": "JSON"},
+            timeout=60,
+        )
+        if response.status_code == 404:
+            continue
+        response.raise_for_status()
+        if not response.content.strip():
+            continue
+        try:
+            payload = response.json()
+        except ValueError:
+            # CelesTrak returns text/plain for a catalog number it does not know.
+            continue
+        if isinstance(payload, dict):
+            records.append(payload)
+        else:
+            records.extend(payload)
+    return records
 
 
 def epoch(value: str) -> datetime:
@@ -140,7 +157,7 @@ def upsert(cur, records: list[dict[str, Any]]) -> int:
                 record.get("MEAN_MOTION_DDOT"),
                 record.get("EPHEMERIS_TYPE"),
                 record.get("CLASSIFICATION"),
-                record,
+                Jsonb(record),
             ),
         )
         written += 1

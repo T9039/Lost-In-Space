@@ -30,8 +30,14 @@ if not parts.hostname:
     raise SystemExit("DATABASE_URL has no host")
 remote_port = parts.port or 5432
 userinfo = parts.netloc.rsplit("@", 1)[0] + "@" if "@" in parts.netloc else ""
+pairs = urllib.parse.parse_qsl(parts.query, keep_blank_values=True)
+if parts.hostname.endswith(".neon.tech"):
+    endpoint = parts.hostname.split(".")[0]
+    pairs = [(k, v) for k, v in pairs if k not in ("channel_binding", "options")]
+    pairs.append(("options", f"endpoint={endpoint}"))
+query = urllib.parse.urlencode(pairs)
 local = urllib.parse.urlunsplit(
-    (parts.scheme, f"{userinfo}localhost:{local_port}", parts.path, parts.query, parts.fragment)
+    (parts.scheme, f"{userinfo}localhost:{local_port}", parts.path, query, parts.fragment)
 )
 print(parts.hostname, remote_port, local)
 PY

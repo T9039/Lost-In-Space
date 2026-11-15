@@ -150,9 +150,14 @@ try {
     })
   );
   checks.push(await check("/api/items/does-not-exist", 404));
-  checks.push(
-    await check("/api/artifacts/hubble-space-telescope/gp", 404)
-  );
+  const gp = await fetch(`${BASE}/api/artifacts/hubble-space-telescope/gp`);
+  assert.ok([200, 404].includes(gp.status));
+  if (gp.ok) {
+    const body = await gp.json();
+    assert.ok(body.satcat_no);
+    assert.ok(body.epoch);
+  }
+  checks.push("GET /api/artifacts/:slug/gp");
   checks.push(
     await check("/api/items/opportunity/lineage", 200, async (response) => {
       const lineage = await response.json();

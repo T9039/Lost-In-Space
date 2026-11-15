@@ -99,7 +99,9 @@ project or reload is needed for the web app.
    reach 5432 (the laptop, a VPS, a Tailscale peer), run:
    `SSH_HOST=<host> DATABASE_URL="$DATABASE_URL_UNPOOLED" npm run db:tunnel`
    then export the `DATABASE_URL` it prints. `--print` shows the rewritten local
-   URL without opening the tunnel.
+   URL without opening the tunnel. The helper removes Neon's
+   `channel_binding=require` and adds the SNI `options=endpoint=...` needed when
+   the TCP connection terminates on localhost.
 4. **VPN or a Tailscale exit node** is the fallback when no SSH host is
    available. The block is on outbound 5432, so any route that permits it works.
 
@@ -249,8 +251,9 @@ Done in this pass:
       geodetic coordinates with `satellite.js`; deterministic tests use a real
       ISS element set.
 - [x] **GP endpoint** — `/api/artifacts/:slug/gp` returns the latest stored OMM
-      and a propagated position with a five-minute cache; `gp_element` is still
-      empty until `celestrak_refresh` can write from this network.
+      and a propagated position with a five-minute cache. The live CelesTrak
+      refresh was exercised through the laptop tunnel and wrote element sets for
+      Hubble and Vanguard 1.
 - [x] **Last known position** — non-Earth item pages show the stored coordinates
       and a `LAST KNOWN POSITION` label; Earth-orbit items say live elements are
       pending.
@@ -350,7 +353,7 @@ Run `npm run db:check` to see the current state.
 - `db/migrations/` only documents the convention; no migrations yet.
 - 30 lander rows have no object row (`lcat`/`rcat` not loaded).
 - One `UNK` launch tag.
-- CelesTrak refresh has not been exercised live.
+- CelesTrak refresh is exercised manually; the scheduled cron is still open.
 - Image proxy, live tracking and narration are not implemented.
 - 3D models are static under `public/models`; credits are in fixtures.
 
