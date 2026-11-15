@@ -137,6 +137,7 @@ npm start
 npm run db:check     # connectivity diagnostic; prints host, driver and latency
 npm run lint         # oxlint
 npm test             # unit + component tests (node:test + tsx)
+npm run test:e2e     # Playwright end-to-end against a production build
 npm run build && npm run test:system   # start the server and exercise every route/API
 npm run test:all     # tests, build and system checks in one command
 ```

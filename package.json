@@ -13,7 +13,8 @@
     "test:system": "node scripts/system-test.mjs",
     "test:all": "npm test && npm run build && npm run test:system",
     "db:apply-sql": "node scripts/apply-sql.mjs",
-    "db:tunnel": "bash scripts/db-tunnel.sh"
+    "db:tunnel": "bash scripts/db-tunnel.sh",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@neon/config": "^1.14.0",
@@ -30,6 +31,7 @@
     "three": "^0.180.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.1",
     "@tailwindcss/postcss": "^4.3.5",
     "@types/node": "^22.0.0",
     "@types/pg": "^8.23.1",

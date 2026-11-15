@@ -217,7 +217,7 @@ reads from PostgreSQL; no generated text is used.
 - [x] Enable the CI workflow at `.github/workflows/ci.yml`
 - [x] Add `typecheck` and `test` scripts (node:test + tsx)
 - [x] Add a lint script (`oxlint`)
-- [ ] Add Playwright end-to-end coverage
+- [x] Add Playwright end-to-end coverage
 - [x] Backup and restore drill (12 MB dump restored into a temporary Neon database)
 - [ ] Accessibility, responsive and performance passes
 - [ ] Deploy to Render with a paid database and cron
