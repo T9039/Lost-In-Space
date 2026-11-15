@@ -19,7 +19,8 @@ function phaseYearLabel(item: Item, phase: Item["phases"][number]) {
   if (uniqueYears.length > 1) return `${uniqueYears[0]}–${uniqueYears[uniqueYears.length - 1]}`;
   if (uniqueYears.length === 1) return uniqueYears[0];
   if (phase.key === "built") return "PRE-LAUNCH";
-  return "DATE NOT RECORDED";
+  if (phase.stat_value && !/unknown|undated/i.test(phase.stat_value)) return `${phase.stat_value} · ${phase.stat_label}`;
+  return `${phase.title} phase`;
 }
 
 export default function LabPane({ item, sources }: { item: Item; sources: Source[] }) {
@@ -37,6 +38,7 @@ export default function LabPane({ item, sources }: { item: Item; sources: Source
 
   const showDust = item.zone === "mars" && /solar/i.test(item.specs["Power source"] ?? "");
   const showLaser = item.zone === "moon";
+  const lunarMissionName = item.name.match(/Apollo\s+\d+/i)?.[0];
   const dustImage = item.images.find((image) => /solar|panel|array/i.test(image.caption))?.src ?? item.images[0]?.src;
 
   return (
@@ -79,7 +81,7 @@ export default function LabPane({ item, sources }: { item: Item; sources: Source
       </div>
 
       <div className="chapter-track-heading">
-        <span>ODYSSEY IN FIVE CHAPTERS</span>
+        <span>{phases.length ? `ODYSSEY IN ${phases.length} CHAPTERS` : "MISSION ODYSSEY"}</span>
         <label className="chapter-scrubber">
           <span>SCRUB TIMELINE</span>
           <input
@@ -92,7 +94,7 @@ export default function LabPane({ item, sources }: { item: Item; sources: Source
           />
         </label>
       </div>
-      <nav className="chapter-bar" aria-label="Odyssey in five chapters">
+      <nav className="chapter-bar" aria-label="Mission odyssey">
         {phases.map((p, i) => {
           return (
             <button
@@ -196,7 +198,7 @@ export default function LabPane({ item, sources }: { item: Item; sources: Source
       {(showDust || showLaser) && (
         <div className="lab-widgets">
           {showDust ? <DustCanvas image={dustImage} /> : null}
-          {showLaser ? <LaserRange /> : null}
+          {showLaser ? <LaserRange missionName={lunarMissionName} /> : null}
         </div>
       )}
     </div>

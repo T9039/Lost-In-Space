@@ -1,7 +1,5 @@
 import type { Fact, Item, Source } from "./types";
 
-export type ReadingLevel = "primary" | "high";
-
 export interface AICitation {
   id: string;
   title: string;
@@ -29,11 +27,11 @@ const words = (s: string) =>
     .split(/\s+/)
     .filter((w) => w.length > 2 && !STOP.has(w));
 
-function uniqueCitations(sources: Source[], ids: string[]): AICitation[] {
+function uniqueCitations(sources: Source[], ids: (string | undefined)[]): AICitation[] {
   const seen = new Set<string>();
   const out: AICitation[] = [];
   for (const id of ids) {
-    if (seen.has(id)) continue;
+    if (!id || seen.has(id)) continue;
     const src = sources.find((s) => s.id === id);
     if (!src) continue;
     seen.add(id);
@@ -57,8 +55,61 @@ function scoreFacts(item: Item, question: string): Fact[] {
     .map((r) => r.fact);
 }
 
-const trim = (level: ReadingLevel, bullets: string[]) =>
-  level === "primary" ? bullets.slice(0, 2) : bullets.slice(0, 3);
+type ActIntent = "design" | "discovery" | "status" | "general";
+
+function routeIntent(question: string): ActIntent {
+  const q = question.toLowerCase();
+  if (/rocket|booster|launch|launched|built|design|designed|purpose|mass|weight|power|battery|solar|instrument|camera|sensor|why.{0,24}(built|made|designed)/i.test(q)) {
+    return "design";
+  }
+  if (/discover|discovery|achiev|record|surviv|survive|worked|science|found|find|environment|dust|storm|radiation|temperature/i.test(q)) {
+    return "discovery";
+  }
+  if (/went silent|silent|abandon|left behind|where|location|still|persist|transmi|signal|today|current|orbit|altitude|distance|why.{0,24}(left|silent|abandon)/i.test(q)) {
+    return "status";
+  }
+  return "general";
+}
+
+function factsForIntent(item: Item, question: string, intent: ActIntent): Fact[] {
+  const pattern: RegExp | null = intent === "design"
+    ? /design|built|purpose|mission|launch|rocket|mass|weight|power|battery|solar|instrument|camera|sensor|antenna|site/i
+    : intent === "discovery"
+      ? /discover|found|record|distance|dust|storm|temperature|radiation|worked|science|survive|water|achievement/i
+      : intent === "status"
+        ? /silent|abandon|left|location|where|orbit|altitude|distance|signal|transmit|status|today|persist|operat/i
+        : null;
+  const relevant = pattern
+    ? item.facts.filter((fact) => pattern.test(`${fact.label} ${fact.value} ${fact.claim}`))
+    : [];
+  const scored = scoreFacts(item, question);
+  const ordered = [...relevant, ...scored];
+  const seen = new Set<string>();
+  return ordered.filter((fact) => {
+    if (seen.has(fact.id)) return false;
+    seen.add(fact.id);
+    return true;
+  });
+}
+
+function phaseBodies(item: Item, keys: string[]) {
+  return [...item.phases]
+    .sort((a, b) => a.order - b.order)
+    .filter((phase) => keys.includes(phase.key));
+}
+
+function citeRecords(sources: Source[], facts: Fact[], phaseSourceIds: (string | undefined)[] = []) {
+  return uniqueCitations(sources, [...facts.map((fact) => fact.source_id), ...phaseSourceIds]);
+}
+
+function uniqueLines(lines: string[]) {
+  const seen = new Set<string>();
+  return lines.map((line) => line.trim()).filter((line) => {
+    if (!line || seen.has(line)) return false;
+    seen.add(line);
+    return true;
+  });
+}
 
 /**
  * Deterministic, fully grounded responder: no model, no invention.
@@ -68,87 +119,94 @@ const trim = (level: ReadingLevel, bullets: string[]) =>
 export function answerQuestion(
   item: Item,
   sources: Source[],
-  question: string,
-  level: ReadingLevel
+  question: string
 ): AIAnswer {
   const q = question.toLowerCase();
-  const srcIds = (facts: Fact[]) => uniqueCitations(sources, facts.map((f) => f.source_id));
-
-  if (/why|left behind|abandon|forgot|forgotten|silent/i.test(q)) {
-    const abandoned = item.facts.filter((f) => f.phase_key === "abandoned");
-    const phase = item.phases.find((p) => p.key === "abandoned");
-    const bullets = trim(level, abandoned.map((f) => f.claim));
-    return {
-      answer:
-        level === "primary"
-          ? `${item.short_name} stayed behind because nobody could bring it home. ${item.abandonment_reason.split(". ")[0]}.`
-          : item.abandonment_reason,
-      bullets: [
-        ...bullets,
-        ...(phase && level === "high" ? [phase.body] : []),
-      ],
-      citations: srcIds(abandoned),
-    };
-  }
-
-  if (/cool|coolest|best|favourite|favorite|amazing|wow/i.test(q)) {
-    const order = ["discovery", "legacy", "mission", "spec"] as const;
-    const picked: Fact[] = [];
-    for (const kind of order) {
-      for (const fact of item.facts) {
-        if (fact.kind === kind && picked.length < (level === "primary" ? 2 : 3)) picked.push(fact);
-      }
-      if (picked.length >= (level === "primary" ? 2 : 3)) break;
-    }
-    return {
-      answer:
-        level === "primary"
-          ? `Here is the coolest thing about ${item.short_name}:`
-          : `The most surprising records attached to ${item.short_name}:`,
-      bullets: picked.map((f) => f.claim),
-      citations: srcIds(picked),
-    };
-  }
-
   if (/quiz|test me|three questions|3 questions|questions/i.test(q)) {
-    const pool = item.facts.filter((f) => f.kind !== "spec").concat(item.facts.filter((f) => f.kind === "spec"));
+    const pool = item.facts.filter((fact) => fact.kind !== "spec").concat(item.facts.filter((fact) => fact.kind === "spec"));
     const picked = pool.slice(0, 3);
     return {
-      answer: "Three questions straight from the record. Answers are underneath — no peeking.",
+      answer: "Three questions straight from this mission record. Open each answer after you have a guess.",
       bullets: [],
-      citations: srcIds(picked),
-      quiz: picked.map((fact, i) => ({
-        question: `${i + 1}. What is ${item.short_name}'s ${fact.label.toLowerCase()}?`,
+      citations: citeRecords(sources, picked),
+      quiz: picked.map((fact, index) => ({
+        question: `${index + 1}. What does the ${fact.label.toLowerCase()} record say about ${item.short_name}?`,
         answer: `${fact.value} — ${fact.claim}`,
       })),
     };
   }
 
-  const matched = scoreFacts(item, question).slice(0, level === "primary" ? 2 : 3);
-
-  if (matched.length === 0) {
+  const intent = routeIntent(question);
+  if (/cool|coolest|best|favourite|favorite|amazing|wow/i.test(q) && intent === "general") {
+    const kindOrder: Record<Fact["kind"], number> = { discovery: 0, legacy: 1, mission: 2, spec: 3 };
+    const picked = item.facts
+      .slice()
+      .sort((a, b) => kindOrder[a.kind] - kindOrder[b.kind])
+      .slice(0, 3);
     return {
-      answer: `I only know what is stored in ${item.short_name}'s mission record. Try asking why it was left behind, what its coolest fact is, or ask me to quiz you.`,
-      bullets: item.facts.slice(0, 2).map((f) => f.claim),
-      citations: srcIds(item.facts.slice(0, 2)),
+      answer: `Here are some standout records attached to ${item.short_name}:`,
+      bullets: picked.map((f) => f.claim),
+      citations: citeRecords(sources, picked),
     };
   }
 
-  const touchedPhases = Array.from(
-    new Set(matched.map((f) => f.phase_key).filter(Boolean))
-  ) as string[];
-  const phaseText =
-    level === "high" && touchedPhases.length
-      ? item.phases.find((p) => p.key === touchedPhases[0])?.body
-      : undefined;
+  if (intent === "design") {
+    const facts = factsForIntent(item, question, intent).slice(0, 4);
+    const phases = phaseBodies(item, ["built", "launched"]);
+    const specs = Object.entries(item.specs)
+      .filter(([label]) => /mass|power|launch|instrument|type/i.test(label))
+      .map(([label, value]) => `${label}: ${value}.`);
+    const bullets = uniqueLines([...phases.map((phase) => phase.body), ...specs, ...facts.map((fact) => fact.claim)]).slice(0, 5);
+    return {
+      answer: `Act I · The mission and the machine. Here are the design, size, power, and launch details recorded for ${item.short_name}.`,
+      bullets: bullets.length ? bullets : ["The saved record has no matching design or launch detail for this question."],
+      citations: citeRecords(sources, facts, phases.map((phase) => phase.source_id)),
+    };
+  }
+
+  if (intent === "discovery") {
+    const facts = factsForIntent(item, question, intent).slice(0, 4);
+    const phases = phaseBodies(item, ["worked"]);
+    const bullets = uniqueLines([...phases.map((phase) => phase.body), ...facts.map((fact) => fact.claim)]).slice(0, 5);
+    return {
+      answer: `Act II · Into the unknown. These are the operations, discoveries, and records saved for ${item.short_name}.`,
+      bullets: bullets.length ? bullets : ["The saved record has no matching discovery or operations detail for this question."],
+      citations: citeRecords(sources, facts, phases.map((phase) => phase.source_id)),
+    };
+  }
+
+  if (intent === "status") {
+    const facts = factsForIntent(item, question, intent).slice(0, 4);
+    const phases = phaseBodies(item, ["abandoned", "still-there"]);
+    const asksWhySilent = /why|silent|abandon|left behind/i.test(q);
+    const bullets = uniqueLines([
+      ...phases.map((phase) => phase.body),
+      `Last recorded location: ${item.location.label}.`,
+      `Archive status: ${item.status.replace("-", " ")}.`,
+      ...(asksWhySilent && item.abandonment_reason ? [item.abandonment_reason] : []),
+      ...facts.map((fact) => fact.claim),
+    ]).slice(0, 5);
+    return {
+      answer: `Act III · Silent, not gone. Here is the latest location and status stored for ${item.short_name}.`,
+      bullets,
+      citations: citeRecords(sources, facts, phases.map((phase) => phase.source_id)),
+    };
+  }
+
+  const matched = scoreFacts(item, question).slice(0, 3);
+
+  if (matched.length === 0) {
+    return {
+      answer: `I can only use the saved facts and mission phases for ${item.short_name}. Try asking about its design and launch, discoveries, present location, or status.`,
+      bullets: [],
+      citations: [],
+    };
+  }
 
   return {
-    answer:
-      level === "primary"
-        ? `From the ${item.short_name} record:`
-        : `Here is what the saved record says about ${item.short_name}:`,
-    bullets: [...matched.map((f) => f.claim), ...(phaseText ? [phaseText] : [])],
-    citations: srcIds(matched),
+    answer: `Here is what the saved record says about ${item.short_name}:`,
+    bullets: matched.map((fact) => fact.claim),
+    citations: citeRecords(sources, matched),
   };
 }
 

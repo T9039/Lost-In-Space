@@ -113,8 +113,8 @@ export default function ItemWorkspace({
             </ul>
           ) : (
             <p className="muted" style={{ margin: 0 }}>
-              No curated parent/child edges yet. Facts and phases still carry their own
-              provenance.
+              The archive has no linked carrier or follow-on spacecraft for this record. Its facts
+              and mission phases remain sourced individually.
             </p>
           )}
         </div>
@@ -144,7 +144,7 @@ export default function ItemWorkspace({
             {item.zone === "earth-orbit"
               ? gp
                 ? "LIVE ELEMENT SET"
-                : "ORBITAL — LIVE ELEMENTS PENDING"
+                : "LAST CATALOGUED ORBITAL POSITION"
               : "LAST KNOWN POSITION"}
           </span>
         </div>

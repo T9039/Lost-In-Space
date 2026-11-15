@@ -8,7 +8,7 @@ const C_KM_PER_S = 299792.458;
  * Lunar Laser Ranging — align the optics, fire a pulse, and derive distance
  * from round-trip time: d = (c * t) / 2.
  */
-export default function LaserRange() {
+export default function LaserRange({ missionName }: { missionName?: string }) {
   const [alignment, setAlignment] = useState(50);
   const [firing, setFiring] = useState(false);
   const [roundTrip, setRoundTrip] = useState<number | null>(null);
@@ -48,9 +48,9 @@ export default function LaserRange() {
     <div className="widget widget-laser">
       <div className="widget-head">
         <div>
-          <div className="widget-title">Apollo 11 · Lunar Laser Ranging</div>
+          <div className="widget-title">{missionName ? `${missionName} · Lunar Laser Ranging` : "Lunar Laser Ranging Experiment"}</div>
           <div className="widget-sub">
-            Corner-cube array left by Apollo 11 · alignment {offsetDeg.toFixed(2)}°{" "}
+            {missionName ? `${missionName} corner-cube array` : "Lunar retroreflector experiment"} · alignment {offsetDeg.toFixed(2)}°{" "}
             <span className={optimal ? "tag-ok" : "tag-warn"}>{optimal ? "OPTIMAL" : "OFF-AXIS"}</span>
           </div>
         </div>
@@ -70,6 +70,9 @@ export default function LaserRange() {
         </div>
       </div>
 
+      <p className="laser-explanation">
+        Earth observatories fire laser pulses at mirror panels left on the Moon and time the reflection to measure the Moon&apos;s exact distance.
+      </p>
       <div className="widget-row">
         <label className="field-label" htmlFor="laser-align">
           Optics alignment

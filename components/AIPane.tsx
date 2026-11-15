@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { answerQuestion, PROMPT_CHIPS, type AIAnswer, type ReadingLevel } from "@/lib/missionAI";
+import { answerQuestion, PROMPT_CHIPS, type AIAnswer } from "@/lib/missionAI";
 import type { Item, Source } from "@/lib/types";
 
 interface Turn {
@@ -12,7 +12,6 @@ interface Turn {
 }
 
 export default function AIPane({ item, sources }: { item: Item; sources: Source[] }) {
-  const [level, setLevel] = useState<ReadingLevel>("high");
   const [turns, setTurns] = useState<Turn[]>([]);
   const [input, setInput] = useState("");
   const counter = useRef(0);
@@ -23,7 +22,7 @@ export default function AIPane({ item, sources }: { item: Item; sources: Source[
   const ask = (raw: string) => {
     const question = raw.trim();
     if (!question) return;
-    const answer = answerQuestion(item, sources, question, level);
+    const answer = answerQuestion(item, sources, question);
     counter.current += 1;
     setTurns((prev) => [
       ...prev,
@@ -66,20 +65,6 @@ export default function AIPane({ item, sources }: { item: Item; sources: Source[
           </div>
           <h3>{item.short_name} archive assistant</h3>
         </div>
-        <div className="level-toggle" role="group" aria-label="Reading level">
-          <button
-            className={`level-btn ${level === "primary" ? "is-active" : ""}`}
-            onClick={() => setLevel("primary")}
-          >
-            Primary
-          </button>
-          <button
-            className={`level-btn ${level === "high" ? "is-active" : ""}`}
-            onClick={() => setLevel("high")}
-          >
-            High school
-          </button>
-        </div>
       </div>
 
       <p className="ai-scope">
@@ -91,8 +76,8 @@ export default function AIPane({ item, sources }: { item: Item; sources: Source[
       <div className="ai-thread">
         <div className="ai-msg ai-msg-bot">
           <p>
-            I am the mission AI for <strong>{item.short_name}</strong>. I only use the stored NASA
-            record — ask me why it was left behind, or make me quiz you.
+            I am the mission AI for <strong>{item.short_name}</strong>. I use its saved facts and
+            mission phases only. Ask about its design, discoveries, or where the record places it today.
           </p>
         </div>
 
