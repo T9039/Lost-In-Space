@@ -239,6 +239,8 @@ Done in this pass:
 - [x] **Last known position** — non-Earth item pages show the stored coordinates
       and a `LAST KNOWN POSITION` label; Earth-orbit items say live elements are
       pending.
+- [x] **Element age labels** — Earth-orbit items show the GP epoch and a
+      deterministic age label when an element set exists.
 
 Next:
 

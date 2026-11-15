@@ -1,7 +1,9 @@
 import { buildZoneSummaries, toUiId } from "@/lib/contract";
 import { items as fixtureItems, sources as fixtureSources } from "@/lib/fixtures";
-import type { Item, LineageEdge, Source, ZoneSummary } from "@/lib/types";
+import { formatAge } from "@/lib/time";
+import type { GpSummary, Item, LineageEdge, Source, ZoneSummary } from "@/lib/types";
 import { getItemByAnyId, listItems } from "./items";
+import { getLatestGp } from "./gp";
 import { listEdgesForItem } from "./lineage";
 import { listSources } from "./sources";
 import { listZones } from "./zones";
@@ -13,6 +15,7 @@ export interface ItemPageData {
   sources: Source[];
   peers: Item[];
   edges: LineageEdge[];
+  gp: GpSummary | null;
   dataSource: PageDataSource;
 }
 
@@ -26,16 +29,33 @@ export async function getItemPageData(id: string): Promise<ItemPageData | null> 
     const item = await getItemByAnyId(id);
     if (!item) return null;
 
-    const [items, sources, edges] = await Promise.all([
+    const [items, sources, edges, gp] = await Promise.all([
       listItems(),
       listSources(),
       listEdgesForItem(id),
+      item.zone === "earth-orbit" ? getLatestGp(id) : Promise.resolve(null),
     ]);
     return {
       item,
       sources,
       peers: items.filter((peer) => peer.id !== item.id),
       edges,
+      gp: gp
+        ? {
+            satcat_no: gp.satcat_no,
+            epoch: gp.epoch,
+            fetched_at: gp.fetched_at,
+            age: formatAge(gp.epoch),
+            position: gp.position
+              ? {
+                  latitude: gp.position.latitude,
+                  longitude: gp.position.longitude,
+                  altitudeKm: gp.position.altitudeKm,
+                  velocityKmS: gp.position.velocityKmS,
+                }
+              : null,
+          }
+        : null,
       dataSource: "database",
     };
   } catch (error) {
@@ -52,6 +72,7 @@ export async function getItemPageData(id: string): Promise<ItemPageData | null> 
     sources: fixtureSources,
     peers: fixtureItems.filter((peer) => peer.id !== item.id),
     edges: [],
+    gp: null,
     dataSource: "fixtures",
   };
 }

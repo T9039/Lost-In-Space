@@ -194,7 +194,7 @@ reads from PostgreSQL; no generated text is used.
 - [x] Add `satellite.js` and a propagation wrapper with tests
 - [x] `/api/artifacts/[slug]/gp` — latest element set, short cache
 - [ ] Map integration (MapLibre; the current solar map is illustrative)
-- [ ] Element epoch and data-age labels
+- [x] Element epoch and data-age labels
 - [ ] Schedule the CelesTrak job and verify pruning
 - [x] Explicit “last known position” for non-Earth objects
 

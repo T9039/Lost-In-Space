@@ -6,7 +6,7 @@ import { ArrowLeftRight, Expand, RotateCcw, X } from "lucide-react";
 import AIPane from "./AIPane";
 import LabPane from "./LabPane";
 import { useCompare } from "./CompareProvider";
-import type { Item, LineageEdge, Source } from "@/lib/types";
+import type { GpSummary, Item, LineageEdge, Source } from "@/lib/types";
 import { ZONES } from "@/lib/types";
 
 type Mode = "split" | "ai" | "lab";
@@ -16,11 +16,13 @@ export default function ItemWorkspace({
   sources,
   peers,
   edges,
+  gp,
 }: {
   item: Item;
   sources: Source[];
   peers: Item[];
   edges: LineageEdge[];
+  gp: GpSummary | null;
 }) {
   const [mode, setMode] = useState<Mode>("split");
   const [swapped, setSwapped] = useState(false);
@@ -107,9 +109,22 @@ export default function ItemWorkspace({
               {item.location.lat.toFixed(4)}°, {item.location.lon.toFixed(4)}°
             </p>
           ) : null}
+          {item.zone === "earth-orbit" && gp?.position ? (
+            <>
+              <p className="muted" style={{ marginBottom: 4 }}>
+                {gp.position.latitude.toFixed(2)}°, {gp.position.longitude.toFixed(2)}° ·{" "}
+                {gp.position.altitudeKm.toFixed(0)} km · {gp.position.velocityKmS.toFixed(2)} km/s
+              </p>
+              <p className="muted" style={{ marginBottom: 8 }}>
+                Element epoch {gp.epoch.slice(0, 16).replace("T", " ")} UTC · {gp.age}
+              </p>
+            </>
+          ) : null}
           <span className="chip">
             {item.zone === "earth-orbit"
-              ? "ORBITAL — LIVE ELEMENTS PENDING"
+              ? gp
+                ? "LIVE ELEMENT SET"
+                : "ORBITAL — LIVE ELEMENTS PENDING"
               : "LAST KNOWN POSITION"}
           </span>
         </div>

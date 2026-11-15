@@ -107,6 +107,19 @@ export interface LineageResponse {
   edges: LineageEdge[];
 }
 
+export interface GpSummary {
+  satcat_no: number;
+  epoch: string;
+  fetched_at: string;
+  age: string;
+  position: {
+    latitude: number;
+    longitude: number;
+    altitudeKm: number;
+    velocityKmS: number;
+  } | null;
+}
+
 export interface CompareRequest {
   aId: string;
   bId: string;
