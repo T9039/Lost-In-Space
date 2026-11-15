@@ -1,27 +1,27 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import { CompareProvider } from "@/components/CompareProvider";
 import CompareTray from "@/components/CompareTray";
 
-const displayFont = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+const displayFont = localFont({
+  src: "../public/fonts/cormorant-garamond-latin.woff2",
+  weight: "400 700",
   variable: "--font-display",
   display: "swap",
 });
 
-const bodyFont = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+const bodyFont = localFont({
+  src: "../public/fonts/plus-jakarta-sans-latin.woff2",
+  weight: "400 700",
   variable: "--font-body",
   display: "swap",
 });
 
-const telemetryFont = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+const telemetryFont = localFont({
+  src: "../public/fonts/jetbrains-mono-latin.woff2",
+  weight: "400 600",
   variable: "--font-telemetry",
   display: "swap",
 });
