@@ -121,6 +121,7 @@ The prototype exists and builds. It is **fixture-backed**.
 - [x] 3D solar map, model viewer, compare tray, mission workspace
 - [x] `API_CONTRACT.md`
 - [x] `npm ci` and `npm run build` succeed; all routes return 200
+- [x] Development database provisioned on Neon and loaded with the full dataset
 - [ ] `lib/db.ts` — one `pg` pool, server-only
 - [ ] Typed queries over `v_artifact_card`, `v_artifact_timeline`, `v_artifact_edge`
 - [ ] `app/api/zones`, `items`, `items/[id]`, `items/[id]/lineage`, `sources`

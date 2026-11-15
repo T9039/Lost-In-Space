@@ -84,55 +84,172 @@ def _zone(cur: psycopg.Cursor, primary_body: str | None, op_orbit: str | None, w
     return cur.fetchone()["zone"]
 
 
+def _bulk(
+    cur: psycopg.Cursor,
+    sql: str,
+    params: list[tuple[Any, ...]],
+    chunk: int = 5000,
+) -> None:
+    """Send rows in batches instead of one round trip per row.
+
+    ``executemany`` is the difference between seconds and tens of minutes on a
+    managed database with network latency.
+    """
+    for offset in range(0, len(params), chunk):
+        cur.executemany(sql, params[offset : offset + chunk])
+
+
+ORG_UPSERT = """
+    INSERT INTO organization (
+        org_code, ucode, state_code, org_type, org_class,
+        short_name, name, location_text, longitude_deg, latitude_deg,
+        coord_error, short_en_name, en_name, un_name,
+        valid_from_raw, valid_from, valid_from_precision,
+        valid_to_raw, valid_to, valid_to_precision,
+        source_id, source_row
+    ) VALUES (
+        %s, %s, %s, %s, %s,
+        %s, %s, %s, %s, %s,
+        %s, %s, %s, %s,
+        %s, %s, %s,
+        %s, %s, %s,
+        'gcat', %s
+    )
+    ON CONFLICT (org_code) DO UPDATE SET
+        ucode = EXCLUDED.ucode,
+        state_code = EXCLUDED.state_code,
+        org_type = EXCLUDED.org_type,
+        org_class = EXCLUDED.org_class,
+        short_name = EXCLUDED.short_name,
+        name = EXCLUDED.name,
+        location_text = EXCLUDED.location_text,
+        longitude_deg = EXCLUDED.longitude_deg,
+        latitude_deg = EXCLUDED.latitude_deg,
+        coord_error = EXCLUDED.coord_error,
+        short_en_name = EXCLUDED.short_en_name,
+        en_name = EXCLUDED.en_name,
+        un_name = EXCLUDED.un_name,
+        valid_from_raw = EXCLUDED.valid_from_raw,
+        valid_from = EXCLUDED.valid_from,
+        valid_from_precision = EXCLUDED.valid_from_precision,
+        valid_to_raw = EXCLUDED.valid_to_raw,
+        valid_to = EXCLUDED.valid_to,
+        valid_to_precision = EXCLUDED.valid_to_precision,
+        source_row = EXCLUDED.source_row
+"""
+
+ORG_PARENT = """
+    UPDATE organization SET parent_org_code = %s
+     WHERE org_code = %s
+       AND EXISTS (SELECT 1 FROM organization WHERE org_code = %s)
+"""
+
+SITE_UPSERT = """
+    INSERT INTO site (
+        site_code, code, ucode, site_type, state_code,
+        short_name, name, location_text, longitude_deg, latitude_deg,
+        coord_error, short_en_name, en_name, group_name, un_name,
+        valid_from_raw, valid_from, valid_from_precision,
+        valid_to_raw, valid_to, valid_to_precision,
+        source_id, source_row
+    ) VALUES (
+        %s, %s, %s, %s, %s,
+        %s, %s, %s, %s, %s,
+        %s, %s, %s, %s, %s,
+        %s, %s, %s,
+        %s, %s, %s,
+        'gcat', %s
+    )
+    ON CONFLICT (site_code) DO UPDATE SET
+        code = EXCLUDED.code,
+        ucode = EXCLUDED.ucode,
+        site_type = EXCLUDED.site_type,
+        state_code = EXCLUDED.state_code,
+        short_name = EXCLUDED.short_name,
+        name = EXCLUDED.name,
+        location_text = EXCLUDED.location_text,
+        longitude_deg = EXCLUDED.longitude_deg,
+        latitude_deg = EXCLUDED.latitude_deg,
+        coord_error = EXCLUDED.coord_error,
+        short_en_name = EXCLUDED.short_en_name,
+        en_name = EXCLUDED.en_name,
+        group_name = EXCLUDED.group_name,
+        un_name = EXCLUDED.un_name,
+        valid_from_raw = EXCLUDED.valid_from_raw,
+        valid_from = EXCLUDED.valid_from,
+        valid_from_precision = EXCLUDED.valid_from_precision,
+        valid_to_raw = EXCLUDED.valid_to_raw,
+        valid_to = EXCLUDED.valid_to,
+        valid_to_precision = EXCLUDED.valid_to_precision,
+        source_row = EXCLUDED.source_row
+"""
+
+SITE_PARENT = """
+    UPDATE site SET parent_site_code = %s
+     WHERE site_code = %s
+       AND EXISTS (SELECT 1 FROM site WHERE site_code = %s)
+"""
+
+LAUNCH_UPSERT = """
+    INSERT INTO launch (
+        launch_id, launch_jd, date_raw, date_best, date_precision,
+        date_approx, cospar_launch_id, lv_type, lv_variant, fairing,
+        flight_id, flight, mission, flight_code, platform,
+        launch_site_code, launch_pad, ascent_site_code, ascent_pad,
+        perigee_km, apogee_km, apogee_flag, inclination_deg,
+        azimuth_deg, range_km, range_flag, dest_raw, orbit_mass_kg,
+        orbit_payload_kg, agency_org_code, launch_code, fail_code,
+        group_code, category, citation, notes,
+        source_id, source_row
+    ) VALUES (
+        %s, %s, %s, %s, %s,
+        %s, %s, %s, %s, %s,
+        %s, %s, %s, %s, %s,
+        %s, %s, %s, %s,
+        %s, %s, %s, %s,
+        %s, %s, %s, %s, %s,
+        %s, %s, %s, %s,
+        %s, %s, %s, %s,
+        'gcat', %s
+    )
+    ON CONFLICT (launch_id) DO UPDATE SET
+        launch_jd = EXCLUDED.launch_jd,
+        date_raw = EXCLUDED.date_raw,
+        date_best = EXCLUDED.date_best,
+        date_precision = EXCLUDED.date_precision,
+        date_approx = EXCLUDED.date_approx,
+        lv_type = EXCLUDED.lv_type,
+        lv_variant = EXCLUDED.lv_variant,
+        fairing = EXCLUDED.fairing,
+        mission = EXCLUDED.mission,
+        launch_site_code = EXCLUDED.launch_site_code,
+        launch_pad = EXCLUDED.launch_pad,
+        ascent_site_code = EXCLUDED.ascent_site_code,
+        ascent_pad = EXCLUDED.ascent_pad,
+        perigee_km = EXCLUDED.perigee_km,
+        apogee_km = EXCLUDED.apogee_km,
+        inclination_deg = EXCLUDED.inclination_deg,
+        dest_raw = EXCLUDED.dest_raw,
+        orbit_mass_kg = EXCLUDED.orbit_mass_kg,
+        orbit_payload_kg = EXCLUDED.orbit_payload_kg,
+        agency_org_code = EXCLUDED.agency_org_code,
+        citation = EXCLUDED.citation,
+        notes = EXCLUDED.notes,
+        source_row = EXCLUDED.source_row
+"""
+
+
 def promote_organizations(cur: psycopg.Cursor) -> int:
     cur.execute("SELECT * FROM staging.gcat_org ORDER BY code")
     rows = cur.fetchall()
-    written = 0
+    params: list[tuple[Any, ...]] = []
     for row in rows:
         code = parse.clean(row["code"])
         if not code:
             continue
         start = _as_date(row["tstart"])
         stop = _as_date(row["tstop"])
-        cur.execute(
-            """
-            INSERT INTO organization (
-                org_code, ucode, state_code, org_type, org_class,
-                short_name, name, location_text, longitude_deg, latitude_deg,
-                coord_error, short_en_name, en_name, un_name,
-                valid_from_raw, valid_from, valid_from_precision,
-                valid_to_raw, valid_to, valid_to_precision,
-                source_id, source_row
-            ) VALUES (
-                %s, %s, %s, %s, %s,
-                %s, %s, %s, %s, %s,
-                %s, %s, %s, %s,
-                %s, %s, %s,
-                %s, %s, %s,
-                'gcat', %s
-            )
-            ON CONFLICT (org_code) DO UPDATE SET
-                ucode = EXCLUDED.ucode,
-                state_code = EXCLUDED.state_code,
-                org_type = EXCLUDED.org_type,
-                org_class = EXCLUDED.org_class,
-                short_name = EXCLUDED.short_name,
-                name = EXCLUDED.name,
-                location_text = EXCLUDED.location_text,
-                longitude_deg = EXCLUDED.longitude_deg,
-                latitude_deg = EXCLUDED.latitude_deg,
-                coord_error = EXCLUDED.coord_error,
-                short_en_name = EXCLUDED.short_en_name,
-                en_name = EXCLUDED.en_name,
-                un_name = EXCLUDED.un_name,
-                valid_from_raw = EXCLUDED.valid_from_raw,
-                valid_from = EXCLUDED.valid_from,
-                valid_from_precision = EXCLUDED.valid_from_precision,
-                valid_to_raw = EXCLUDED.valid_to_raw,
-                valid_to = EXCLUDED.valid_to,
-                valid_to_precision = EXCLUDED.valid_to_precision,
-                source_row = EXCLUDED.source_row
-            """,
+        params.append(
             (
                 code,
                 parse.clean(row["ucode"]),
@@ -155,76 +272,31 @@ def promote_organizations(cur: psycopg.Cursor) -> int:
                 stop.best,
                 stop.precision,
                 f"tables/orgs.tsv#{row['source_row']}",
-            ),
+            )
         )
-        written += 1
+    _bulk(cur, ORG_UPSERT, params)
 
-    # Resolve parents only after every organization exists.
+    parents: list[tuple[Any, ...]] = []
     for row in rows:
         code = parse.clean(row["code"])
         parent = parse.clean(row["parent"])
         if code and parent:
-            cur.execute(
-                """
-                UPDATE organization SET parent_org_code = %s
-                 WHERE org_code = %s
-                   AND EXISTS (SELECT 1 FROM organization WHERE org_code = %s)
-                """,
-                (parent, code, parent),
-            )
-    return written
+            parents.append((parent, code, parent))
+    _bulk(cur, ORG_PARENT, parents)
+    return len(params)
 
 
 def promote_sites(cur: psycopg.Cursor) -> int:
     cur.execute("SELECT * FROM staging.gcat_site ORDER BY site")
     rows = cur.fetchall()
-    written = 0
+    params: list[tuple[Any, ...]] = []
     for row in rows:
         code = parse.clean(row["site"])
         if not code:
             continue
         start = _as_date(row["tstart"])
         stop = _as_date(row["tstop"])
-        cur.execute(
-            """
-            INSERT INTO site (
-                site_code, code, ucode, site_type, state_code,
-                short_name, name, location_text, longitude_deg, latitude_deg,
-                coord_error, short_en_name, en_name, group_name, un_name,
-                valid_from_raw, valid_from, valid_from_precision,
-                valid_to_raw, valid_to, valid_to_precision,
-                source_id, source_row
-            ) VALUES (
-                %s, %s, %s, %s, %s,
-                %s, %s, %s, %s, %s,
-                %s, %s, %s, %s, %s,
-                %s, %s, %s,
-                %s, %s, %s,
-                'gcat', %s
-            )
-            ON CONFLICT (site_code) DO UPDATE SET
-                code = EXCLUDED.code,
-                ucode = EXCLUDED.ucode,
-                site_type = EXCLUDED.site_type,
-                state_code = EXCLUDED.state_code,
-                short_name = EXCLUDED.short_name,
-                name = EXCLUDED.name,
-                location_text = EXCLUDED.location_text,
-                longitude_deg = EXCLUDED.longitude_deg,
-                latitude_deg = EXCLUDED.latitude_deg,
-                coord_error = EXCLUDED.coord_error,
-                short_en_name = EXCLUDED.short_en_name,
-                en_name = EXCLUDED.en_name,
-                group_name = EXCLUDED.group_name,
-                un_name = EXCLUDED.un_name,
-                valid_from_raw = EXCLUDED.valid_from_raw,
-                valid_from = EXCLUDED.valid_from,
-                valid_from_precision = EXCLUDED.valid_from_precision,
-                valid_to_raw = EXCLUDED.valid_to_raw,
-                valid_to = EXCLUDED.valid_to,
-                valid_to_precision = EXCLUDED.valid_to_precision,
-                source_row = EXCLUDED.source_row
-            """,
+        params.append(
             (
                 code,
                 parse.clean(row["code"]),
@@ -248,23 +320,18 @@ def promote_sites(cur: psycopg.Cursor) -> int:
                 stop.best,
                 stop.precision,
                 f"tables/sites.tsv#{row['source_row']}",
-            ),
+            )
         )
-        written += 1
+    _bulk(cur, SITE_UPSERT, params)
 
+    parents: list[tuple[Any, ...]] = []
     for row in rows:
         code = parse.clean(row["site"])
         parent = parse.clean(row["parent"])
         if code and parent:
-            cur.execute(
-                """
-                UPDATE site SET parent_site_code = %s
-                 WHERE site_code = %s
-                   AND EXISTS (SELECT 1 FROM site WHERE site_code = %s)
-                """,
-                (parent, code, parent),
-            )
-    return written
+            parents.append((parent, code, parent))
+    _bulk(cur, SITE_PARENT, parents)
+    return len(params)
 
 
 def promote_launches(
@@ -279,7 +346,7 @@ def promote_launches(
         """
     )
     rows = cur.fetchall()
-    written = 0
+    params: list[tuple[Any, ...]] = []
     ids: set[str] = set()
     for row in rows:
         tag = parse.clean(row["launch_tag"])
@@ -290,54 +357,7 @@ def promote_launches(
         ascent = parse.clean(row["ascent_site"])
         agency = parse.clean(row["agency"])
         citation = parse.clean(row["cite"]) or parse.clean(row["ltcite"])
-        cur.execute(
-            """
-            INSERT INTO launch (
-                launch_id, launch_jd, date_raw, date_best, date_precision,
-                date_approx, cospar_launch_id, lv_type, lv_variant, fairing,
-                flight_id, flight, mission, flight_code, platform,
-                launch_site_code, launch_pad, ascent_site_code, ascent_pad,
-                perigee_km, apogee_km, apogee_flag, inclination_deg,
-                azimuth_deg, range_km, range_flag, dest_raw, orbit_mass_kg,
-                orbit_payload_kg, agency_org_code, launch_code, fail_code,
-                group_code, category, citation, notes,
-                source_id, source_row
-            ) VALUES (
-                %s, %s, %s, %s, %s,
-                %s, %s, %s, %s, %s,
-                %s, %s, %s, %s, %s,
-                %s, %s, %s, %s,
-                %s, %s, %s, %s,
-                %s, %s, %s, %s, %s,
-                %s, %s, %s, %s,
-                %s, %s, %s, %s,
-                'gcat', %s
-            )
-            ON CONFLICT (launch_id) DO UPDATE SET
-                launch_jd = EXCLUDED.launch_jd,
-                date_raw = EXCLUDED.date_raw,
-                date_best = EXCLUDED.date_best,
-                date_precision = EXCLUDED.date_precision,
-                date_approx = EXCLUDED.date_approx,
-                lv_type = EXCLUDED.lv_type,
-                lv_variant = EXCLUDED.lv_variant,
-                fairing = EXCLUDED.fairing,
-                mission = EXCLUDED.mission,
-                launch_site_code = EXCLUDED.launch_site_code,
-                launch_pad = EXCLUDED.launch_pad,
-                ascent_site_code = EXCLUDED.ascent_site_code,
-                ascent_pad = EXCLUDED.ascent_pad,
-                perigee_km = EXCLUDED.perigee_km,
-                apogee_km = EXCLUDED.apogee_km,
-                inclination_deg = EXCLUDED.inclination_deg,
-                dest_raw = EXCLUDED.dest_raw,
-                orbit_mass_kg = EXCLUDED.orbit_mass_kg,
-                orbit_payload_kg = EXCLUDED.orbit_payload_kg,
-                agency_org_code = EXCLUDED.agency_org_code,
-                citation = EXCLUDED.citation,
-                notes = EXCLUDED.notes,
-                source_row = EXCLUDED.source_row
-            """,
+        params.append(
             (
                 tag,
                 parse.parse_float(row["launch_jd"]),
@@ -376,11 +396,11 @@ def promote_launches(
                 citation,
                 parse.clean(row["notes"]),
                 f"{row['source_file']}#{row['source_row']}",
-            ),
+            )
         )
         ids.add(tag)
-        written += 1
-    return written, ids
+    _bulk(cur, LAUNCH_UPSERT, params)
+    return len(params), ids
 
 
 def _location_for(

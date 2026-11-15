@@ -33,6 +33,7 @@ fixture data.
 | Curation | 12 artifacts: 3 Moon, 4 Mars, 3 Earth orbit, 2 deep space |
 | Facts | 24 sourced facts, 12 credited media rows |
 | Frontend | Next.js 15, 6 routes, 3D map, workspace, compare, sources — fixture-backed |
+| Database | Neon project `royal-sea-92317290` (PostgreSQL 18.7), schema and data loaded |
 | Docs | 79-page Typst PDF, ADRs, ROADMAP |
 | CI | Draft workflow at `docs/ci-workflow.yml`; needs a token with `workflow` scope to enable |
 
@@ -154,9 +155,32 @@ dump needs to move.
 **Decision:** managed PostgreSQL for development, Render PostgreSQL for
 production. The local database is not exposed over Tailscale.
 
-### Development: Neon (or another managed Postgres)
+### Development: Neon (already provisioned)
 
-1. Create a project at <https://neon.tech> (free tier is enough).
+The project is linked to Neon project `royal-sea-92317290` in organization
+`org-billowing-queen-70187418`, branch `production`. The schema and the full
+GCAT dataset are already loaded (12 artifacts, 29 phases, 24 facts, 12 media,
+76,029 launch records).
+
+`.env.local` holds the connection strings and is gitignored. It is
+machine-specific: copy it to another machine, or run `neon init` there. Never
+commit it.
+
+On a second machine, either copy the file:
+
+```bash
+scp .env.local thuto@HOST:~/Projects/lost-in-space/.env.local
+```
+
+or authenticate the Neon CLI there and run:
+
+```bash
+neon init -y --agent opencode \
+  --org-id org-billowing-queen-70187418 \
+  --project-id royal-sea-92317290
+```
+
+To create a separate project instead:
 2. Copy the connection string from the dashboard. It looks like:
 
    ```text

@@ -47,3 +47,4 @@ pgdata/
 .vscode/
 *.swp
 *.log
+.neon
