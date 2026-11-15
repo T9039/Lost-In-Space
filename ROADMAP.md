@@ -191,7 +191,7 @@ reads from PostgreSQL; no generated text is used.
 
 ## Phase 5 — Live tracking
 
-- [ ] Add `satellite.js` and a propagation wrapper with tests
+- [x] Add `satellite.js` and a propagation wrapper with tests
 - [ ] `/api/artifacts/[slug]/gp` — latest element set, short cache
 - [ ] Map integration (MapLibre; the current solar map is illustrative)
 - [ ] Element epoch and data-age labels

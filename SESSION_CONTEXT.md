@@ -230,6 +230,9 @@ Done in this pass:
       the old static map only when a row is absent.
 - [x] **Image proxy** — `/api/image` allowlists NASA image hosts, forwards a
       descriptive user agent and sets a long cache; local `/img` paths bypass it.
+- [x] **SGP4 wrapper** — `lib/orbit.ts` propagates a CelesTrak OMM record to
+      geodetic coordinates with `satellite.js`; deterministic tests use a real
+      ISS element set.
 
 Next:
 
