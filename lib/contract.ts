@@ -182,6 +182,20 @@ const TYPE_BY_SLUG: Record<string, ItemType> = {
   "vanguard-1": "orbiter",
   "pioneer-10": "probe",
   "voyager-1": "probe",
+  "apollo-12-lunar-module-intrepid": "lander",
+  "apollo-15-lunar-module-falcon": "lander",
+  "apollo-17-lunar-module-challenger": "lander",
+  "apollo-17-lunar-roving-vehicle": "rover",
+  "voyager-2": "probe",
+  "pioneer-11": "probe",
+  "new-horizons": "probe",
+  juno: "orbiter",
+  spirit: "rover",
+  phoenix: "lander",
+  curiosity: "rover",
+  mir: "orbiter",
+  envisat: "orbiter",
+  "landsat-5": "orbiter",
 };
 
 export function deriveType(row: Pick<CardRow, "slug" | "primary_zone" | "sat_type_raw">): ItemType {

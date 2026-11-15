@@ -51,7 +51,12 @@ test("zones and sources come from the database", { skip: !hasDatabase }, async (
   const { listSources, sourcesForIds } = await import("./sources");
   const zones = await listZones();
   assert.equal(zones.length, 4);
-  assert.equal(zones.reduce((sum, zone) => sum + zone.item_count, 0), 12);
+  const counts = Object.fromEntries(zones.map((zone) => [zone.id, zone.item_count]));
+  assert.ok(zones.reduce((sum, zone) => sum + zone.item_count, 0) >= 20);
+  assert.equal(counts.moon, 7);
+  assert.equal(counts.mars, 7);
+  assert.equal(counts["earth-orbit"], 6);
+  assert.equal(counts["deep-space"], 6);
 
   const sources = await listSources();
   assert.ok(sources.length >= 8);

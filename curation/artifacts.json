@@ -631,6 +631,774 @@
         }
       ],
       "relations": []
+    },
+    {
+      "slug": "apollo-12-lunar-module-intrepid",
+      "canonical_name": "Apollo 12 Lunar Module Intrepid",
+      "short_name": "Intrepid",
+      "primary_zone": "moon",
+      "is_curated": true,
+      "jcats": [
+        "S04246",
+        "D00293",
+        "D01055"
+      ],
+      "mission": {
+        "mission_name": "Apollo 12",
+        "program": "Apollo",
+        "agency_org_code": "NASA",
+        "summary_text": "The second crewed lunar module, which landed in Oceanus Procellarum and visited Surveyor 3.",
+        "abandonment_reason": "The descent stage remains in Oceanus Procellarum; the ascent stage was deliberately crashed into the Moon after docking.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Intrepid landed in Oceanus Procellarum on 19 November 1969, the second crewed lunar landing.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/apollo-12/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "The crew walked to Surveyor 3 and returned parts of the lander to Earth for study.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/apollo-12/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "abandonment",
+          "fact_text": "After docking, the ascent stage was deliberately crashed into the Moon; the descent stage remains at the site.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/apollo-12/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/AS12-46-6780/AS12-46-6780~medium.jpg",
+          "title": "Apollo 12 astronaut Alan Bean beside the TV camera near Surveyor Crater",
+          "credit": "NASA",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ]
+    },
+    {
+      "slug": "apollo-15-lunar-module-falcon",
+      "canonical_name": "Apollo 15 Lunar Module Falcon",
+      "short_name": "Falcon",
+      "primary_zone": "moon",
+      "is_curated": true,
+      "jcats": [
+        "S05366",
+        "D00385",
+        "D01063"
+      ],
+      "mission": {
+        "mission_name": "Apollo 15",
+        "program": "Apollo",
+        "agency_org_code": "NASA",
+        "summary_text": "The lunar module that landed at Hadley-Apennine and carried the first Lunar Roving Vehicle.",
+        "abandonment_reason": "The descent stage remains at Hadley-Apennine; the ascent stage was deliberately crashed into the Moon.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Falcon landed in the Hadley-Apennine region on 30 July 1971.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/apollo-15/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "It carried the first Lunar Roving Vehicle, which the crew drove 27.8 km.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/apollo-15/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "abandonment",
+          "fact_text": "The descent stage remains at Hadley-Apennine; the ascent stage was crashed into the Moon.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/apollo-15/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/S71-41511/S71-41511~medium.jpg",
+          "title": "Apollo 15 Lunar Module Falcon before ascent stage liftoff",
+          "credit": "NASA",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ],
+      "relations": [
+        {
+          "to": "apollo-15-rover",
+          "kind": "deployed_from",
+          "note": "Falcon carried and deployed the first Lunar Roving Vehicle."
+        }
+      ]
+    },
+    {
+      "slug": "apollo-17-lunar-module-challenger",
+      "canonical_name": "Apollo 17 Lunar Module Challenger",
+      "short_name": "Challenger",
+      "primary_zone": "moon",
+      "is_curated": true,
+      "jcats": [
+        "S06307",
+        "D00464"
+      ],
+      "mission": {
+        "mission_name": "Apollo 17",
+        "program": "Apollo",
+        "agency_org_code": "NASA",
+        "summary_text": "The last lunar module to land humans on the Moon, in the Taurus-Littrow valley.",
+        "abandonment_reason": "The descent stage remains at Taurus-Littrow; the ascent stage was deliberately crashed into the Moon.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Challenger landed in the Taurus-Littrow valley on 11 December 1972.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/apollo-17/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "It was the last lunar module to land humans on the Moon.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/apollo-17/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "abandonment",
+          "fact_text": "The descent stage remains at Taurus-Littrow; the ascent stage was crashed into the Moon.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/apollo-17/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/S72-55421/S72-55421~medium.jpg",
+          "title": "Apollo 17 Lunar Module Challenger lifts off from Taurus-Littrow",
+          "credit": "NASA",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ],
+      "relations": [
+        {
+          "to": "apollo-17-lunar-roving-vehicle",
+          "kind": "deployed_from",
+          "note": "Challenger carried and deployed LRV-3."
+        }
+      ]
+    },
+    {
+      "slug": "apollo-17-lunar-roving-vehicle",
+      "canonical_name": "Apollo 17 Lunar Roving Vehicle",
+      "short_name": "LRV-3",
+      "primary_zone": "moon",
+      "is_curated": true,
+      "jcats": [
+        "D00470"
+      ],
+      "mission": {
+        "mission_name": "Apollo 17",
+        "program": "Apollo",
+        "agency_org_code": "NASA",
+        "summary_text": "The last Lunar Roving Vehicle, left parked in the Taurus-Littrow valley.",
+        "abandonment_reason": "LRV-3 remains parked at Taurus-Littrow, left behind when the crew returned to Earth.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "LRV-3 was driven 35.9 km across the Taurus-Littrow valley in December 1972.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/apollo-17/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "Apollo 17 was the last crewed lunar landing, leaving LRV-3 as the last rover on the Moon.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/apollo-17/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "abandonment",
+          "fact_text": "LRV-3 remains parked at Taurus-Littrow, left behind when the crew returned to Earth.",
+          "source_id": "nasa",
+          "source_url": "https://www.nasa.gov/mission/apollo-17/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/as17-137-20979/as17-137-20979~medium.jpg",
+          "title": "Close-up of the Apollo 17 lunar roving vehicle at Taurus-Littrow",
+          "credit": "NASA",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ]
+    },
+    {
+      "slug": "voyager-2",
+      "canonical_name": "Voyager 2",
+      "short_name": "Voyager 2",
+      "primary_zone": "deep_space",
+      "is_curated": true,
+      "jcats": [
+        "S10271",
+        "D00574"
+      ],
+      "mission": {
+        "mission_name": "Voyager 2",
+        "program": "Voyager",
+        "agency_org_code": "NASA",
+        "summary_text": "The only spacecraft to visit Uranus and Neptune, now in interstellar space.",
+        "abandonment_reason": null,
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Voyager 2 launched on 20 August 1977.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/voyager/voyager-2/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "discovery",
+          "fact_text": "It is the only spacecraft to fly past Uranus and Neptune.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/voyager/voyager-2/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "It crossed the heliopause in November 2018 and is now in interstellar space.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/voyager/voyager-2/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/PIA22915/PIA22915~small.jpg",
+          "title": "Voyager 2 spacecraft instruments",
+          "credit": "NASA/JPL-Caltech",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ]
+    },
+    {
+      "slug": "pioneer-11",
+      "canonical_name": "Pioneer 11",
+      "short_name": "Pioneer 11",
+      "primary_zone": "deep_space",
+      "is_curated": true,
+      "jcats": [
+        "S06421",
+        "D00489"
+      ],
+      "mission": {
+        "mission_name": "Pioneer 11",
+        "program": "Pioneer",
+        "agency_org_code": "NASA",
+        "summary_text": "The first spacecraft to fly past Saturn, now coasting out of the Solar System.",
+        "abandonment_reason": "Contact was lost in September 1995; the spacecraft is coasting out of the Solar System.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Pioneer 11 launched on 6 April 1973.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/pioneer-11/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "discovery",
+          "fact_text": "It was the first spacecraft to fly past Saturn, in September 1979.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/pioneer-11/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "NASA lost contact with Pioneer 11 in September 1995.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/pioneer-11/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://nssdc.gsfc.nasa.gov/thumbnail/spacecraft/pioneer10-11.gif",
+          "title": "Pioneer 10 and 11 spacecraft",
+          "credit": "NASA/NSSDCA",
+          "license_name": "NASA public domain",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nssdca"
+        }
+      ]
+    },
+    {
+      "slug": "new-horizons",
+      "canonical_name": "New Horizons",
+      "short_name": "New Horizons",
+      "primary_zone": "deep_space",
+      "is_curated": true,
+      "jcats": [
+        "S28928",
+        "D00843"
+      ],
+      "mission": {
+        "mission_name": "New Horizons",
+        "program": "New Frontiers",
+        "agency_org_code": "NASA",
+        "summary_text": "The Pluto flyby spacecraft, now exploring the Kuiper Belt.",
+        "abandonment_reason": null,
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "New Horizons launched on 19 January 2006.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/new-horizons/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "discovery",
+          "fact_text": "It flew past Pluto on 14 July 2015 and Arrokoth on 1 January 2019.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/new-horizons/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "It is still operating in the Kuiper Belt.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/new-horizons/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/PIA09234/PIA09234~small.jpg",
+          "title": "New Horizons sees Pluto",
+          "credit": "NASA/Johns Hopkins APL/SwRI",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ]
+    },
+    {
+      "slug": "juno",
+      "canonical_name": "Juno",
+      "short_name": "Juno",
+      "primary_zone": "deep_space",
+      "is_curated": true,
+      "jcats": [
+        "S37773",
+        "D00906"
+      ],
+      "mission": {
+        "mission_name": "Juno",
+        "program": "New Frontiers",
+        "agency_org_code": "NASA",
+        "summary_text": "A Jupiter orbiter measuring the planet’s interior, magnetic field and atmosphere.",
+        "abandonment_reason": null,
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Juno launched on 5 August 2011 and entered Jupiter orbit on 4 July 2016.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/juno/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "discovery",
+          "fact_text": "It has measured Jupiter’s gravity, magnetic field and deep atmosphere.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/juno/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "Juno remains in orbit around Jupiter.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/juno/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/PIA20702/PIA20702~small.jpg",
+          "title": "Juno approaches Jupiter (artist concept)",
+          "credit": "NASA/JPL-Caltech",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ]
+    },
+    {
+      "slug": "spirit",
+      "canonical_name": "Spirit Rover",
+      "short_name": "Spirit",
+      "primary_zone": "mars",
+      "is_curated": true,
+      "jcats": [
+        "S27827",
+        "D00807"
+      ],
+      "mission": {
+        "mission_name": "Mars Exploration Rover A (Spirit)",
+        "program": "Mars Exploration Program",
+        "agency_org_code": "NASA",
+        "summary_text": "The first Mars Exploration Rover, which landed in Gusev Crater and far outlived its design life.",
+        "abandonment_reason": "Spirit became embedded in soft soil in 2009 and stopped communicating in 2010; it remains in Gusev Crater.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Spirit landed in Gusev Crater on 4 January 2004.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/mer-spirit/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "It became embedded in soft soil in 2009 and last communicated with Earth in March 2010.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/mer-spirit/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "discovery",
+          "fact_text": "It found evidence of ancient volcanic activity and hot springs at Gusev Crater.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/mer-spirit/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/PIA05040/PIA05040~small.jpg",
+          "title": "Spirit stretches out its lander petals on Mars",
+          "credit": "NASA/JPL-Caltech",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ]
+    },
+    {
+      "slug": "phoenix",
+      "canonical_name": "Phoenix Mars Lander",
+      "short_name": "Phoenix",
+      "primary_zone": "mars",
+      "is_curated": true,
+      "jcats": [
+        "S32003",
+        "D00853"
+      ],
+      "mission": {
+        "mission_name": "Phoenix",
+        "program": "Mars Scout",
+        "agency_org_code": "NASA",
+        "summary_text": "A polar lander that confirmed water ice beneath the Martian surface.",
+        "abandonment_reason": "The lander went silent in November 2008 when winter darkness ended its solar power; it remains in the Arctic plain.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Phoenix landed in the Martian Arctic on 25 May 2008.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/mars-phoenix/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "discovery",
+          "fact_text": "It confirmed water ice beneath the landing site and observed falling snow.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/mars-phoenix/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "Its last contact was in November 2008, when winter darkness ended solar power.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/mars-phoenix/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/KSC-07PD-1085/KSC-07PD-1085~medium.jpg",
+          "title": "Phoenix Mars Lander during spacecraft processing",
+          "credit": "NASA",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ]
+    },
+    {
+      "slug": "curiosity",
+      "canonical_name": "Curiosity Rover",
+      "short_name": "Curiosity",
+      "primary_zone": "mars",
+      "is_curated": true,
+      "jcats": [
+        "S37936",
+        "D00911"
+      ],
+      "mission": {
+        "mission_name": "Mars Science Laboratory (Curiosity)",
+        "program": "Mars Exploration Program",
+        "agency_org_code": "NASA",
+        "summary_text": "A car-sized rover exploring Gale Crater and the habitability of ancient Mars.",
+        "abandonment_reason": null,
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Curiosity landed in Gale Crater on 6 August 2012.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/msl-curiosity/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "discovery",
+          "fact_text": "It found ancient lake and stream deposits that could have supported microbial life.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/msl-curiosity/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "Curiosity is still operating on Mars.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/msl-curiosity/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/PIA17068/PIA17068~small.jpg",
+          "title": "Curiosity drilling into its second rock target",
+          "credit": "NASA/JPL-Caltech",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ]
+    },
+    {
+      "slug": "mir",
+      "canonical_name": "Mir Space Station",
+      "short_name": "Mir",
+      "primary_zone": "earth_orbit",
+      "is_curated": true,
+      "jcats": [
+        "S16609"
+      ],
+      "mission": {
+        "mission_name": "Mir",
+        "program": "Mir",
+        "agency_org_code": "NASA",
+        "summary_text": "The modular Soviet and Russian space station that hosted long-duration crews for 15 years.",
+        "abandonment_reason": "Mir was deorbited on 23 March 2001 and re-entered over the South Pacific; no intact station remains.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Mir was launched on 20 February 1986 and assembled in low Earth orbit.",
+          "source_id": "nssdca",
+          "source_url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1986-017A",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "It hosted record-long crew stays and international visitors, including NASA astronauts.",
+          "source_id": "nssdca",
+          "source_url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1986-017A",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "abandonment",
+          "fact_text": "Mir was deliberately deorbited on 23 March 2001 and broke up over the South Pacific.",
+          "source_id": "nssdca",
+          "source_url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1986-017A",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/sts063-708-095/sts063-708-095~medium.jpg",
+          "title": "Mir space station seen from Space Shuttle Discovery during STS-63",
+          "credit": "NASA",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ]
+    },
+    {
+      "slug": "envisat",
+      "canonical_name": "Envisat",
+      "short_name": "Envisat",
+      "primary_zone": "earth_orbit",
+      "is_curated": true,
+      "jcats": [
+        "S27386"
+      ],
+      "mission": {
+        "mission_name": "Envisat",
+        "program": "Earth observation",
+        "agency_org_code": "NASA",
+        "summary_text": "A large European Earth-observation satellite that stopped communicating in 2012.",
+        "abandonment_reason": "Contact was lost in April 2012; Envisat remains in orbit as one of the largest derelict satellites.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Envisat launched on 1 March 2002 into a Sun-synchronous orbit.",
+          "source_id": "nssdca",
+          "source_url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2002-009A",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "discovery",
+          "fact_text": "Its radar and optical instruments monitored land, oceans, ice and the atmosphere for a decade.",
+          "source_id": "nssdca",
+          "source_url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2002-009A",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "abandonment",
+          "fact_text": "Contact was lost in April 2012; the satellite remains in orbit.",
+          "source_id": "nssdca",
+          "source_url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2002-009A",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/PIA13976/PIA13976~medium.jpg",
+          "title": "Envisat radar data used to map the 2011 Tohoku earthquake",
+          "credit": "NASA/JPL-Caltech/ESA",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ]
+    },
+    {
+      "slug": "landsat-5",
+      "canonical_name": "Landsat 5",
+      "short_name": "Landsat 5",
+      "primary_zone": "earth_orbit",
+      "is_curated": true,
+      "jcats": [
+        "S14780"
+      ],
+      "mission": {
+        "mission_name": "Landsat 5",
+        "program": "Landsat",
+        "agency_org_code": "NASA",
+        "summary_text": "An Earth-observation satellite that operated for 29 years, far beyond its design life.",
+        "abandonment_reason": "Landsat 5 was decommissioned in June 2013 and remains in orbit without propellant.",
+        "curated_by": "T9039"
+      },
+      "facts": [
+        {
+          "fact_type": "history",
+          "fact_text": "Landsat 5 launched on 1 March 1984.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/landsat/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "history",
+          "fact_text": "It operated for 29 years, far beyond its three-year design life.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/landsat/",
+          "confidence": "confirmed"
+        },
+        {
+          "fact_type": "abandonment",
+          "fact_text": "Landsat 5 was decommissioned in June 2013 and remains in orbit.",
+          "source_id": "nasa",
+          "source_url": "https://science.nasa.gov/mission/landsat/",
+          "confidence": "confirmed"
+        }
+      ],
+      "media": [
+        {
+          "url": "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001700/GSFC_20171208_Archive_e001700~small.jpg",
+          "title": "Landsat view of Las Vegas, Nevada",
+          "credit": "NASA/USGS",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "image",
+          "is_primary": true,
+          "source_id": "nasa_images"
+        }
+      ]
     }
   ]
 }

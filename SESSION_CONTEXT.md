@@ -31,8 +31,8 @@ offline fallback.
 |---|---|
 | Schema | `db/schema.sql`, 18 tables, `derive_zone()`, `phase_key`, read views |
 | ETL | Download, staging, VagueDate parser, transform, curate, validate, CelesTrak refresh |
-| Curation | 12 artifacts: 3 Moon, 4 Mars, 3 Earth orbit, 2 deep space |
-| Facts | 24 sourced facts, 12 credited media rows |
+| Curation | 26 artifacts: 7 Moon, 7 Mars, 6 Earth orbit, 6 deep space |
+| Facts | 66 sourced facts, 32 credited media rows, 2 relations |
 | Database | Neon project `royal-sea-92317290` (PostgreSQL 18.7), schema and data loaded |
 | Database driver | `lib/db.ts` — `neon-http` (HTTPS/443) or `pg` (TCP), auto-selected from the host |
 | Queries | `lib/queries/` — `archive`, `items`, `lineage`, `sources`, `zones`, `compare`, `health`, `page-data` |
@@ -265,8 +265,11 @@ Done in this pass:
       prompt version, provider configuration and a guard that `story` never
       enters facts or comparisons.
 - [x] **Attribution audit** — every page is covered by the footer credits, and
-      the sources page is checked by the system test. All 12 unique fact source
-      URLs resolve (three only via the laptop network).
+      the sources page is checked by the system test. All 24 unique fact source
+      URLs resolve (some only via the laptop network).
+- [x] **Curation expansion** — 26 curated artifacts (7 Moon, 7 Mars, 6 Earth
+      orbit, 6 deep space), 66 facts and 32 media rows. Two `deployed_from`
+      relations resolve the Apollo 15 and Apollo 17 rover/LM pairs.
 - [x] **Playwright + accessibility** — twelve end-to-end checks cover every
       route; axe reports no serious or critical violations on the five main
       pages.

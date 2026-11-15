@@ -6,6 +6,7 @@ import {
   buildZoneSummaries,
   derivePhaseKey,
   deriveStatus,
+  deriveType,
   toDbSlug,
   toDbZone,
   toSourceKind,
@@ -177,4 +178,27 @@ test("source kinds and zone summaries are deterministic", () => {
   assert.equal(zones.length, 4);
   assert.equal(zones.find((zone) => zone.id === "mars")?.item_count, 1);
   assert.equal(zones.find((zone) => zone.id === "moon")?.item_count, 0);
+});
+
+
+test("new curated slugs have explicit hardware types", () => {
+  assert.equal(
+    deriveType({ slug: "apollo-17-lunar-roving-vehicle", primary_zone: "moon", sat_type_raw: "PX-LD--" }),
+    "rover"
+  );
+  assert.equal(
+    deriveType({ slug: "apollo-15-lunar-module-falcon", primary_zone: "moon", sat_type_raw: "PP HD" }),
+    "lander"
+  );
+  assert.equal(deriveType({ slug: "juno", primary_zone: "deep_space", sat_type_raw: "P" }), "orbiter");
+  assert.equal(deriveType({ slug: "voyager-2", primary_zone: "deep_space", sat_type_raw: "P" }), "probe");
+});
+
+
+test("Mars and Earth-orbit additions have explicit types", () => {
+  assert.equal(deriveType({ slug: "spirit", primary_zone: "mars", sat_type_raw: "P" }), "rover");
+  assert.equal(deriveType({ slug: "phoenix", primary_zone: "mars", sat_type_raw: "P" }), "lander");
+  assert.equal(deriveType({ slug: "curiosity", primary_zone: "mars", sat_type_raw: "P" }), "rover");
+  assert.equal(deriveType({ slug: "mir", primary_zone: "earth_orbit", sat_type_raw: "P" }), "orbiter");
+  assert.equal(deriveType({ slug: "envisat", primary_zone: "earth_orbit", sat_type_raw: "P" }), "orbiter");
 });

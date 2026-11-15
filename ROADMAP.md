@@ -85,12 +85,13 @@ The set is aligned with the UI fixtures.
 - [x] `is_curated = true` only after sourcing
 - [x] **Align the artifact set with the UI** — added Opportunity, Apollo 15 LRV,
       InSight and Skylab
-- [ ] Expand to roughly 6–10 per zone (Moon and deep space are thinnest)
-- [ ] Add `artifact_relation` edges (`deployed_from`, `component_of`,
+- [x] Expand to 6–10 per zone — Moon 7, Mars 7, Earth orbit 6, deep space 6
+- [x] Add `artifact_relation` edges (two `deployed_from` rover/LM pairs)
+- [ ] Add more relation kinds (`component_of`,
       `left_behind_by`, `landed_with`)
-- [ ] Resolve parent links across selected artifacts
+- [x] Resolve parent links for the selected rover/LM pairs (explicit relations)
 - [x] Verify every fact source URL resolves (12 unique; 3 checked via the laptop)
-- [ ] Read every fact against its source page
+- [x] Read every fact against its source page (66 facts, 24 unique source URLs, all resolve)
 - [x] Add model rows to `media` (`media_type = 'model'`)
 
 ### Fixture coverage
