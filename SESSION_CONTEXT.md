@@ -236,6 +236,9 @@ Done in this pass:
 - [x] **GP endpoint** — `/api/artifacts/:slug/gp` returns the latest stored OMM
       and a propagated position with a five-minute cache; `gp_element` is still
       empty until `celestrak_refresh` can write from this network.
+- [x] **Last known position** — non-Earth item pages show the stored coordinates
+      and a `LAST KNOWN POSITION` label; Earth-orbit items say live elements are
+      pending.
 
 Next:
 

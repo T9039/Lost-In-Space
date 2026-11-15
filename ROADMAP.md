@@ -196,7 +196,7 @@ reads from PostgreSQL; no generated text is used.
 - [ ] Map integration (MapLibre; the current solar map is illustrative)
 - [ ] Element epoch and data-age labels
 - [ ] Schedule the CelesTrak job and verify pruning
-- [ ] Explicit “last known position” for non-Earth objects
+- [x] Explicit “last known position” for non-Earth objects
 
 ---
 

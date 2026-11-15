@@ -28,6 +28,8 @@ test("ItemWorkspace renders abandonment, lineage and provenance", () => {
   assert.match(html, /Lineage/);
   assert.match(html, /No curated parent\/child edges yet/);
   assert.match(html, /Provenance/);
+  assert.match(html, /LAST KNOWN POSITION/);
+  assert.match(html, /-2\.2500°/);
   assert.match(html, /PIA20285|Potts/);
 });
 

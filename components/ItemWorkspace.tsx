@@ -98,6 +98,23 @@ export default function ItemWorkspace({
         </div>
       </section>
 
+      <section className="card" aria-label="Position">
+        <div className="card-pad">
+          <div className="eyebrow" style={{ marginBottom: 6 }}>Position</div>
+          <p style={{ marginBottom: 4 }}><strong>{item.location.label}</strong></p>
+          {item.location.lat !== undefined && item.location.lon !== undefined ? (
+            <p className="muted" style={{ marginBottom: 8 }}>
+              {item.location.lat.toFixed(4)}°, {item.location.lon.toFixed(4)}°
+            </p>
+          ) : null}
+          <span className="chip">
+            {item.zone === "earth-orbit"
+              ? "ORBITAL — LIVE ELEMENTS PENDING"
+              : "LAST KNOWN POSITION"}
+          </span>
+        </div>
+      </section>
+
       <section className="card" aria-label="Provenance">
         <div className="card-pad">
           <div className="eyebrow" style={{ marginBottom: 6 }}>Provenance</div>
