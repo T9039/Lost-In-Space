@@ -147,15 +147,31 @@ Return one complete `Item` object (not an array and not `{ "item": ... }`). A no
 Return the linked bucket records for the requested item. The relationship is expressed by `item_id`, `Fact.phase_key`, and `Fact.source_id` rather than duplicated graph nodes:
 
 ```ts
+interface LineageEdge {
+  kind: string;          // "relation" | "phase_parent"
+  label: string;         // relation kind or phase status code
+  via: string | null;    // JCAT id for phase_parent edges
+  parent_id: string;
+  parent_slug: string;
+  parent_name: string;
+  child_id: string;
+  child_slug: string;
+  child_name: string;
+}
+
 interface LineageResponse {
   item_id: string;
   phases: Phase[];
   facts: Fact[];
   sources: Source[];
+  edges: LineageEdge[];
 }
 ```
 
-The `sources` array should contain the sources referenced by the returned facts (and may include sources referenced by item images). Return `404` when the item does not exist.
+`edges` is the direct one-hop projection of `v_artifact_edge`, joined to both
+artifacts' slugs and names. The `sources` array contains the sources referenced
+by the returned facts (and may include sources referenced by item images).
+Return `404` when the item does not exist.
 
 ### `GET /api/sources`
 
@@ -194,7 +210,7 @@ interface CompareResult {
 }
 ```
 
-The response should be grounded in the two item records. `depth` selects presentation detail; it must not change the underlying facts or calculated diff. No narrative field is defined by the current `CompareResult` TypeScript interface. The existing frontend does not yet consume this POST response.
+The spec join and the `same`/count arithmetic run in PostgreSQL. The response is grounded in the two item records; `depth` selects presentation detail and must not change the underlying facts or calculated diff. No narrative field is defined by the current `CompareResult` TypeScript interface. The existing frontend does not yet consume this POST response.
 
 ## Adapter wiring notes
 

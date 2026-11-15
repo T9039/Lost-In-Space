@@ -125,10 +125,10 @@ The app builds and every route reads PostgreSQL. Fixtures remain the offline fal
 - [x] App reaches Neon over HTTPS; native `psql`/ETL still need a 5432-capable network
 - [x] `lib/db.ts` — one lazy server handle (`neon-http` over HTTPS or a `pg` pool)
 - [x] Typed queries over `v_artifact_card` and `v_artifact_timeline`
-- [ ] Typed lineage query over `v_artifact_edge`
+- [x] Typed lineage query over `v_artifact_edge`
 - [x] `app/api/zones`, `items`, `items/[id]`, `items/[id]/lineage`, `sources`
 - [x] `POST /api/compare` from database records and the deterministic diff
-- [ ] Move comparison arithmetic into SQL, so `lib/compare.ts` is not the runtime path
+- [x] Move the spec join and same/different arithmetic into SQL (`lib/compare.ts` still formats highlights)
 - [x] `GET /api/health`
 - [x] Archive, home, item, sources and compare read PostgreSQL with fixture fallback
 - [x] Sources page driven by the `source` table
@@ -243,9 +243,8 @@ reads from PostgreSQL; no generated text is used.
 
 ## Next three actions
 
-1. **Lineage and SQL diff** — use `v_artifact_edge` for `/api/items/:id/lineage`
-   and move comparison arithmetic into SQL.
-2. **Expand curation** — Moon and deep space to 6–10 artifacts, then add
-   `artifact_relation` edges.
+1. **Curated lineage** — add `artifact_relation` edges so `v_artifact_edge`
+   returns meaningful parent/child links, not only raw phase parents.
+2. **Expand curation** — Moon and deep space to 6–10 artifacts.
 3. **Harden the DB-backed flow** — contract tests, frontend tests and the
    accessibility pass; then enable CI.

@@ -206,14 +206,17 @@ Done in this pass:
       fallback.
 - [x] **Home, sources and compare off fixtures** — all three read PostgreSQL
       with fixture fallback; sources and compare show a `DATABASE` chip.
+- [x] **Lineage edges** — `/api/items/:id/lineage` includes direct edges from
+      `v_artifact_edge`, joined to parent/child slugs and names.
+- [x] **SQL comparison diff** — the spec FULL JOIN and same/different counts run
+      in PostgreSQL; highlights remain deterministic presentation.
 
 Next:
 
-1. Use `v_artifact_edge` for the lineage graph; `/api/items/:id/lineage`
-   currently returns the fact/phase/source buckets only.
-2. Move comparison arithmetic into SQL so `lib/compare.ts` is not the runtime path.
-3. Expand curation (Moon and deep space), then Phase 4 provenance and search,
+1. Add curated `artifact_relation` edges so lineage is more than raw phase parents.
+2. Expand curation (Moon and deep space), then Phase 4 provenance and search,
    Phase 5 live tracking, Phase 6 narration.
+3. Harden the flow: contract tests, frontend tests and accessibility.
 
 ## Database hosting decision
 

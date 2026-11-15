@@ -85,11 +85,24 @@ export interface ZoneSummary {
   hero_image?: string;
 }
 
+export interface LineageEdge {
+  kind: string;
+  label: string;
+  via: string | null;
+  parent_id: string;
+  parent_slug: string;
+  parent_name: string;
+  child_id: string;
+  child_slug: string;
+  child_name: string;
+}
+
 export interface LineageResponse {
   item_id: string;
   phases: Phase[];
   facts: Fact[];
   sources: Source[];
+  edges: LineageEdge[];
 }
 
 export interface CompareRequest {
