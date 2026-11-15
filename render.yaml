@@ -1,8 +1,9 @@
 # ---------------------------------------------------------------------------
-# Render blueprint — target deployment
+# Render blueprint — production topology
 #
-# The Next.js app is not scaffolded yet, so this file describes the intended
-# topology and will start working once `package.json` and `etl/` exist.
+# The Next.js app, PostgreSQL schema and ETL are in the repository. Deploy this
+# blueprint from the Render dashboard, then apply the schema once with
+# `psql "$DATABASE_URL" -f db/schema.sql`, the seed and the staging schema.
 #
 # Notes:
 #   - Free web services spin down when idle. Use a paid instance for a demo.
@@ -17,7 +18,7 @@ databases:
   - name: lost-in-space-db
     databaseName: lost_in_space
     user: lost_in_space
-    plan: free
+    plan: free # free PostgreSQL expires after 30 days; use a paid plan for production
     postgresMajorVersion: "16"
     region: frankfurt
 
@@ -25,7 +26,7 @@ services:
   - type: web
     name: lost-in-space
     runtime: node
-    plan: free
+    plan: free # use starter/basic for a demo that must stay warm
     region: frankfurt
     branch: main
     autoDeploy: true
