@@ -1,3 +1,4 @@
+@import "maplibre-gl/dist/maplibre-gl.css";
 @import "tailwindcss";
 
 :root {
@@ -3915,3 +3916,15 @@ body:has(.workspace-shell) {
   .sector-map-layout { grid-template-columns: 1fr; }
   .sector-map-console { border-radius: 0 0 12px 12px; }
 }
+
+/* ---------- live orbital map ---------- */
+.orbit-map { border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; background: var(--panel); }
+.orbit-map-heading { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 12px; }
+.orbit-map-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(260px, 1fr); gap: 16px; }
+.orbit-map-canvas { min-height: 440px; border-radius: 10px; overflow: hidden; background: #0b1120; }
+.orbit-map-list { display: flex; flex-direction: column; gap: 8px; }
+.orbit-row { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 10px; border: 1px solid var(--line); border-radius: 10px; }
+.orbit-readout { display: flex; flex-direction: column; align-items: flex-end; font-size: 12px; color: var(--muted); }
+.orbit-readout b { color: var(--text); font-family: var(--font-telemetry), ui-monospace, monospace; }
+.orbit-marker { padding: 4px 8px; border-radius: 999px; background: rgba(4, 6, 13, 0.9); border: 1px solid var(--accent); color: var(--text); font-size: 11px; white-space: nowrap; }
+@media (max-width: 820px) { .orbit-map-grid { grid-template-columns: 1fr; } }

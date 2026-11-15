@@ -274,6 +274,9 @@ Done in this pass:
       snapshot, checks the `story` cache by `fact_hash`, and calls Ollama or an
       OpenAI-compatible provider. Cached stories render with an AI-generated
       label and a link to the facts used.
+- [x] **MapLibre** — the Earth-orbit archive view shows a live MapLibre map with
+      GP positions and a reliable record list; the solar map covers the other
+      halls.
 
 Next:
 

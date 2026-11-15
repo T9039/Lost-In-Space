@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import ItemCard from "./ItemCard";
 import SectorMap from "./SectorMap";
+import OrbitMap from "./OrbitMap";
 import { ZONES, type Item, type Zone, type ZoneSummary } from "@/lib/types";
 import { hallTelemetry, zoneMeta } from "@/lib/zones";
 import { GalleryVerticalEnd, MapPinned } from "lucide-react";
@@ -201,7 +202,10 @@ export default function ArchiveView({
         </div>
       ) : (
         <>
-          {activeZone && view === "map" ? <SectorMap key={activeZone} zone={activeZone} items={filtered} zones={zones} onZoneSelect={selectZone} /> : null}
+          {activeZone && view === "map" && activeZone === "earth-orbit" ? (
+            <OrbitMap items={filtered} />
+          ) : null}
+          {activeZone && view === "map" && activeZone !== "earth-orbit" ? <SectorMap key={activeZone} zone={activeZone} items={filtered} zones={zones} onZoneSelect={selectZone} /> : null}
           {activeZone && view === "data" ? (
             <section className="explorer-data-panel">
               <div className="explorer-data-heading"><div className="eyebrow">EXPLORER DATA</div><h2>{meta?.label} / Mission Telemetry</h2></div>
