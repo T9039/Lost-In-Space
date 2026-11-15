@@ -68,7 +68,7 @@ design is documented. Met.
 - [x] Idempotency: identical counts after a second run
 - [x] Exercise `celestrak_refresh` against the live CelesTrak API
 - [x] Decide whether to load `lcat`/`rcat` — deferred; documented in `docs/DATABASE.md`
-- [ ] Add a CI job that applies the schema and runs the ETL on fixtures
+- [x] Add a CI job that applies the schema, seed and staging, then runs ETL tests
 
 **Known warnings:** `UNK` launch tag; 30 lander rows without an object row.
 
@@ -214,7 +214,7 @@ reads from PostgreSQL; no generated text is used.
 
 ## Phase 7 — Hardening and release
 
-- [ ] Enable the drafted CI workflow (`.github/workflows` needs workflow scope)
+- [x] Enable the CI workflow at `.github/workflows/ci.yml`
 - [x] Add `typecheck` and `test` scripts (node:test + tsx)
 - [x] Add a lint script (`oxlint`)
 - [ ] Add Playwright end-to-end coverage
@@ -228,8 +228,8 @@ reads from PostgreSQL; no generated text is used.
 
 ## Cross-cutting gaps
 
-- [x] CI workflow drafted at `docs/ci-workflow.yml`
-- [ ] Enable CI after `gh auth refresh -s workflow` (workflow files need that scope)
+- [x] CI workflow enabled at `.github/workflows/ci.yml`
+- [x] CI enabled after `gh auth refresh -s workflow`
 - [x] `db/migrations/README.md` documents the forward-only convention
 - [x] `app/api/` routes and `lib/db.ts` are in place
 - [x] `npm run typecheck` added

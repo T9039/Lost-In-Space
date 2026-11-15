@@ -39,7 +39,7 @@ offline fallback.
 | API | `app/api/` — `zones`, `items`, `items/[id]`, `items/[id]/lineage`, `sources`, `POST /api/compare`, `GET /api/health` |
 | Frontend | All routes DB-backed with fixture fallback (archive, home, item, sources, compare) |
 | Docs | 79-page Typst PDF, ADRs, ROADMAP |
-| CI | Draft workflow at `docs/ci-workflow.yml`; needs a token with `workflow` scope to enable |
+| CI | GitHub Actions at `.github/workflows/ci.yml` — app, ETL, database and docs jobs |
 
 Verified on the previous machine:
 
@@ -356,7 +356,7 @@ Run `npm run db:check` to see the current state.
 
 - No `app/api/` routes and no `lib/db.ts` yet.
 - Unit, component, database and system tests exist; `typecheck` and `lint` are clean.
-- CI is drafted but not enabled; the gh token lacks the `workflow` scope.
+- CI is enabled and runs on pushes and pull requests.
 - `db/migrations/` only documents the convention; no migrations yet.
 - 30 lander rows have no object row; loading `lcat`/`rcat` is deferred (see `docs/DATABASE.md`).
 - One `UNK` launch tag.

@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  push:
+    branches: [main, Frontend]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  app:
+    name: App build and tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  etl:
+    name: ETL tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: |
+            etl/requirements.txt
+            etl/requirements-dev.txt
+      - run: pip install -r etl/requirements.txt -r etl/requirements-dev.txt
+      - run: python -m pytest etl/tests -q
+
+  database:
+    name: Schema and staging
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: lost_in_space
+          POSTGRES_PASSWORD: lost_in_space
+          POSTGRES_DB: lost_in_space
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U lost_in_space -d lost_in_space"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgres://lost_in_space:lost_in_space@localhost:5432/lost_in_space
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply schema, seed and staging
+        run: |
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f db/schema.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f db/seed/001_lookups.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f db/staging.sql
+      - name: Verify views and seed
+        run: |
+          test "$(psql "$DATABASE_URL" -tAc "select count(*) from source")" -ge 8
+          test "$(psql "$DATABASE_URL" -tAc "select count(*) from information_schema.views where table_schema='public' and table_name like 'v_artifact_%'")" -eq 3
+          test "$(psql "$DATABASE_URL" -tAc "select count(*) from information_schema.tables where table_schema='staging'")" -ge 4
+
+  docs:
+    name: Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: typst-community/setup-typst@v3
+        with:
+          typst-version: "0.15.1"
+      - name: Compile the technical document
+        working-directory: docs/technical
+        run: typst compile main.typ
