@@ -3,26 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LOST IN SPACE — Cyberpunk NASA Space Machine Museum</title>
+  <title>LOST IN SPACE — NASA Historic Space Machines Museum</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@600;700&family=Share+Tech+Mono&family=Black+Ops+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #030712;
-      --card-bg: rgba(13, 20, 38, 0.88);
-      --card-border: rgba(0, 240, 255, 0.3);
+      --card-bg: #0b1329;
+      --card-border: rgba(0, 240, 255, 0.35);
       --neon-cyan: #00f0ff;
       --neon-magenta: #ff007f;
       --signal-green: #00ff88;
       --achievement-gold: #ffd700;
       --mars-orange: #ff5722;
       --ended-grey: #64748b;
-      --dull-border: rgba(100, 116, 139, 0.4);
+      --dull-border: rgba(100, 116, 139, 0.45);
       --font-display: 'Orbitron', monospace;
       --font-body: 'Rajdhani', sans-serif;
       --font-telemetry: 'Share Tech Mono', monospace;
-      --font-arcade: 'Black Ops One', cursive;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,80 +36,55 @@
       position: relative;
     }
 
-    /* CRT Scanlines */
-    body::before {
-      content: "";
+    /* Fast, lightweight grid without heavy filters */
+    .cyber-bg {
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 9999;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.32) 50%),
-                  linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-      background-size: 100% 3px, 6px 100%;
-      opacity: 0.8;
-    }
-
-    /* Cyberpunk animated grid */
-    .cyber-grid {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image: 
-        radial-gradient(circle at 50% 20%, rgba(0, 240, 255, 0.12) 0%, transparent 60%),
-        radial-gradient(circle at 80% 80%, rgba(255, 0, 127, 0.08) 0%, transparent 50%),
-        linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+      background: 
+        linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
       z-index: 0;
     }
 
     .container {
-      max-width: 1320px;
+      max-width: 1300px;
       margin: 0 auto;
-      padding: 20px 20px 100px;
+      padding: 16px 20px 100px;
       position: relative;
       z-index: 1;
     }
 
-    /* Top HUD Header */
+    /* Header */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 24px;
-      background: rgba(10, 15, 30, 0.92);
+      padding: 12px 20px;
+      background: #070d1e;
       border: 1px solid var(--card-border);
       border-radius: 8px;
-      box-shadow: 0 0 30px rgba(0, 240, 255, 0.15), inset 0 0 15px rgba(0, 240, 255, 0.05);
-      margin-bottom: 24px;
-      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 20px rgba(0, 240, 255, 0.12);
+      margin-bottom: 20px;
     }
 
     .brand-wrap {
       display: flex;
       align-items: center;
-      gap: 14px;
-    }
-    .brand-logo {
-      width: 36px;
-      height: 36px;
-      border: 2px solid var(--neon-cyan);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 15px var(--neon-cyan);
-      background: rgba(0, 240, 255, 0.1);
+      gap: 12px;
     }
     .brand-title {
       font-family: var(--font-display);
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 900;
-      letter-spacing: 3px;
+      letter-spacing: 2.5px;
       color: #fff;
-      text-shadow: 0 0 10px var(--neon-cyan);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .brand-title .badge {
+    .brand-badge {
       font-size: 10px;
       background: rgba(255, 0, 127, 0.2);
       color: var(--neon-magenta);
@@ -118,39 +92,29 @@
       padding: 2px 8px;
       border-radius: 4px;
       font-family: var(--font-telemetry);
-      margin-left: 8px;
-      letter-spacing: 1px;
     }
 
     .hud-controls {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
-
-    /* Cadet XP & Audio Indicator */
     .cadet-badge {
       background: rgba(255, 215, 0, 0.1);
       border: 1px solid var(--achievement-gold);
-      padding: 6px 14px;
+      padding: 5px 12px;
       border-radius: 6px;
       font-family: var(--font-telemetry);
       font-size: 12px;
       color: var(--achievement-gold);
       display: flex;
-      align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
-    .cadet-badge .xp {
-      font-weight: 900;
-      color: #fff;
-    }
-
-    .audio-toggle-btn {
+    .audio-btn {
       background: rgba(0, 240, 255, 0.15);
       border: 1px solid var(--neon-cyan);
       color: var(--neon-cyan);
-      padding: 6px 14px;
+      padding: 5px 12px;
       border-radius: 6px;
       font-family: var(--font-telemetry);
       font-size: 12px;
@@ -158,790 +122,582 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s;
+      transition: background 0.15s;
     }
-    .audio-toggle-btn:hover {
-      box-shadow: 0 0 15px var(--neon-cyan);
+    .audio-btn:hover {
       background: rgba(0, 240, 255, 0.3);
     }
 
-    /* Main Museum Navigation Tabs */
+    /* Museum Tabs */
     .museum-tabs {
       display: flex;
-      gap: 12px;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
     }
     .tab-btn {
       flex: 1;
-      min-width: 170px;
-      background: rgba(15, 23, 42, 0.7);
+      background: #091228;
       border: 1px solid rgba(255, 255, 255, 0.15);
       color: #94a3b8;
-      padding: 12px 18px;
+      padding: 10px 16px;
       border-radius: 8px;
       font-family: var(--font-display);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: 1.5px;
+      letter-spacing: 1px;
       cursor: pointer;
+      transition: all 0.15s;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      transition: all 0.25s ease;
+      gap: 8px;
     }
     .tab-btn:hover {
-      color: #fff;
       border-color: var(--neon-cyan);
-      box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+      color: #fff;
     }
     .tab-btn.active {
-      color: #030712;
       background: var(--neon-cyan);
+      color: #030712;
       border-color: var(--neon-cyan);
-      box-shadow: 0 0 25px var(--neon-cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
     }
 
-    /* Museum Hero */
+    /* Hero Banner */
     .museum-hero {
       text-align: center;
-      margin-bottom: 32px;
-      padding: 28px 20px;
-      border: 1px solid rgba(0, 240, 255, 0.25);
-      background: radial-gradient(circle at 50% 30%, rgba(15, 23, 42, 0.95) 0%, rgba(3, 7, 18, 0.98) 100%);
-      border-radius: 12px;
-      box-shadow: 0 0 35px rgba(0, 240, 255, 0.08);
-      position: relative;
-      overflow: hidden;
+      padding: 22px 16px;
+      background: #091226;
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-radius: 10px;
+      margin-bottom: 24px;
     }
     .museum-hero h1 {
       font-family: var(--font-display);
-      font-size: 34px;
-      font-weight: 900;
-      letter-spacing: 4px;
+      font-size: 28px;
+      letter-spacing: 3px;
       color: #fff;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-      text-shadow: 0 0 25px rgba(0, 240, 255, 0.7);
+      margin-bottom: 6px;
+      text-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
     }
     .museum-hero p {
       font-family: var(--font-telemetry);
       color: #94a3b8;
-      font-size: 15px;
-      max-width: 800px;
-      margin: 0 auto 16px;
-      letter-spacing: 0.5px;
+      font-size: 14px;
+      max-width: 760px;
+      margin: 0 auto 12px;
     }
-    .museum-hero-strip {
+    .hero-stat-strip {
       display: inline-flex;
       flex-wrap: wrap;
-      gap: 18px;
-      background: rgba(0, 0, 0, 0.65);
-      border: 1px solid rgba(0, 240, 255, 0.3);
-      padding: 8px 24px;
+      gap: 16px;
+      background: #040816;
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      padding: 6px 18px;
       border-radius: 6px;
       font-family: var(--font-telemetry);
-      font-size: 13px;
+      font-size: 12px;
     }
 
-    /* Views container */
-    .museum-view {
-      display: none;
-    }
-    .museum-view.active {
-      display: block;
-    }
+    /* Views */
+    .museum-view { display: none; }
+    .museum-view.active { display: block; }
 
-    /* ========================================================
-       1. TIMELINE & MACHINE EXHIBITS
-       ======================================================== */
-    .timeline-filter-bar {
+    /* Timeline Filter */
+    .filter-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
-      background: rgba(15, 23, 42, 0.7);
-      padding: 12px 20px;
+      background: #070e22;
+      padding: 10px 16px;
       border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
       flex-wrap: wrap;
-      gap: 12px;
-    }
-    .filter-chips {
-      display: flex;
       gap: 10px;
-      flex-wrap: wrap;
     }
+    .filter-chips { display: flex; gap: 8px; flex-wrap: wrap; }
     .filter-btn {
-      padding: 6px 14px;
-      border-radius: 4px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(0, 0, 0, 0.4);
+      background: #030712;
+      border: 1px solid rgba(255, 255, 255, 0.15);
       color: #94a3b8;
+      padding: 5px 12px;
+      border-radius: 4px;
       font-family: var(--font-telemetry);
-      font-size: 12px;
+      font-size: 11px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s;
     }
     .filter-btn:hover, .filter-btn.active {
-      background: rgba(0, 240, 255, 0.18);
-      color: var(--neon-cyan);
+      background: rgba(0, 240, 255, 0.2);
       border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
     }
 
-    .timeline-line {
+    /* Timeline Layout */
+    .timeline-track {
       position: relative;
-      margin-left: 24px;
-      padding-left: 36px;
+      margin-left: 20px;
+      padding-left: 32px;
     }
-    .timeline-line::before {
+    .timeline-track::before {
       content: "";
       position: absolute;
       left: 7px;
       top: 0;
       bottom: 0;
       width: 3px;
-      background: linear-gradient(180deg, var(--signal-green) 0%, var(--neon-cyan) 35%, var(--achievement-gold) 65%, var(--ended-grey) 100%);
-      box-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
+      background: linear-gradient(180deg, var(--signal-green) 0%, var(--neon-cyan) 40%, var(--ended-grey) 100%);
     }
 
-    .machine-card-wrap {
+    .machine-entry {
       position: relative;
-      margin-bottom: 36px;
-      transition: transform 0.2s;
+      margin-bottom: 28px;
     }
-    .machine-card-wrap:hover {
-      transform: translateX(4px);
-    }
-
-    /* Node pin */
-    .timeline-pin {
+    .machine-pin {
       position: absolute;
-      left: -44px;
-      top: 28px;
-      width: 18px;
-      height: 18px;
+      left: -39px;
+      top: 26px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
       background: #030712;
       border: 3px solid var(--ended-grey);
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
       z-index: 2;
     }
-    .machine-card-wrap.active-craft .timeline-pin {
+    .machine-entry.active-craft .machine-pin {
       border-color: var(--signal-green);
       background: var(--signal-green);
-      box-shadow: 0 0 20px var(--signal-green);
-      animation: pulse-pin 1.4s infinite;
-    }
-    @keyframes pulse-pin {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.35); }
+      box-shadow: 0 0 15px var(--signal-green);
     }
 
     /* Machine Card */
     .machine-card {
       background: var(--card-bg);
       border: 1px solid var(--dull-border);
-      border-radius: 12px;
-      padding: 24px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+      padding: 20px;
       display: grid;
-      grid-template-columns: 310px 1fr;
-      gap: 24px;
+      grid-template-columns: 320px 1fr;
+      gap: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
       position: relative;
-      overflow: hidden;
     }
-
-    .machine-card-wrap.active-craft .machine-card {
+    .machine-entry.active-craft .machine-card {
       border-color: rgba(0, 255, 136, 0.5);
-      box-shadow: 0 0 30px rgba(0, 255, 136, 0.18), inset 0 0 25px rgba(0, 255, 136, 0.05);
+      box-shadow: 0 0 25px rgba(0, 255, 136, 0.15);
     }
-    .machine-card-wrap.active-craft .machine-card::after {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--signal-green), var(--neon-cyan), transparent);
-    }
-
-    .machine-card-wrap.inactive-craft .machine-card {
-      border-color: rgba(100, 116, 139, 0.35);
-      background: rgba(15, 23, 42, 0.65);
-    }
-    .machine-card-wrap.inactive-craft .machine-card::after {
+    .machine-entry.active-craft .machine-card::after {
       content: "";
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 3px;
+      background: linear-gradient(90deg, var(--signal-green), transparent);
+    }
+    .machine-entry.inactive-craft .machine-card::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
       background: var(--ended-grey);
     }
 
-    /* Media Box */
-    .machine-media-box {
-      background: #000;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+    /* Actual Archival Photo Frame */
+    .photo-frame {
+      background: #020617;
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 8px;
-      overflow: hidden;
+      height: 260px;
       position: relative;
-      height: 280px;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
     }
-    .machine-media-box img {
+    .photo-frame img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.4s ease;
+      background: #0a0f1d;
     }
-    .machine-media-box:hover img {
-      transform: scale(1.06);
-    }
-    .machine-media-box .schematic-canvas {
-      display: none;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, #0b1d30 0%, #030712 100%);
-      padding: 16px;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .media-mode-bar {
+    .photo-credit-tag {
       position: absolute;
-      bottom: 8px;
-      left: 8px;
-      right: 8px;
+      bottom: 6px;
+      left: 6px;
+      right: 6px;
+      background: rgba(3, 7, 18, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 4px;
+      padding: 3px 8px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      background: rgba(3, 7, 18, 0.88);
-      padding: 4px 10px;
-      border-radius: 4px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
       font-family: var(--font-telemetry);
       font-size: 11px;
-    }
-    .media-mode-bar button {
-      background: transparent;
-      border: none;
       color: #94a3b8;
-      cursor: pointer;
-      padding: 2px 6px;
-      border-radius: 3px;
     }
-    .media-mode-bar button.active {
+    .photo-credit-tag strong {
       color: var(--neon-cyan);
-      background: rgba(0, 240, 255, 0.2);
     }
 
     /* Card Details */
-    .machine-info {
+    .machine-content {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
-    .machine-top-header {
+    .machine-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
-    .machine-name {
-      font-family: var(--font-display);
-      font-size: 24px;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: 1px;
-    }
-    .craft-type-tag {
-      font-family: var(--font-telemetry);
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 4px;
-      text-transform: uppercase;
-      font-weight: bold;
-    }
-    .craft-type-tag.rover {
-      background: rgba(255, 87, 34, 0.2);
-      border: 1px solid var(--mars-orange);
-      color: var(--mars-orange);
-    }
-    .craft-type-tag.probe {
-      background: rgba(0, 240, 255, 0.15);
-      border: 1px solid var(--neon-cyan);
-      color: var(--neon-cyan);
-    }
-    .craft-type-tag.lander {
-      background: rgba(255, 215, 0, 0.15);
-      border: 1px solid var(--achievement-gold);
-      color: var(--achievement-gold);
-    }
-    .craft-type-tag.station {
-      background: rgba(147, 51, 234, 0.2);
-      border: 1px solid #a855f7;
-      color: #c084fc;
-    }
-
-    .service-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--font-telemetry);
-      font-size: 14px;
-      margin-bottom: 12px;
-      color: var(--neon-cyan);
-    }
-    .machine-card-wrap.inactive-craft .service-badge {
-      color: #94a3b8;
-    }
-
-    .machine-story {
-      color: #cbd5e1;
-      font-size: 15px;
-      line-height: 1.6;
-      margin-bottom: 16px;
-    }
-
-    .specs-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      background: rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 10px 14px;
-      border-radius: 6px;
-      margin-bottom: 18px;
-    }
-    .spec-block .spec-label {
-      font-family: var(--font-telemetry);
-      font-size: 11px;
-      color: #64748b;
-      text-transform: uppercase;
-    }
-    .spec-block .spec-val {
-      font-family: var(--font-telemetry);
-      font-size: 13px;
-      color: #fff;
-      font-weight: 700;
-    }
-
-    /* Gold Achievement Pullup */
-    .achievement-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: linear-gradient(90deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.03));
-      border: 1px solid rgba(255, 215, 0, 0.4);
-      padding: 10px 18px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.25s;
-    }
-    .achievement-bar:hover {
-      background: rgba(255, 215, 0, 0.22);
-      border-color: var(--achievement-gold);
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-      transform: translateY(-1px);
-    }
-    .achievement-bar .left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .achievement-bar .star-icon {
-      color: var(--achievement-gold);
-      font-size: 20px;
-      animation: rotate-star 8s linear infinite;
-    }
-    @keyframes rotate-star {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .achievement-bar .text {
-      font-family: var(--font-display);
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--achievement-gold);
-      letter-spacing: 1px;
-    }
-    .achievement-bar .pull-btn {
-      background: rgba(255, 215, 0, 0.2);
-      border: 1px solid var(--achievement-gold);
-      color: #fff;
-      padding: 4px 12px;
-      border-radius: 4px;
-      font-family: var(--font-telemetry);
-      font-size: 12px;
-    }
-
-    /* ========================================================
-       2. INTERACTIVE ROVER SIMULATOR (FUN FOR KIDS)
-       ======================================================== */
-    .rover-sim-panel {
-      background: #080f24;
-      border: 2px solid var(--mars-orange);
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 0 35px rgba(255, 87, 34, 0.25);
-      margin-bottom: 30px;
-    }
-    .sim-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      border-bottom: 1px solid rgba(255, 87, 34, 0.3);
-      padding-bottom: 12px;
-    }
-    .sim-header h2 {
+    .machine-title {
       font-family: var(--font-display);
       font-size: 22px;
-      color: var(--mars-orange);
-      letter-spacing: 2px;
+      font-weight: 700;
+      color: #fff;
     }
-
-    .sim-canvas-wrap {
-      position: relative;
-      background: #1a0804;
-      border: 2px solid rgba(255, 87, 34, 0.5);
-      border-radius: 8px;
-      overflow: hidden;
-      height: 380px;
-      box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8);
-    }
-    #mars-canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .sim-dashboard {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 16px;
-      margin-top: 18px;
-    }
-    .dashboard-gauge {
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 87, 34, 0.3);
-      padding: 12px;
-      border-radius: 6px;
-      text-align: center;
-    }
-    .dashboard-gauge .label {
+    .type-pill {
       font-family: var(--font-telemetry);
-      font-size: 12px;
-      color: #94a3b8;
-    }
-    .dashboard-gauge .val {
-      font-family: var(--font-display);
-      font-size: 20px;
-      color: var(--mars-orange);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
       font-weight: bold;
     }
+    .type-pill.rover { background: rgba(255, 87, 34, 0.2); border: 1px solid var(--mars-orange); color: var(--mars-orange); }
+    .type-pill.probe { background: rgba(0, 240, 255, 0.15); border: 1px solid var(--neon-cyan); color: var(--neon-cyan); }
+    .type-pill.lander { background: rgba(255, 215, 0, 0.15); border: 1px solid var(--achievement-gold); color: var(--achievement-gold); }
+    .type-pill.station { background: rgba(168, 85, 247, 0.2); border: 1px solid #a855f7; color: #c084fc; }
 
-    .rover-controls {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 16px;
-    }
-    .ctrl-key {
-      background: rgba(255, 87, 34, 0.2);
-      border: 2px solid var(--mars-orange);
-      color: #fff;
-      font-family: var(--font-display);
-      font-size: 16px;
-      padding: 10px 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.1s;
-    }
-    .ctrl-key:active {
-      background: var(--mars-orange);
-      transform: scale(0.92);
-    }
-
-    /* ========================================================
-       3. S6 TACTICAL RETRIEVAL QUIZ
-       ======================================================== */
-    .quiz-card {
-      background: var(--card-bg);
-      border: 2px solid var(--neon-cyan);
-      border-radius: 12px;
-      padding: 28px;
-      box-shadow: 0 0 35px rgba(0, 240, 255, 0.2);
-    }
-    .quiz-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      border-bottom: 1px solid rgba(0, 240, 255, 0.3);
-      padding-bottom: 12px;
-    }
-    .quiz-title-text {
-      font-family: var(--font-display);
-      font-size: 22px;
-      color: #fff;
-      letter-spacing: 2px;
-    }
-    .quiz-score-strip {
-      display: flex;
-      gap: 20px;
+    .service-row {
       font-family: var(--font-telemetry);
-      font-size: 15px;
-    }
-    .quiz-opt-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 20px;
-    }
-    .quiz-btn {
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(0, 240, 255, 0.3);
-      color: #e2e8f0;
-      padding: 16px 20px;
-      border-radius: 8px;
-      font-family: var(--font-telemetry);
-      font-size: 15px;
-      text-align: left;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .quiz-btn:hover {
-      border-color: var(--neon-cyan);
-      background: rgba(0, 240, 255, 0.15);
-      transform: translateY(-2px);
-    }
-    .quiz-btn.correct {
-      background: rgba(0, 255, 136, 0.3) !important;
-      border-color: var(--signal-green) !important;
-      color: #fff !important;
-      box-shadow: 0 0 20px var(--signal-green);
-    }
-    .quiz-btn.wrong {
-      background: rgba(239, 68, 68, 0.3) !important;
-      border-color: #ef4444 !important;
-      color: #fff !important;
-    }
-    .quiz-feedback-box {
-      margin-top: 20px;
-      padding: 16px;
-      border-radius: 8px;
-      font-family: var(--font-telemetry);
-      font-size: 14px;
-      display: none;
-    }
-
-    /* ========================================================
-       4. TALKING ASTRONAUT LEX WITH REAL AUDIO
-       ======================================================== */
-    .astronaut-dock {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 1000;
-      display: flex;
-      align-items: flex-end;
-      gap: 14px;
-      pointer-events: auto;
-    }
-
-    .comms-bubble {
-      background: rgba(10, 17, 36, 0.96);
-      border: 2px solid var(--neon-cyan);
-      box-shadow: 0 0 35px rgba(0, 240, 255, 0.35);
-      border-radius: 10px;
-      padding: 18px 22px;
-      max-width: 400px;
-      position: relative;
-      backdrop-filter: blur(14px);
-    }
-    .comms-bubble::after {
-      content: "";
-      position: absolute;
-      right: -10px;
-      bottom: 24px;
-      border-width: 8px 0 8px 10px;
-      border-style: solid;
-      border-color: transparent transparent transparent var(--neon-cyan);
-    }
-    .bubble-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      font-size: 13px;
       margin-bottom: 10px;
-      border-bottom: 1px solid rgba(0, 240, 255, 0.25);
-      padding-bottom: 6px;
-    }
-    .astro-callsign {
-      font-family: var(--font-display);
-      font-size: 12px;
-      color: var(--neon-cyan);
-      letter-spacing: 1.5px;
-      font-weight: 700;
-    }
-    .audio-wave-anim {
       display: flex;
-      align-items: center;
-      gap: 3px;
+      gap: 12px;
+      color: #94a3b8;
     }
-    .wave-line {
-      width: 3px;
-      height: 14px;
-      background: var(--neon-cyan);
-      border-radius: 2px;
-      animation: wave-bounce 0.8s infinite alternate ease-in-out;
-    }
-    .wave-line:nth-child(2) { animation-delay: 0.2s; height: 18px; }
-    .wave-line:nth-child(3) { animation-delay: 0.4s; height: 10px; }
-    .wave-line:nth-child(4) { animation-delay: 0.6s; height: 16px; }
-    @keyframes wave-bounce {
-      0% { height: 4px; }
-      100% { height: 22px; }
-    }
+    .machine-entry.active-craft .service-row { color: var(--signal-green); }
 
-    .bubble-content {
-      font-family: var(--font-telemetry);
-      color: #f1f5f9;
-      font-size: 13.5px;
+    .machine-desc {
+      color: #cbd5e1;
+      font-size: 14.5px;
       line-height: 1.5;
       margin-bottom: 14px;
     }
 
-    .bubble-actions {
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      background: #040816;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin-bottom: 14px;
+    }
+    .spec-cell .lbl {
+      font-family: var(--font-telemetry);
+      font-size: 10px;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+    .spec-cell .val {
+      font-family: var(--font-telemetry);
+      font-size: 12px;
+      color: #f1f5f9;
+      font-weight: bold;
+    }
+
+    /* Achievement Bar */
+    .achievement-pull {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 8px;
+      background: rgba(255, 215, 0, 0.08);
+      border: 1px solid rgba(255, 215, 0, 0.35);
+      border-radius: 6px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: background 0.15s;
     }
-    .speak-btn {
-      background: rgba(0, 255, 136, 0.2);
-      border: 1px solid var(--signal-green);
-      color: var(--signal-green);
+    .achievement-pull:hover {
+      background: rgba(255, 215, 0, 0.18);
+      border-color: var(--achievement-gold);
+    }
+    .achievement-pull .title {
+      font-family: var(--font-display);
+      font-size: 12px;
+      color: var(--achievement-gold);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .achievement-pull .btn {
       font-family: var(--font-telemetry);
       font-size: 11px;
-      padding: 5px 12px;
+      color: #fff;
+      background: rgba(255, 215, 0, 0.2);
+      border: 1px solid var(--achievement-gold);
+      padding: 3px 10px;
       border-radius: 4px;
-      cursor: pointer;
+    }
+
+    /* Rover Simulator */
+    .sim-wrap {
+      background: #070d1e;
+      border: 2px solid var(--mars-orange);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 30px rgba(255, 87, 34, 0.2);
+    }
+    .sim-top {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 6px;
-      transition: all 0.2s;
+      margin-bottom: 14px;
     }
-    .speak-btn:hover {
-      background: rgba(0, 255, 136, 0.35);
-      box-shadow: 0 0 12px var(--signal-green);
+    .sim-top h2 {
+      font-family: var(--font-display);
+      font-size: 20px;
+      color: var(--mars-orange);
+      letter-spacing: 1.5px;
     }
-    .next-fact-btn {
+    .canvas-container {
+      background: #140704;
+      border: 1px solid rgba(255, 87, 34, 0.4);
+      border-radius: 6px;
+      overflow: hidden;
+      height: 360px;
+      position: relative;
+    }
+    #sim-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .sim-stats-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .stat-card {
+      background: #030712;
+      border: 1px solid rgba(255, 87, 34, 0.3);
+      padding: 10px;
+      border-radius: 6px;
+      text-align: center;
+    }
+    .stat-card .t { font-family: var(--font-telemetry); font-size: 11px; color: #94a3b8; }
+    .stat-card .n { font-family: var(--font-display); font-size: 18px; color: var(--mars-orange); font-weight: bold; }
+
+    .sim-controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .sim-btn {
+      background: rgba(255, 87, 34, 0.15);
+      border: 1px solid var(--mars-orange);
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 13px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .sim-btn:active {
+      background: var(--mars-orange);
+      transform: scale(0.95);
+    }
+
+    /* Quiz */
+    .quiz-card {
+      background: var(--card-bg);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      padding: 24px;
+    }
+    .quiz-q-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .quiz-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .quiz-option {
+      background: #040816;
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      color: #cbd5e1;
+      padding: 14px 18px;
+      border-radius: 6px;
+      font-family: var(--font-telemetry);
+      font-size: 14px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .quiz-option:hover {
+      border-color: var(--neon-cyan);
+      background: rgba(0, 240, 255, 0.1);
+    }
+    .quiz-option.correct {
+      background: rgba(0, 255, 136, 0.25) !important;
+      border-color: var(--signal-green) !important;
+      color: #fff !important;
+    }
+    .quiz-option.wrong {
+      background: rgba(239, 68, 68, 0.25) !important;
+      border-color: #ef4444 !important;
+      color: #fff !important;
+    }
+    .quiz-expl {
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-family: var(--font-telemetry);
+      font-size: 13px;
+      display: none;
+    }
+
+    /* Astronaut Dock */
+    .astronaut-dock {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+    }
+    .comms-bubble {
+      background: #070e24;
+      border: 2px solid var(--neon-cyan);
+      box-shadow: 0 4px 25px rgba(0, 240, 255, 0.25);
+      border-radius: 8px;
+      padding: 14px 18px;
+      max-width: 380px;
+      position: relative;
+    }
+    .comms-bubble::after {
+      content: "";
+      position: absolute;
+      right: -8px;
+      bottom: 20px;
+      border-width: 6px 0 6px 8px;
+      border-style: solid;
+      border-color: transparent transparent transparent var(--neon-cyan);
+    }
+    .bubble-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+      padding-bottom: 4px;
+    }
+    .bubble-text {
+      font-family: var(--font-telemetry);
+      font-size: 13px;
+      color: #f1f5f9;
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+    .bubble-btns {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .bubble-btn {
       background: rgba(0, 240, 255, 0.15);
       border: 1px solid var(--neon-cyan);
       color: var(--neon-cyan);
       font-family: var(--font-telemetry);
       font-size: 11px;
-      padding: 5px 12px;
+      padding: 4px 10px;
       border-radius: 4px;
       cursor: pointer;
-      transition: all 0.2s;
     }
-    .next-fact-btn:hover {
-      background: rgba(0, 240, 255, 0.3);
-      box-shadow: 0 0 12px var(--neon-cyan);
+    .bubble-btn.speak {
+      background: rgba(0, 255, 136, 0.2);
+      border-color: var(--signal-green);
+      color: var(--signal-green);
     }
 
     .astronaut-pod {
-      width: 76px;
-      height: 76px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(0, 240, 255, 0.25) 0%, rgba(3, 7, 18, 0.95) 75%);
+      background: #08122c;
       border: 2px solid var(--neon-cyan);
-      box-shadow: 0 0 25px rgba(0, 240, 255, 0.45);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      animation: astro-float 3.5s ease-in-out infinite;
-      position: relative;
-    }
-    @keyframes astro-float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-    .astronaut-pod:hover {
-      box-shadow: 0 0 35px var(--neon-cyan), 0 0 50px var(--neon-cyan);
     }
 
     /* Modal */
-    .achievement-modal-overlay {
+    .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.88);
-      backdrop-filter: blur(10px);
       z-index: 10000;
       align-items: center;
       justify-content: center;
       padding: 20px;
     }
-    .achievement-modal-overlay.open {
-      display: flex;
-    }
-    .achievement-modal-box {
-      background: #091228;
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: #081126;
       border: 2px solid var(--achievement-gold);
-      box-shadow: 0 0 50px rgba(255, 215, 0, 0.35);
-      border-radius: 12px;
-      max-width: 680px;
+      box-shadow: 0 0 35px rgba(255, 215, 0, 0.25);
+      border-radius: 10px;
+      max-width: 620px;
       width: 100%;
-      padding: 28px;
+      padding: 24px;
       position: relative;
     }
-    .modal-x-btn {
+    .modal-close {
       position: absolute;
-      top: 16px;
-      right: 16px;
+      top: 14px;
+      right: 14px;
       background: transparent;
-      border: 1px solid rgba(255, 215, 0, 0.4);
+      border: 1px solid var(--achievement-gold);
       color: var(--achievement-gold);
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 14px;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 860px) {
       .machine-card { grid-template-columns: 1fr; }
-      .specs-row { grid-template-columns: repeat(2, 1fr); }
-      .quiz-opt-grid { grid-template-columns: 1fr; }
-      .comms-bubble { max-width: 270px; }
-      .sim-dashboard { grid-template-columns: 1fr; }
+      .specs-grid { grid-template-columns: repeat(2, 1fr); }
+      .quiz-grid { grid-template-columns: 1fr; }
+      .comms-bubble { max-width: 260px; }
     }
   </style>
 </head>
 <body>
-  <div class="cyber-grid"></div>
+  <div class="cyber-bg"></div>
 
   <div class="container">
-    <!-- Top HUD Header -->
+    <!-- Header -->
     <header>
       <div class="brand-wrap">
-        <div class="brand-logo">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-            <path d="M2 12h20"/>
-          </svg>
-        </div>
         <div class="brand-title">
           <span>LOST IN SPACE</span>
-          <span class="badge">NASA RETRO-TECH MUSEUM</span>
+          <span class="brand-badge">NASA MACHINE ARCHIVE</span>
         </div>
       </div>
 
@@ -949,138 +705,126 @@
         <div class="cadet-badge">
           <span>RANK: <strong id="cadet-rank">JUNIOR EXPLORER</strong></span>
           <span>•</span>
-          <span>XP: <strong class="xp" id="cadet-xp">100</strong></span>
+          <span>XP: <strong id="cadet-xp">100</strong></span>
         </div>
-        <button class="audio-toggle-btn" id="audio-btn" onclick="toggleAudioEngine()">
+        <button class="audio-btn" id="audio-toggle" onclick="toggleAudio()">
           <span id="audio-icon">🔊</span>
-          <span id="audio-text">SOUND: ON</span>
+          <span id="audio-label">SOUND: ON</span>
         </button>
       </div>
     </header>
 
-    <!-- Museum Navigation Tabs -->
+    <!-- Museum Tabs -->
     <div class="museum-tabs">
-      <button class="tab-btn active" id="tab-timeline" onclick="switchMuseumView('timeline')">
-        <span>⏱</span> INTERACTIVE TIMELINE (1958–2026)
+      <button class="tab-btn active" id="tab-timeline" onclick="showTab('timeline')">
+        <span>⏱</span> NASA ACTIVE TIMELINE (1958–2026)
       </button>
-      <button class="tab-btn" id="tab-sim" onclick="switchMuseumView('sim')">
+      <button class="tab-btn" id="tab-sim" onclick="showTab('sim')">
         <span>🎮</span> MARS ROVER TEST DRIVE
       </button>
-      <button class="tab-btn" id="tab-quiz" onclick="switchMuseumView('quiz')">
+      <button class="tab-btn" id="tab-quiz" onclick="showTab('quiz')">
         <span>⚡</span> S6 FLIGHT CADET QUIZ
       </button>
     </div>
 
-    <!-- Museum Hero Banner -->
+    <!-- Hero -->
     <section class="museum-hero">
-      <h1>NASA MACHINE ARCHIVE & MUSEUM</h1>
-      <p>Welcome, Cadet! Step inside humanity's exploration vault: From rugged Martian rovers that outlived their lifespans by 14 years, to deep space probes traveling beyond our solar system into interstellar space.</p>
-      <div class="museum-hero-strip">
-        <span><strong style="color:var(--signal-green)">●</strong> ACTIVE EXPLORERS: 1 VOYAGER PROBE</span>
-        <span><strong style="color:var(--mars-orange)">■</strong> PRESERVED ROVERS & LANDERS: 4 CRAFTS</span>
-        <span><strong style="color:var(--achievement-gold)">★</strong> GOLD ACHIEVEMENTS UNLOCKED</span>
-        <span><strong style="color:var(--neon-cyan)">🔊</strong> SPATIAL AUDIO & SPEECH ACTIVE</span>
+      <h1>LOST IN SPACE: HISTORIC MACHINES</h1>
+      <p>Humanity's real robotic pioneers: Roaming the sands of Mars, resting permanently on lunar regolith, and voyaging into the interstellar dark.</p>
+      <div class="hero-stat-strip">
+        <span><strong style="color:var(--signal-green)">●</strong> ACTIVE: VOYAGER 1 (>24 BILLION KM)</span>
+        <span><strong style="color:var(--mars-orange)">■</strong> PRESERVED ROVERS & LANDERS: 4</span>
+        <span><strong style="color:var(--achievement-gold)">★</strong> VERIFIED NASA ARCHIVAL PHOTOGRAPHY</span>
       </div>
     </section>
 
-    <!-- VIEW 1: TIMELINE & EXHIBITS -->
+    <!-- TAB 1: TIMELINE -->
     <div class="museum-view active" id="view-timeline">
-      <div class="timeline-filter-bar">
-        <span style="font-family:var(--font-telemetry); font-size:13px; color:#94a3b8;">EXHIBIT SECTORS:</span>
+      <div class="filter-bar">
+        <span style="font-family:var(--font-telemetry); font-size:12px; color:#94a3b8;">SECTORS:</span>
         <div class="filter-chips">
-          <button class="filter-btn active" onclick="filterExhibits('all', this)">ALL MACHINES (8)</button>
-          <button class="filter-btn" onclick="filterExhibits('rover', this)">MARS & MOON ROVERS</button>
-          <button class="filter-btn" onclick="filterExhibits('probe', this)">INTERSTELLAR PROBES</button>
-          <button class="filter-btn" onclick="filterExhibits('lander', this)">PLANETARY LANDERS</button>
-          <button class="filter-btn" onclick="filterExhibits('active', this)">STILL TRANSMITTING (GREEN)</button>
+          <button class="filter-btn active" onclick="applyFilter('all', this)">ALL MACHINES (8)</button>
+          <button class="filter-btn" onclick="applyFilter('rover', this)">ROVERS</button>
+          <button class="filter-btn" onclick="applyFilter('lander', this)">LANDERS</button>
+          <button class="filter-btn" onclick="applyFilter('probe', this)">PROBES</button>
+          <button class="filter-btn" onclick="applyFilter('active', this)">STILL TRANSMITTING (GREEN)</button>
         </div>
       </div>
 
-      <div class="timeline-line" id="timeline-feed">
-        <!-- populated dynamically -->
+      <div class="timeline-track" id="machines-container">
+        <!-- Rendered by JS -->
       </div>
     </div>
 
-    <!-- VIEW 2: MARS ROVER TEST DRIVE (FUN FOR KIDS) -->
+    <!-- TAB 2: MARS ROVER TEST DRIVE -->
     <div class="museum-view" id="view-sim">
-      <div class="rover-sim-panel">
-        <div class="sim-header">
-          <h2>🎮 MARS ROVER REMOTE CONTROL SIMULATOR</h2>
-          <span style="font-family:var(--font-telemetry); color:#ff5722;">MISSION: DRIVE ACROSS ENDURANCE CRATER & DISCOVER HEMATITE</span>
+      <div class="sim-wrap">
+        <div class="sim-top">
+          <h2>🎮 MARS ROVER TEST DRIVE (ENDURANCE CRATER)</h2>
+          <span style="font-family:var(--font-telemetry); color:var(--mars-orange); font-size:12px;">KEYBOARD: W/A/D STEER • SPACE TO SCAN ROCKS</span>
         </div>
-
-        <div class="sim-canvas-wrap">
-          <canvas id="mars-canvas" width="1200" height="380"></canvas>
+        <div class="canvas-container">
+          <canvas id="sim-canvas" width="1200" height="360"></canvas>
         </div>
-
-        <div class="sim-dashboard">
-          <div class="dashboard-gauge">
-            <div class="label">DISTANCE TRAVELED</div>
-            <div class="val" id="sim-dist">0.00 M</div>
+        <div class="sim-stats-bar">
+          <div class="stat-card">
+            <div class="t">DISTANCE TRAVELED</div>
+            <div class="n" id="stat-dist">0.00 METERS</div>
           </div>
-          <div class="dashboard-gauge">
-            <div class="label">MARTIAN SAMPLES COLLECTED</div>
-            <div class="val" id="sim-samples">0 SAMPLES</div>
+          <div class="stat-card">
+            <div class="t">SAMPLES DISCOVERED</div>
+            <div class="n" id="stat-samples">0 SAMPLES</div>
           </div>
-          <div class="dashboard-gauge">
-            <div class="label">SOLAR ARRAY BATTERY</div>
-            <div class="val" id="sim-battery">98%</div>
+          <div class="stat-card">
+            <div class="t">SOLAR ARRAY BATTERY</div>
+            <div class="n" id="stat-bat">100%</div>
           </div>
         </div>
-
-        <div class="rover-controls">
-          <button class="ctrl-key" onclick="driveRover('left')">◀ STEER LEFT (A)</button>
-          <button class="ctrl-key" onclick="driveRover('forward')">▲ DRIVE FORWARD (W)</button>
-          <button class="ctrl-key" onclick="driveRover('right')">▶ STEER RIGHT (D)</button>
-          <button class="ctrl-key" style="border-color:var(--signal-green); color:var(--signal-green);" onclick="fireRoverLaser()">⚡ FIRE ROCK LASER (SPACE)</button>
-          <button class="ctrl-key" style="border-color:var(--achievement-gold); color:var(--achievement-gold);" onclick="cleanSolarPanels()">🧹 BRUSH DUST OFF PANELS</button>
+        <div class="sim-controls">
+          <button class="sim-btn" onclick="simMove('left')">◀ STEER LEFT (A)</button>
+          <button class="sim-btn" onclick="simMove('forward')">▲ DRIVE FORWARD (W)</button>
+          <button class="sim-btn" onclick="simMove('right')">▶ STEER RIGHT (D)</button>
+          <button class="sim-btn" style="border-color:var(--signal-green); color:var(--signal-green);" onclick="simLaser()">⚡ SCAN ROCK LASER (SPACE)</button>
+          <button class="sim-btn" style="border-color:var(--achievement-gold); color:var(--achievement-gold);" onclick="simClean()">🧹 BRUSH MARTIAN DUST</button>
         </div>
       </div>
     </div>
 
-    <!-- VIEW 3: S6 RETRIEVAL QUIZ -->
+    <!-- TAB 3: QUIZ -->
     <div class="museum-view" id="view-quiz">
       <div class="quiz-card">
-        <div class="quiz-top">
-          <div class="quiz-title-text">S6 TACTICAL FLIGHT CADET VERIFICATION</div>
-          <div class="quiz-score-strip">
-            <span>SCORE: <strong id="q-score" style="color:var(--signal-green)">0</strong></span>
-            <span>STREAK: <strong id="q-streak" style="color:var(--achievement-gold)">0x</strong></span>
-          </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:16px; border-bottom:1px solid rgba(0,240,255,0.2); padding-bottom:8px;">
+          <div style="font-family:var(--font-display); font-size:18px; color:#fff;">S6 RETRIEVAL VERIFICATION QUIZ</div>
+          <div style="font-family:var(--font-telemetry); color:var(--neon-cyan); font-size:13px;">SCORE: <strong id="score-val" style="color:var(--signal-green)">0</strong></div>
         </div>
-        <div id="quiz-question-box"></div>
-        <div class="quiz-feedback-box" id="q-feedback"></div>
+        <div id="quiz-box"></div>
+        <div class="quiz-expl" id="quiz-expl"></div>
       </div>
     </div>
   </div>
 
-  <!-- ASTRONAUT LEX GUIDE WITH REAL SOUND -->
+  <!-- ASTRONAUT LEX COMM DOCK -->
   <div class="astronaut-dock">
     <div class="comms-bubble" id="lex-bubble">
-      <div class="bubble-head">
-        <span class="astro-callsign">ASTRONAUT GUIDE — LEX</span>
-        <div class="audio-wave-anim" id="lex-equalizer">
-          <div class="wave-line"></div>
-          <div class="wave-line"></div>
-          <div class="wave-line"></div>
-          <div class="wave-line"></div>
-        </div>
+      <div class="bubble-top">
+        <span style="font-family:var(--font-display); font-size:11px; color:var(--neon-cyan); font-weight:bold;">ASTRONAUT GUIDE — LEX</span>
+        <span style="font-family:var(--font-telemetry); font-size:10px; color:#64748b;" id="lex-status">READY</span>
       </div>
-      <div class="bubble-content" id="lex-speech">
-        "Cadet on deck! Welcome to Lost in Space. Click on any rover, lander, or probe to inspect it, or press SPEAK to hear my audio transmission!"
+      <div class="bubble-text" id="lex-text">
+        "Cadet, welcome aboard! Click 'SPEAK ALOUD' to hear real NASA radio transmissions for each historic machine, or explore the Mars rover test drive!"
       </div>
-      <div class="bubble-actions">
-        <button class="speak-btn" onclick="lexSpeakCurrent()">
+      <div class="bubble-btns">
+        <button class="bubble-btn speak" id="speak-action-btn" onclick="speakLex()">
           <span>🔊</span> SPEAK ALOUD
         </button>
-        <button class="next-fact-btn" onclick="nextLexStory()">
+        <button class="bubble-btn" onclick="nextFact()">
           NEXT TRANSMISSION ⟳
         </button>
       </div>
     </div>
 
-    <div class="astronaut-pod" onclick="lexPodClicked()">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <div class="astronaut-pod" onclick="nextFact()">
+      <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="10" r="7"/>
         <path d="M9 9h6v3a3 3 0 0 1-6 0V9z" fill="var(--achievement-gold)" stroke="none" opacity="0.9"/>
         <path d="M12 3v2"/>
@@ -1091,39 +835,77 @@
     </div>
   </div>
 
-  <!-- GOLD ACHIEVEMENT MODAL -->
-  <div class="achievement-modal-overlay" id="achieve-modal">
-    <div class="achievement-modal-box">
-      <button class="modal-x-btn" onclick="closeAchieveModal()">✕</button>
-      <div style="font-family:var(--font-display); font-size:20px; color:var(--achievement-gold); margin-bottom:6px;" id="modal-heading">KEY ACHIEVEMENTS</div>
-      <div style="font-family:var(--font-telemetry); font-size:13px; color:#94a3b8; margin-bottom:20px;" id="modal-sub">TELEMETRY & DISCOVERY RECORDS</div>
-      <div style="display:flex; flex-direction:column; gap:12px; max-height:380px; overflow-y:auto;" id="modal-items-list"></div>
+  <!-- ACHIEVEMENT MODAL -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div style="font-family:var(--font-display); font-size:18px; color:var(--achievement-gold); margin-bottom:4px;" id="modal-craft">ACHIEVEMENTS</div>
+      <div style="font-family:var(--font-telemetry); font-size:12px; color:#94a3b8; margin-bottom:16px;" id="modal-sub">NASA FLIGHT LOG RECORDS</div>
+      <div style="display:flex; flex-direction:column; gap:10px; max-height:360px; overflow-y:auto;" id="modal-list"></div>
     </div>
   </div>
 
   <script>
     // ========================================================
-    // SYNTHESIZED WEB AUDIO ENGINE (QUINDAR BEEPS & RADIO SFX)
+    // 1. VERIFIED NASA ARCHIVAL PHOTOGRAPHY DATABASE
     // ========================================================
-    let audioCtx = null;
-    let soundEnabled = true;
+    const REAL_NASA_PHOTOS = {
+      "opportunity": {
+        url: "https://images-assets.nasa.gov/image/PIA18077/PIA18077~small.jpg",
+        credit: "NASA/JPL-Caltech/Cornell/MSSS (Endeavour Crater Selfie)"
+      },
+      "apollo-11-eagle": {
+        url: "https://images-assets.nasa.gov/image/as11-40-5927/as11-40-5927~medium.jpg",
+        credit: "NASA (Apollo 11 Eagle Lunar Module at Tranquility Base)"
+      },
+      "apollo-15-rover": {
+        url: "https://images-assets.nasa.gov/image/as15-88-11866/as15-88-11866~medium.jpg",
+        credit: "NASA (Apollo 15 Lunar Roving Vehicle at Hadley Rille)"
+      },
+      "insight": {
+        url: "https://images-assets.nasa.gov/image/PIA23204/PIA23204~thumb.jpg",
+        credit: "NASA/JPL-Caltech (InSight Mars Lander Selfie)"
+      },
+      "vanguard-1": {
+        url: "https://images-assets.nasa.gov/image/9139356/9139356~medium.jpg",
+        credit: "NASA/US Navy (Vanguard 1 Flight Satellite, 1958)"
+      },
+      "skylab-debris": {
+        url: "https://images-assets.nasa.gov/image/S73-23919/S73-23919~medium.jpg",
+        credit: "NASA (Skylab 1 Orbital Workshop)"
+      },
+      "voyager-1": {
+        url: "https://images-assets.nasa.gov/image/PIA14110/PIA14110~small.jpg",
+        credit: "NASA/JPL (Voyager 1 Flight Spacecraft in Space Simulator)"
+      },
+      "pioneer-10": {
+        url: "https://images-assets.nasa.gov/image/ARC-1972-AC72-2135/ARC-1972-AC72-2135~medium.jpg",
+        credit: "NASA Ames (Pioneer 10 Spacecraft Inspection)"
+      }
+    };
 
-    function getAudioContext() {
-      if (!audioCtx) {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        audioCtx = new AudioContext();
+    // ========================================================
+    // 2. SYNCHRONIZED AUDIO ENGINE (QUINDAR BEEPS & SPEECH)
+    // ========================================================
+    let audioContext = null;
+    let audioActive = true;
+    let isSpeaking = false;
+
+    function getAudioCtx() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
       }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
       }
-      return audioCtx;
+      return audioContext;
     }
 
-    // Classic Apollo Quindar Intro Beep (2525 Hz for 250ms)
-    function playQuindarBeep(freq = 2525, duration = 0.22) {
-      if (!soundEnabled) return;
+    // Authentic NASA Quindar Beep
+    function playBeep(freq = 2525, duration = 0.2) {
+      if (!audioActive) return;
       try {
-        const ctx = getAudioContext();
+        const ctx = getAudioCtx();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'sine';
@@ -1134,631 +916,490 @@
         gain.connect(ctx.destination);
         osc.start();
         osc.stop(ctx.currentTime + duration);
-      } catch (e) {
-        console.warn("Audio error:", e);
-      }
-    }
-
-    // Radio click / mechanical servo sound
-    function playMechanicalClick() {
-      if (!soundEnabled) return;
-      try {
-        const ctx = getAudioContext();
-        const bufferSize = ctx.sampleRate * 0.04;
-        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-          data[i] = Math.random() * 2 - 1;
-        }
-        const noise = ctx.createBufferSource();
-        noise.buffer = buffer;
-        const filter = ctx.createBiquadFilter();
-        filter.type = 'bandpass';
-        filter.frequency.value = 1800;
-        const gain = ctx.createGain();
-        gain.gain.setValueAtTime(0.06, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
-        noise.connect(filter);
-        filter.connect(gain);
-        gain.connect(ctx.destination);
-        noise.start();
       } catch (e) {}
     }
 
-    // Laser beam blast sound for rover
-    function playLaserSound() {
-      if (!soundEnabled) return;
-      try {
-        const ctx = getAudioContext();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(1400, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.28);
-        gain.gain.setValueAtTime(0.12, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.28);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.28);
-      } catch (e) {}
-    }
-
-    // Gold achievement fanfare chime
-    function playAchievementFanfare() {
-      if (!soundEnabled) return;
-      [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
-        setTimeout(() => playQuindarBeep(freq, 0.18), idx * 100);
-      });
-    }
-
-    function toggleAudioEngine() {
-      soundEnabled = !soundEnabled;
-      const btn = document.getElementById('audio-btn');
+    function toggleAudio() {
+      audioActive = !audioActive;
       const icon = document.getElementById('audio-icon');
-      const text = document.getElementById('audio-text');
-      if (soundEnabled) {
+      const label = document.getElementById('audio-label');
+      if (audioActive) {
         icon.innerText = '🔊';
-        text.innerText = 'SOUND: ON';
-        playQuindarBeep(2475, 0.15);
+        label.innerText = 'SOUND: ON';
+        playBeep(2475, 0.15);
       } else {
         icon.innerText = '🔇';
-        text.innerText = 'SOUND: MUTED';
+        label.innerText = 'SOUND: MUTED';
         if (window.speechSynthesis) window.speechSynthesis.cancel();
       }
     }
 
     // ========================================================
-    // ASTRONAUT LEX VOICE (SPEECH SYNTHESIS + RADIO COMM)
+    // 3. ASTRONAUT LEX RADIO VOICE
     // ========================================================
-    const lexTransmissions = [
+    const LEX_STORIES = [
       {
         title: "Opportunity Mars Rover",
-        text: "Opportunity was only designed to survive for 90 days on Mars, but this legendary robot kept driving for more than fourteen Earth years across forty-five kilometers of red dust!",
-        craftId: "opportunity"
+        text: "Opportunity was built to survive only 90 sols on Mars, but kept driving for over fourteen Earth years! It traveled 45 kilometers across red craters before a global dust storm ended its journey.",
+        id: "opportunity"
       },
       {
-        title: "Voyager 1 Interstellar Probe",
-        text: "Voyager 1 is our furthest human artifact! Launched in 1977, it has crossed into interstellar space and is still beaming telemetry back home from over 24 billion kilometers away.",
-        craftId: "voyager-1"
+        title: "Voyager 1 Interstellar Herald",
+        text: "Voyager 1 is our furthest explorer! Launched in 1977, it entered interstellar space in 2012 and is still beaming telemetry home from over 24 billion kilometers away.",
+        id: "voyager-1"
       },
       {
         title: "Apollo 11 Lunar Module Eagle",
-        text: "The Apollo 11 descent stage is still resting in Mare Tranquillitatis on the Moon! Attached to its landing leg is a stainless steel plaque that reads: We came in peace for all mankind.",
-        craftId: "apollo-11-eagle"
+        text: "The Apollo 11 descent stage has stood in Tranquility Base on the Moon since July 20, 1969. It carries a plaque signed by Neil Armstrong, Buzz Aldrin, and Michael Collins.",
+        id: "apollo-11-eagle"
       },
       {
         title: "Apollo 15 Lunar Roving Vehicle",
-        text: "The Apollo 15 Lunar Rover was the first car driven on another world! Astronauts reached 13 kilometers per hour on the Moon and parked it with its camera pointed at Earth.",
-        craftId: "apollo-15-rover"
+        text: "The Apollo 15 Moon Buggy was the first wheeled vehicle driven by humans on another world! Astronauts parked it overlooking Hadley Rille with its camera pointed at Earth.",
+        id: "apollo-15-rover"
       },
       {
         title: "InSight Mars Seismometer",
-        text: "InSight listened to the heartbeat of Mars, detecting over 1,300 marsquakes and proving that Mars has a molten liquid core beneath its crust!",
-        craftId: "insight"
+        text: "InSight detected over 1,300 marsquakes, revealing that Mars has a liquid core beneath its crust before red dust finally obscured its solar panels in 2022.",
+        id: "insight"
       },
       {
         title: "Vanguard 1 Satellite",
-        text: "Vanguard 1 was launched on St. Patrick's Day in 1958. It is the oldest human-made object still orbiting the Earth, and scientists estimate it will stay in orbit for over 200 more years!",
-        craftId: "vanguard-1"
+        text: "Vanguard 1 was launched in 1958. It is humanity's oldest artifact in orbit, and scientists calculate it will circle Earth for another two centuries!",
+        id: "vanguard-1"
       },
       {
-        title: "Skylab Space Station",
-        text: "Skylab was America's very first space station! Three astronaut crews lived aboard it in the 1970s, proving humans could run long-term scientific laboratories in microgravity.",
-        craftId: "skylab-debris"
+        title: "Skylab Orbital Workshop",
+        text: "Skylab was America's first space station, hosting three astronaut expeditions across 1973 and 1974 to prove humans could live and work long-term in weightlessness.",
+        id: "skylab-debris"
       },
       {
         title: "Pioneer 10 Deep Space Scout",
-        text: "Pioneer 10 was the first human spacecraft to safely cross through the dangerous Asteroid Belt and snap close-up images of giant Jupiter in 1973!",
-        craftId: "pioneer-10"
+        text: "Pioneer 10 was the first spacecraft to navigate through the Asteroid Belt and capture close-up portraits of the giant planet Jupiter in 1973.",
+        id: "pioneer-10"
       }
     ];
 
-    let currentLexIndex = 0;
+    let lexIndex = 0;
 
-    function lexSpeakCurrent() {
-      if (!soundEnabled) {
-        toggleAudioEngine();
-      }
-      const t = lexTransmissions[currentLexIndex];
-      playQuindarBeep(2525, 0.25);
+    function speakLex() {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
 
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(t.text);
-        utterance.rate = 1.05;
-        utterance.pitch = 1.1;
+      const story = LEX_STORIES[lexIndex];
+      const statusEl = document.getElementById('lex-status');
 
-        // Try to pick an English voice
+      // 1. Play intro Quindar beep
+      playBeep(2525, 0.22);
+      statusEl.innerText = "TRANSMITTING...";
+      statusEl.style.color = "var(--signal-green)";
+
+      // 2. Start speech right after beep finishes
+      setTimeout(() => {
+        const utter = new SpeechSynthesisUtterance(story.text);
+        utter.rate = 1.05;
+        utter.pitch = 1.05;
+
         const voices = window.speechSynthesis.getVoices();
-        const englishVoice = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('David') || v.name.includes('Samantha')));
-        if (englishVoice) utterance.voice = englishVoice;
+        const engVoice = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('David') || v.name.includes('George')));
+        if (engVoice) utter.voice = engVoice;
 
-        utterance.onend = () => {
-          setTimeout(() => playQuindarBeep(2475, 0.2), 100);
+        utter.onend = () => {
+          statusEl.innerText = "STANDBY";
+          statusEl.style.color = "#64748b";
+          playBeep(2475, 0.18);
         };
 
-        window.speechSynthesis.speak(utterance);
+        utter.onerror = () => {
+          statusEl.innerText = "STANDBY";
+        };
+
+        window.speechSynthesis.speak(utter);
+      }, 250);
+    }
+
+    function nextFact() {
+      lexIndex = (lexIndex + 1) % LEX_STORIES.length;
+      const s = LEX_STORIES[lexIndex];
+      document.getElementById('lex-text').innerText = '"[' + s.title + '] ' + s.text + '"';
+      gainCadetXP(15);
+      speakLex();
+    }
+
+    function selectCraftLex(craftId) {
+      const idx = LEX_STORIES.findIndex(s => s.id === craftId);
+      if (idx !== -1) {
+        lexIndex = idx;
+        const s = LEX_STORIES[lexIndex];
+        document.getElementById('lex-text').innerText = '"[' + s.title + '] ' + s.text + '"';
+        speakLex();
       }
     }
 
-    function nextLexStory() {
-      playMechanicalClick();
-      currentLexIndex = (currentLexIndex + 1) % lexTransmissions.length;
-      const t = lexTransmissions[currentLexIndex];
-      document.getElementById('lex-speech').innerText = '"[' + t.title + '] ' + t.text + '"';
-      addXP(15);
-      lexSpeakCurrent();
-    }
-
-    function lexPodClicked() {
-      playQuindarBeep(2525, 0.2);
-      nextLexStory();
-    }
-
     // ========================================================
-    // CADET XP & RANKING SYSTEM
+    // 4. CADET XP & GAMIFICATION
     // ========================================================
     let cadetXP = 100;
-    const ranks = [
-      { min: 0, title: "JUNIOR CADET" },
-      { min: 150, title: "LUNAR ROVER PILOT" },
-      { min: 300, title: "MARS EXPLORER" },
-      { min: 500, title: "INTERSTELLAR COMMANDER" }
-    ];
-
-    function addXP(points) {
-      cadetXP += points;
+    function gainCadetXP(pts) {
+      cadetXP += pts;
       document.getElementById('cadet-xp').innerText = cadetXP;
-      const r = ranks.slice().reverse().find(rank => cadetXP >= rank.min);
-      if (r) {
-        document.getElementById('cadet-rank').innerText = r.title;
-      }
+      if (cadetXP >= 500) document.getElementById('cadet-rank').innerText = "INTERSTELLAR COMMANDER";
+      else if (cadetXP >= 300) document.getElementById('cadet-rank').innerText = "MARS ROVER PILOT";
+      else if (cadetXP >= 180) document.getElementById('cadet-rank').innerText = "LUNAR SPECIALIST";
     }
 
     // ========================================================
-    // EXHIBITS & TIMELINE DATA
+    // 5. TIMELINE RENDERING WITH VERIFIED NASA PHOTOS
     // ========================================================
-    let catalogItems = [];
+    let machineCatalog = [];
 
-    function renderTimelineFeed(filter = 'all') {
-      const container = document.getElementById('timeline-feed');
+    function renderTimeline(filter = 'all') {
+      const container = document.getElementById('machines-container');
       container.innerHTML = '';
 
-      const filtered = catalogItems.filter(item => {
-        if (filter === 'rover') return item.id.includes('rover') || item.id.includes('opportunity');
-        if (filter === 'probe') return item.id.includes('voyager') || item.id.includes('pioneer');
-        if (filter === 'lander') return item.id.includes('eagle') || item.id.includes('insight');
-        if (filter === 'active') return item.status === 'active';
+      const filtered = machineCatalog.filter(m => {
+        if (filter === 'rover') return m.id.includes('rover') || m.id.includes('opportunity');
+        if (filter === 'lander') return m.id.includes('eagle') || m.id.includes('insight');
+        if (filter === 'probe') return m.id.includes('voyager') || m.id.includes('pioneer') || m.id.includes('vanguard');
+        if (filter === 'active') return m.status === 'active';
         return true;
       });
 
       filtered.forEach(item => {
         const isActive = item.status === 'active';
-        const photoUrl = item.images && item.images.length > 0 ? item.images[0].url : 'https://images.nasa.gov';
-        const photoCredit = item.images && item.images.length > 0 ? item.images[0].credit : 'NASA';
+        const photoInfo = REAL_NASA_PHOTOS[item.id] || {
+          url: "https://images-assets.nasa.gov/image/PIA18077/PIA18077~small.jpg",
+          credit: "NASA Archive"
+        };
 
         let typeClass = 'probe';
         if (item.id.includes('rover') || item.id.includes('opportunity')) typeClass = 'rover';
         else if (item.id.includes('eagle') || item.id.includes('insight')) typeClass = 'lander';
         else if (item.id.includes('skylab')) typeClass = 'station';
 
-        const wrap = document.createElement('div');
-        wrap.className = 'machine-card-wrap ' + (isActive ? 'active-craft' : 'inactive-craft');
-
         let specsHtml = '';
         if (item.specs) {
           Object.keys(item.specs).slice(0, 4).forEach(k => {
             specsHtml += `
-              <div class="spec-block">
-                <div class="spec-label">${k.replace(/_/g, ' ')}</div>
-                <div class="spec-val">${item.specs[k]}</div>
+              <div class="spec-cell">
+                <div class="lbl">${k.replace(/_/g, ' ')}</div>
+                <div class="val">${item.specs[k]}</div>
               </div>
             `;
           });
         }
 
-        wrap.innerHTML = `
-          <div class="timeline-pin"></div>
-          <div class="machine-card">
-            <div class="machine-media-box">
-              <img id="img-${item.id}" src="${photoUrl}" alt="${item.name}" onerror="this.src='https://images-assets.nasa.gov/image/PIA01322/PIA01322~orig.jpg'">
-              <div class="schematic-canvas" id="sch-${item.id}">
-                <svg width="130" height="130" viewBox="0 0 100 100" fill="none" stroke="${isActive ? 'var(--signal-green)' : 'var(--neon-cyan)'}" stroke-width="2">
-                  <polygon points="50,15 85,80 15,80" stroke-dasharray="4 2"/>
-                  <circle cx="50" cy="55" r="18" fill="rgba(0,240,255,0.2)"/>
-                  <line x1="50" y1="5" x2="50" y2="95"/>
-                  <line x1="5" y1="55" x2="95" y2="55"/>
-                  <circle cx="50" cy="55" r="38" stroke-dasharray="6 4" opacity="0.4"/>
-                </svg>
-              </div>
-              <div class="media-mode-bar">
-                <span style="color:#64748b;">${photoCredit}</span>
-                <div>
-                  <button class="active" id="btn-img-${item.id}" onclick="setMediaMode('${item.id}', 'photo')">PHOTO</button>
-                  <button id="btn-sch-${item.id}" onclick="setMediaMode('${item.id}', 'schematic')">SCHEMATIC</button>
-                </div>
+        const div = document.createElement('div');
+        div.className = 'machine-entry ' + (isActive ? 'active-craft' : 'inactive-craft');
+        div.innerHTML = `
+          <div class="machine-pin"></div>
+          <div class="machine-card" onclick="selectCraftLex('${item.id}')">
+            <div class="photo-frame">
+              <img src="${photoInfo.url}" alt="${item.name}" loading="lazy">
+              <div class="photo-credit-tag">
+                <span>HISTORIC PHOTO</span>
+                <strong>${photoInfo.credit}</strong>
               </div>
             </div>
 
-            <div class="machine-info">
+            <div class="machine-content">
               <div>
-                <div class="machine-top-header">
-                  <div class="machine-name">${item.name}</div>
-                  <span class="craft-type-tag ${typeClass}">${typeClass.toUpperCase()}</span>
+                <div class="machine-header">
+                  <div class="machine-title">${item.name}</div>
+                  <span class="type-pill ${typeClass}">${typeClass.toUpperCase()}</span>
                 </div>
-                <div class="service-badge">
+                <div class="service-row">
                   <span>⏱ SERVICE: <strong>${item.years_active}</strong></span>
                   <span>•</span>
-                  <span>STATUS: <strong style="color:${isActive ? 'var(--signal-green)' : 'var(--ended-grey)'}">${isActive ? '● ACTIVE & TRANSMITTING' : '■ PRESERVED / INACTIVE'}</strong></span>
+                  <span>STATUS: <strong style="color:${isActive ? 'var(--signal-green)' : 'var(--ended-grey)'}">${isActive ? '● ACTIVE & TRANSMITTING' : '■ INACTIVE / PRESERVED'}</strong></span>
                 </div>
-                <div class="machine-story">${item.abandonment_reason || 'Pioneering scientific spacecraft preserving historic discovery records across the cosmos.'}</div>
-                <div class="specs-row">${specsHtml}</div>
+                <div class="machine-desc">${item.abandonment_reason || 'Pioneering scientific spacecraft preserving NASA discovery heritage across the solar system.'}</div>
+                <div class="specs-grid">${specsHtml}</div>
               </div>
 
-              <div class="achievement-bar" onclick="openAchievements('${item.id}')">
-                <div class="left">
-                  <span class="star-icon">★</span>
-                  <span class="text">PULL UP GOLD ACHIEVEMENTS & DISCOVERIES (${item.facts ? item.facts.length : 0})</span>
-                </div>
-                <button class="pull-btn">EXPAND ↗</button>
+              <div class="achievement-pull" onclick="event.stopPropagation(); openAchievements('${item.id}')">
+                <span class="title">★ PULL UP GOLD ACHIEVEMENTS (${item.facts ? item.facts.length : 0} DISCOVERIES)</span>
+                <span class="btn">EXPAND ↗</span>
               </div>
             </div>
           </div>
         `;
-        container.appendChild(wrap);
+        container.appendChild(div);
       });
     }
 
-    function setMediaMode(id, mode) {
-      playMechanicalClick();
-      const img = document.getElementById('img-' + id);
-      const sch = document.getElementById('sch-' + id);
-      const btnImg = document.getElementById('btn-img-' + id);
-      const btnSch = document.getElementById('btn-sch-' + id);
-      if (mode === 'photo') {
-        img.style.display = 'block';
-        sch.style.display = 'none';
-        btnImg.classList.add('active');
-        btnSch.classList.remove('active');
-      } else {
-        img.style.display = 'none';
-        sch.style.display = 'flex';
-        btnImg.classList.remove('active');
-        btnSch.classList.add('active');
-      }
-    }
-
-    function filterExhibits(type, btn) {
-      playMechanicalClick();
+    function applyFilter(f, btn) {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      renderTimelineFeed(type);
+      renderTimeline(f);
     }
 
     // Modal
     function openAchievements(id) {
-      playAchievementFanfare();
-      addXP(25);
-      const item = catalogItems.find(i => i.id === id);
+      playBeep(2525, 0.15);
+      gainCadetXP(25);
+      const item = machineCatalog.find(i => i.id === id);
       if (!item) return;
 
-      document.getElementById('modal-heading').innerText = '★ ' + item.name.toUpperCase() + ' — KEY ACHIEVEMENTS';
-      document.getElementById('modal-sub').innerText = 'MISSION TIMELINE: ' + item.years_active + ' | NASA DISCOVERY LOGS';
+      document.getElementById('modal-craft').innerText = '★ ' + item.name.toUpperCase();
+      document.getElementById('modal-sub').innerText = 'MISSION DURATION: ' + item.years_active + ' | NASA DISCOVERY TELEMETRY';
 
-      const list = document.getElementById('modal-items-list');
+      const list = document.getElementById('modal-list');
       list.innerHTML = '';
-
       if (item.facts && item.facts.length > 0) {
         item.facts.forEach(f => {
-          const card = document.createElement('div');
-          card.style.background = 'rgba(255, 215, 0, 0.08)';
-          card.style.border = '1px solid rgba(255, 215, 0, 0.25)';
-          card.style.borderRadius = '6px';
-          card.style.padding = '12px 16px';
-          card.innerHTML = `
-            <div style="font-weight:700; color:#fff; font-size:15px; margin-bottom:4px;">${f.claim}</div>
-            <div style="font-family:var(--font-telemetry); color:var(--achievement-gold); font-size:13px;">TELEMETRY STAT: ${f.value} | PHASE: ${f.phase_key || 'EXPLORATION'}</div>
+          const c = document.createElement('div');
+          c.style.background = 'rgba(255, 215, 0, 0.08)';
+          c.style.border = '1px solid rgba(255, 215, 0, 0.25)';
+          c.style.borderRadius = '6px';
+          c.style.padding = '10px 14px';
+          c.innerHTML = `
+            <div style="font-weight:bold; color:#fff; font-size:14px; margin-bottom:3px;">${f.claim}</div>
+            <div style="font-family:var(--font-telemetry); color:var(--achievement-gold); font-size:12px;">TELEMETRY STAT: ${f.value} | PHASE: ${f.phase_key || 'EXPLORATION'}</div>
           `;
-          list.appendChild(card);
+          list.appendChild(c);
         });
-      } else {
-        list.innerHTML = '<div style="color:#94a3b8; font-family:var(--font-telemetry)">No telemetry records cataloged for this machine.</div>';
       }
-
-      document.getElementById('achieve-modal').classList.add('open');
+      document.getElementById('modal').classList.add('open');
     }
 
-    function closeAchieveModal() {
-      playMechanicalClick();
-      document.getElementById('achieve-modal').classList.remove('open');
+    function closeModal() {
+      document.getElementById('modal').classList.remove('open');
     }
 
     // ========================================================
-    // MARS ROVER SIMULATOR ENGINE (INTERACTIVE GAME FOR KIDS)
+    // 6. MARS ROVER SIMULATOR (ZERO LAG 60FPS)
     // ========================================================
-    const canvas = document.getElementById('mars-canvas');
+    const canvas = document.getElementById('sim-canvas');
     const ctx = canvas.getContext('2d');
 
-    const rover = {
-      x: 200,
-      y: 190,
-      angle: 0,
-      speed: 0,
-      samples: 0,
-      battery: 98,
-      distance: 0
-    };
-
+    const rover = { x: 180, y: 180, angle: 0, distance: 0, samples: 0, battery: 100 };
     const rocks = [
-      { x: 380, y: 120, type: 'Hematite Blueberry', collected: false },
-      { x: 550, y: 260, type: 'Basaltic Regolith', collected: false },
-      { x: 740, y: 90, type: 'Olivine Crystal', collected: false },
-      { x: 920, y: 220, type: 'Ancient Lake Mudstone', collected: false },
-      { x: 1080, y: 150, type: 'Meteorite Fragment', collected: false }
+      { x: 340, y: 110, name: "Hematite", collected: false },
+      { x: 520, y: 240, name: "Basalt Regolith", collected: false },
+      { x: 710, y: 90, name: "Olivine", collected: false },
+      { x: 910, y: 220, name: "Ancient Mudstone", collected: false },
+      { x: 1060, y: 140, name: "Meteorite", collected: false }
     ];
 
-    function drawMarsTerrain() {
-      // Martian red soil gradient
-      const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      grad.addColorStop(0, '#2d0e07');
-      grad.addColorStop(1, '#150603');
-      ctx.fillStyle = grad;
+    function drawRoverSim() {
+      // Mars soil
+      ctx.fillStyle = '#1c0804';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Craters & Dunes
-      ctx.fillStyle = 'rgba(215, 60, 20, 0.15)';
+      // Craters
+      ctx.fillStyle = 'rgba(230, 80, 30, 0.12)';
       ctx.beginPath();
-      ctx.arc(320, 180, 70, 0, Math.PI * 2);
+      ctx.arc(360, 200, 80, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.beginPath();
-      ctx.arc(800, 260, 110, 0, Math.PI * 2);
+      ctx.arc(820, 240, 110, 0, Math.PI * 2);
       ctx.fill();
 
       // Tire tracks
-      ctx.strokeStyle = 'rgba(100, 30, 10, 0.5)';
-      ctx.lineWidth = 4;
-      ctx.setLineDash([4, 6]);
+      ctx.strokeStyle = 'rgba(80, 25, 10, 0.6)';
+      ctx.lineWidth = 3;
       ctx.beginPath();
-      ctx.moveTo(50, 190);
+      ctx.moveTo(40, 180);
       ctx.lineTo(rover.x, rover.y);
       ctx.stroke();
-      ctx.setLineDash([]);
 
-      // Draw rock samples
+      // Rocks
       rocks.forEach(r => {
         if (!r.collected) {
-          ctx.fillStyle = 'var(--achievement-gold)';
+          ctx.fillStyle = '#ffd700';
           ctx.beginPath();
-          ctx.arc(r.x, r.y, 8, 0, Math.PI * 2);
+          ctx.arc(r.x, r.y, 7, 0, Math.PI * 2);
           ctx.fill();
-          ctx.strokeStyle = '#fff';
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-
-          // Label
-          ctx.fillStyle = '#ffcc00';
+          ctx.fillStyle = '#fff';
           ctx.font = '11px Share Tech Mono';
-          ctx.fillText('★ ' + r.type, r.x - 30, r.y - 12);
+          ctx.fillText('★ ' + r.name, r.x - 20, r.y - 10);
         }
       });
 
-      // Draw Rover
+      // Rover
       ctx.save();
       ctx.translate(rover.x, rover.y);
       ctx.rotate(rover.angle);
 
       // Wheels
-      ctx.fillStyle = '#1e293b';
-      ctx.fillRect(-28, -22, 14, 8);
-      ctx.fillRect(14, -22, 14, 8);
-      ctx.fillRect(-28, 14, 14, 8);
-      ctx.fillRect(14, 14, 14, 8);
+      ctx.fillStyle = '#334155';
+      ctx.fillRect(-24, -18, 12, 6);
+      ctx.fillRect(12, -18, 12, 6);
+      ctx.fillRect(-24, 12, 12, 6);
+      ctx.fillRect(12, 12, 12, 6);
 
-      // Chassis
+      // Body
       ctx.fillStyle = '#cbd5e1';
-      ctx.fillRect(-20, -14, 40, 28);
+      ctx.fillRect(-16, -12, 32, 24);
 
       // Solar Panel
       ctx.fillStyle = '#0284c7';
-      ctx.fillRect(-16, -10, 32, 20);
+      ctx.fillRect(-12, -8, 24, 16);
 
-      // Camera Mast
+      // Mast
       ctx.fillStyle = '#f59e0b';
       ctx.beginPath();
-      ctx.arc(14, 0, 5, 0, Math.PI * 2);
+      ctx.arc(10, 0, 4, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.restore();
     }
 
-    function driveRover(direction) {
-      playMechanicalClick();
-      if (direction === 'forward') {
-        rover.x += Math.cos(rover.angle) * 20;
-        rover.y += Math.sin(rover.angle) * 20;
-        rover.distance += 1.4;
-        rover.battery = Math.max(10, rover.battery - 0.2);
-      } else if (direction === 'left') {
-        rover.angle -= 0.25;
-      } else if (direction === 'right') {
-        rover.angle += 0.25;
+    function simMove(dir) {
+      if (dir === 'forward') {
+        rover.x += Math.cos(rover.angle) * 18;
+        rover.y += Math.sin(rover.angle) * 18;
+        rover.distance += 1.2;
+        rover.battery = Math.max(15, rover.battery - 0.2);
+      } else if (dir === 'left') {
+        rover.angle -= 0.2;
+      } else if (dir === 'right') {
+        rover.angle += 0.2;
       }
 
-      // Check rock collections
+      // Check sample pickup
       rocks.forEach(r => {
-        if (!r.collected) {
-          const dist = Math.hypot(rover.x - r.x, rover.y - r.y);
-          if (dist < 30) {
-            r.collected = true;
-            rover.samples++;
-            playAchievementFanfare();
-            addXP(50);
-            document.getElementById('sim-samples').innerText = rover.samples + ' SAMPLES';
-          }
+        if (!r.collected && Math.hypot(rover.x - r.x, rover.y - r.y) < 28) {
+          r.collected = true;
+          rover.samples++;
+          playBeep(2525, 0.25);
+          gainCadetXP(50);
+          document.getElementById('stat-samples').innerText = rover.samples + " SAMPLES";
         }
       });
 
-      document.getElementById('sim-dist').innerText = rover.distance.toFixed(2) + ' M';
-      document.getElementById('sim-battery').innerText = Math.round(rover.battery) + '%';
-      drawMarsTerrain();
+      document.getElementById('stat-dist').innerText = rover.distance.toFixed(2) + " METERS";
+      document.getElementById('stat-bat').innerText = Math.round(rover.battery) + "%";
+      drawRoverSim();
     }
 
-    function fireRoverLaser() {
-      playLaserSound();
-      addXP(10);
-
-      // Draw laser beam
+    function simLaser() {
+      playBeep(1800, 0.1);
+      gainCadetXP(10);
       ctx.strokeStyle = '#00ff88';
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 2.5;
       ctx.beginPath();
       ctx.moveTo(rover.x, rover.y);
-      ctx.lineTo(rover.x + Math.cos(rover.angle) * 200, rover.y + Math.sin(rover.angle) * 200);
+      ctx.lineTo(rover.x + Math.cos(rover.angle) * 180, rover.y + Math.sin(rover.angle) * 180);
       ctx.stroke();
-
-      setTimeout(drawMarsTerrain, 180);
+      setTimeout(drawRoverSim, 150);
     }
 
-    function cleanSolarPanels() {
-      playQuindarBeep(2525, 0.2);
+    function simClean() {
+      playBeep(2475, 0.15);
       rover.battery = 100;
-      addXP(20);
-      document.getElementById('sim-battery').innerText = '100% (CLEAN!)';
+      gainCadetXP(20);
+      document.getElementById('stat-bat').innerText = "100% (CLEAN!)";
     }
 
-    // Keyboard support for rover
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'w' || e.key === 'ArrowUp') driveRover('forward');
-      else if (e.key === 'a' || e.key === 'ArrowLeft') driveRover('left');
-      else if (e.key === 'd' || e.key === 'ArrowRight') driveRover('right');
-      else if (e.key === ' ') fireRoverLaser();
+    window.addEventListener('keydown', e => {
+      if (e.key === 'w' || e.key === 'ArrowUp') simMove('forward');
+      else if (e.key === 'a' || e.key === 'ArrowLeft') simMove('left');
+      else if (e.key === 'd' || e.key === 'ArrowRight') simMove('right');
+      else if (e.key === ' ') simLaser();
     });
 
     // ========================================================
-    // S6 TACTICAL RETRIEVAL QUIZ
+    // 7. QUIZ
     // ========================================================
-    const quizQuestions = [
+    const QUIZ_Q = [
       {
-        question: "How long did Opportunity (MER-B) operate on Mars beyond its original 90-sol primary mission?",
-        options: ["180 sols (6 months)", "1 Earth year", "5,111 sols (over 14 Earth years)", "8 years"],
-        answer: 2,
-        explanation: "Opportunity lasted 5,111 sols (over 14 years) on Mars, traveling 45.16 km until the June 2018 planet-wide dust storm."
+        q: "How long did Opportunity (MER-B) operate on Mars beyond its original 90-sol mission?",
+        opts: ["180 sols", "1 year", "5,111 sols (over 14 Earth years)", "8 years"],
+        ans: 2,
+        info: "Opportunity lasted 5,111 sols (over 14 years) on Mars until a planet-wide dust storm in June 2018."
       },
       {
-        question: "Which craft is humanity's oldest artifact still in orbital motion?",
-        options: ["Sputnik 1", "Vanguard 1 (1958)", "Explorer 1", "Telstar 1"],
-        answer: 1,
-        explanation: "Launched on March 17, 1958, Vanguard 1 remains in high-stability orbit and is predicted to remain aloft for over two centuries."
+        q: "Which satellite is humanity's oldest artifact still orbiting Earth?",
+        opts: ["Sputnik 1", "Vanguard 1 (1958)", "Explorer 1", "Telstar 1"],
+        ans: 1,
+        info: "Launched in 1958, Vanguard 1 remains in high-stability orbit and will stay aloft for centuries."
       },
       {
-        question: "What is the operational status of Voyager 1 in 2026?",
-        options: ["Derelict in the Kuiper Belt", "Lost contact in 1999", "Active and transmitting from interstellar space (>160 AU)", "De-orbited into Jupiter"],
-        answer: 2,
-        explanation: "Voyager 1 crossed the heliopause in August 2012 and remains in active communication via the Deep Space Network."
-      },
-      {
-        question: "How many marsquakes did the InSight lander detect before dust choked its solar panels in 2022?",
-        options: ["12 quakes", "Over 1,300 marsquakes", "Zero quakes", "86 quakes"],
-        answer: 1,
-        explanation: "InSight's SEIS seismometer detected 1,319 marsquakes, mapping Mars' crust, mantle, and molten liquid core."
-      },
-      {
-        question: "Where did the Apollo 11 Lunar Module Descent Stage remain permanently preserved?",
-        options: ["Mare Tranquillitatis (Tranquility Base)", "Oceanus Procellarum", "Fra Mauro", "Hadley Rille"],
-        answer: 0,
-        explanation: "The Apollo 11 Descent Stage has stood at Tranquility Base since July 20, 1969, commemorating humanity's first lunar landing."
+        q: "What is the operational status of Voyager 1 in 2026?",
+        opts: ["Derelict in Kuiper Belt", "Lost contact in 1999", "Active & transmitting from interstellar space (>24B km)", "De-orbited"],
+        ans: 2,
+        info: "Voyager 1 entered interstellar space in 2012 and transmits daily science via the Deep Space Network."
       }
     ];
 
-    let currentQ = 0;
+    let quizIdx = 0;
     let quizScore = 0;
-    let quizStreak = 0;
 
     function renderQuiz() {
-      const q = quizQuestions[currentQ];
-      const box = document.getElementById('quiz-question-box');
-      let optHtml = '';
-      q.options.forEach((opt, idx) => {
-        optHtml += `<button class="quiz-btn" onclick="submitQuizAns(${idx})">${String.fromCharCode(65 + idx)}. ${opt}</button>`;
-      });
-
+      const q = QUIZ_Q[quizIdx];
+      const box = document.getElementById('quiz-box');
       box.innerHTML = `
-        <div style="font-family:var(--font-display); font-size:18px; margin-bottom:14px; color:#fff;">
-          QUESTION [${currentQ + 1}/${quizQuestions.length}]: ${q.question}
+        <div class="quiz-q-title">[QUESTION ${quizIdx + 1}/${QUIZ_Q.length}]: ${q.q}</div>
+        <div class="quiz-grid">
+          ${q.opts.map((opt, i) => `<button class="quiz-option" onclick="answerQuiz(${i})">${String.fromCharCode(65 + i)}. ${opt}</button>`).join('')}
         </div>
-        <div class="quiz-opt-grid">${optHtml}</div>
       `;
-      document.getElementById('q-feedback').style.display = 'none';
+      document.getElementById('quiz-expl').style.display = 'none';
     }
 
-    function submitQuizAns(choice) {
-      const q = quizQuestions[currentQ];
-      const btns = document.querySelectorAll('.quiz-btn');
-      const fb = document.getElementById('q-feedback');
-      fb.style.display = 'block';
+    function answerQuiz(choice) {
+      const q = QUIZ_Q[quizIdx];
+      const btns = document.querySelectorAll('.quiz-option');
+      const expl = document.getElementById('quiz-expl');
+      expl.style.display = 'block';
 
-      if (choice === q.answer) {
+      if (choice === q.ans) {
         btns[choice].classList.add('correct');
-        quizScore += 100 * (1 + quizStreak * 0.25);
-        quizStreak++;
-        playAchievementFanfare();
-        addXP(50);
-        fb.style.background = 'rgba(0, 255, 136, 0.15)';
-        fb.style.border = '1px solid var(--signal-green)';
-        fb.style.color = '#fff';
-        fb.innerHTML = '<strong style="color:var(--signal-green)">✓ VERIFICATION CONFIRMED:</strong> ' + q.explanation;
+        quizScore += 100;
+        playBeep(2525, 0.25);
+        gainCadetXP(50);
+        expl.style.background = 'rgba(0, 255, 136, 0.15)';
+        expl.style.border = '1px solid var(--signal-green)';
+        expl.style.color = '#fff';
+        expl.innerHTML = '<strong style="color:var(--signal-green)">✓ CONFIRMED:</strong> ' + q.info;
       } else {
         btns[choice].classList.add('wrong');
-        btns[q.answer].classList.add('correct');
-        quizStreak = 0;
-        playQuindarBeep(300, 0.3);
-        fb.style.background = 'rgba(239, 68, 68, 0.15)';
-        fb.style.border = '1px solid #ef4444';
-        fb.style.color = '#fff';
-        fb.innerHTML = '<strong style="color:#ef4444">✕ TELEMETRY MISMATCH:</strong> ' + q.explanation;
+        btns[q.ans].classList.add('correct');
+        playBeep(350, 0.2);
+        expl.style.background = 'rgba(239, 68, 68, 0.15)';
+        expl.style.border = '1px solid #ef4444';
+        expl.style.color = '#fff';
+        expl.innerHTML = '<strong style="color:#ef4444">✕ MISMATCH:</strong> ' + q.info;
       }
 
-      document.getElementById('q-score').innerText = Math.round(quizScore);
-      document.getElementById('q-streak').innerText = quizStreak + 'x';
-
+      document.getElementById('score-val').innerText = quizScore;
       setTimeout(() => {
-        currentQ = (currentQ + 1) % quizQuestions.length;
+        quizIdx = (quizIdx + 1) % QUIZ_Q.length;
         renderQuiz();
-      }, 4000);
+      }, 3500);
     }
 
-    // ========================================================
-    // TAB NAVIGATION
-    // ========================================================
-    function switchMuseumView(view) {
-      playMechanicalClick();
+    // Tabs
+    function showTab(tab) {
+      playBeep(2525, 0.08);
       document.querySelectorAll('.museum-view').forEach(v => v.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
 
-      if (view === 'timeline') {
+      if (tab === 'timeline') {
         document.getElementById('view-timeline').classList.add('active');
         document.getElementById('tab-timeline').classList.add('active');
-      } else if (view === 'sim') {
+      } else if (tab === 'sim') {
         document.getElementById('view-sim').classList.add('active');
         document.getElementById('tab-sim').classList.add('active');
-        drawMarsTerrain();
-      } else if (view === 'quiz') {
+        drawRoverSim();
+      } else if (tab === 'quiz') {
         document.getElementById('view-quiz').classList.add('active');
         document.getElementById('tab-quiz').classList.add('active');
         renderQuiz();
       }
     }
 
-    // Load API data
+    // Init Data
     fetch('/api/items')
-      .then(res => res.json())
+      .then(r => r.json())
       .then(data => {
-        catalogItems = data;
-        renderTimelineFeed('all');
-        drawMarsTerrain();
-      })
-      .catch(err => console.error("Error loading items:", err));
+        machineCatalog = data;
+        renderTimeline('all');
+        drawRoverSim();
+      });
   </script>
 </body>
 </html>
