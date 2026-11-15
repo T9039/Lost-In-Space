@@ -49,3 +49,20 @@ def test_fetch_batch_queries_each_catnr(monkeypatch):
 
     assert [call["CATNR"] for call in session.calls] == ["6633", "5", "2756", "10321"]
     assert [record["NORAD_CAT_ID"] for record in records] == [6633, 10321]
+
+
+class Cursor:
+    rowcount = 3
+
+    def execute(self, sql, params):
+        self.sql = sql
+        self.params = params
+
+
+def test_prune_uses_the_curated_allowlist():
+    cur = Cursor()
+    removed = celestrak_refresh.prune(cur, [5, 6633])
+
+    assert removed == 3
+    assert "interval '30 days'" in cur.sql
+    assert cur.params == ([5, 6633],)

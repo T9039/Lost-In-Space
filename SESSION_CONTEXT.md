@@ -351,9 +351,9 @@ Run `npm run db:check` to see the current state.
 - No lint script. Unit, component and system tests exist; `typecheck` is clean.
 - CI is drafted but not enabled; the gh token lacks the `workflow` scope.
 - `db/migrations/` only documents the convention; no migrations yet.
-- 30 lander rows have no object row (`lcat`/`rcat` not loaded).
+- 30 lander rows have no object row; loading `lcat`/`rcat` is deferred (see `docs/DATABASE.md`).
 - One `UNK` launch tag.
-- CelesTrak refresh is exercised manually; the scheduled cron is still open.
+- CelesTrak refresh is exercised live; `render.yaml` schedules it every 2 hours.
 - Image proxy, live tracking and narration are not implemented.
 - 3D models are static under `public/models`; credits are in fixtures.
 

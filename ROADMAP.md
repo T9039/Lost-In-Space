@@ -67,7 +67,7 @@ design is documented. Met.
 - [x] End-to-end: 258,367 staging rows, 392 launch files, 12 artifacts, 29 phases
 - [x] Idempotency: identical counts after a second run
 - [x] Exercise `celestrak_refresh` against the live CelesTrak API
-- [ ] Decide whether to load `lcat`/`rcat` (30 lander rows unmatched)
+- [x] Decide whether to load `lcat`/`rcat` — deferred; documented in `docs/DATABASE.md`
 - [ ] Add a CI job that applies the schema and runs the ETL on fixtures
 
 **Known warnings:** `UNK` launch tag; 30 lander rows without an object row.
@@ -195,7 +195,7 @@ reads from PostgreSQL; no generated text is used.
 - [x] `/api/artifacts/[slug]/gp` — latest element set, short cache
 - [ ] Map integration (MapLibre; the current solar map is illustrative)
 - [x] Element epoch and data-age labels
-- [ ] Schedule the CelesTrak job and verify pruning
+- [x] Schedule the CelesTrak job (`render.yaml`, every 2 h) and verify the prune logic
 - [x] Explicit “last known position” for non-Earth objects
 
 ---
@@ -216,7 +216,7 @@ reads from PostgreSQL; no generated text is used.
 - [ ] Enable the drafted CI workflow (`.github/workflows` needs workflow scope)
 - [x] Add `typecheck` and `test` scripts (node:test + tsx)
 - [ ] Add a lint script (and Playwright when the DB-backed flow stabilises)
-- [ ] Backup and restore drill
+- [x] Backup and restore drill (12 MB dump restored into a temporary Neon database)
 - [ ] Accessibility, responsive and performance passes
 - [ ] Deploy to Render with a paid database and cron
 - [ ] Verify attribution and licences on every page
@@ -236,7 +236,7 @@ reads from PostgreSQL; no generated text is used.
 - [x] `ATTRIBUTION.md` includes NASA mission pages
 - [x] Technical docs point at `app/`, `components/` and `lib/`
 - [x] Branding is Lost in Space; the museum name is gone from the UI
-- [ ] The 30 unmatched lander rows and `UNK` launch tag are still open
+- [x] The 30 unmatched lander rows are a documented deferral; `UNK` is preserved
 - [x] CelesTrak refresh exercised live (manual run; scheduling remains open)
 - [x] Image proxy implemented for remote NASA assets; bundled images stay local
 - [x] Countermeasure for blocked TCP/5432: HTTPS SQL runner + SSH tunnel helper

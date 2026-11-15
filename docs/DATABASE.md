@@ -275,3 +275,18 @@ RETURN path
 ```
 
 The relational tables remain canonical, so the graph can always be rebuilt.
+
+
+## Decision: `lcat` / `rcat` are not loaded
+
+GCAT's lander and rover catalogs (`lcat`, `rcat`) are not ingested. The ETL
+loads object, deep-space, HCO and CSO catalogs plus `landercat`, and resolves
+landing sites through the `location` table. As a result, 30 lander rows have no
+matching object row.
+
+Decision (15 November 2026): **defer loading `lcat`/`rcat`**. The current
+curated set and the UI read artifacts through object/deep-space phases, and the
+lander rows do not add a fact the archive displays. Revisit this when parent
+links, uncrewed landers without object rows, or a full surface-object inventory
+become a release requirement. The `UNK` launch tag is a known upstream data
+value and is preserved as-is.
