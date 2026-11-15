@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Next.js / build output
+.next/
+out/
+build/
+dist/
+coverage/
+test-results/
+playwright-report/
+blob-report/
+.nyc_output/
+*.tmp
+*.temp
+next-env.d.ts
+*.tsbuildinfo
+
+# Environment
+.env
+.env.*
+!.env.example
+.env*.local
+
+# Python tooling and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# Local data dumps and caches
+data/gcat/
+data/celestrak/
+*.tar.gz
+
+# Local database volume
+.pgdata/
+pgdata/
+
+# Editor / OS / logs
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.log
