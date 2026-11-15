@@ -88,6 +88,21 @@ The app, API, build and ETL-independent routes work. `psql`, `pg_dump` and the
 Python ETL still need a network or tunnel that permits 5432. No Frankfurt
 project or reload is needed for the web app.
 
+### Countermeasure when 5432 is blocked
+
+1. **The app** already uses the Neon HTTPS driver automatically.
+2. **Schema, seed files and migrations** can be applied over HTTPS:
+   `npm run db:apply-sql -- db/migrations/001_nasa_3d_models.sql`.
+   Statements are split outside quotes/dollar bodies and sent as one HTTPS
+   transaction; `npm run db:apply-sql -- --check` verifies the connection.
+3. **`psql`, `pg_dump` and the Python ETL** need a TCP path. If any SSH host can
+   reach 5432 (the laptop, a VPS, a Tailscale peer), run:
+   `SSH_HOST=<host> DATABASE_URL="$DATABASE_URL_UNPOOLED" npm run db:tunnel`
+   then export the `DATABASE_URL` it prints. `--print` shows the rewritten local
+   URL without opening the tunnel.
+4. **VPN or a Tailscale exit node** is the fallback when no SSH host is
+   available. The block is on outbound 5432, so any route that permits it works.
+
 Verified on the current machine:
 
 - `npm run typecheck`, `npm test` (unit, component and real-database query tests) and `npm run build` pass.

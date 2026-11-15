@@ -239,6 +239,7 @@ reads from PostgreSQL; no generated text is used.
 - [ ] The 30 unmatched lander rows and `UNK` launch tag are still open
 - [ ] CelesTrak refresh is not exercised live
 - [x] Image proxy implemented for remote NASA assets; bundled images stay local
+- [x] Countermeasure for blocked TCP/5432: HTTPS SQL runner + SSH tunnel helper
 - [ ] No narration provider or snapshot builder
 
 ---
