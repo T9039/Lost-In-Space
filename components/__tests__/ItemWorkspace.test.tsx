@@ -6,18 +6,18 @@ import { renderToStaticMarkup } from "react-dom/server";
 import ItemWorkspace from "../ItemWorkspace";
 import { CompareProvider } from "../CompareProvider";
 import { items, sources } from "../../lib/fixtures";
-import type { LineageEdge } from "../../lib/types";
+import type { LineageEdge, NarrationSummary } from "../../lib/types";
 
 const item = items.find((candidate) => candidate.id === "opportunity");
 const peers = items.filter((candidate) => candidate.id !== "opportunity");
 
-function render(edges: LineageEdge[], gp = null) {
+function render(edges: LineageEdge[], gp = null, narration: NarrationSummary | null = null) {
   assert.ok(item);
   return renderToStaticMarkup(
     createElement(
       CompareProvider,
       null,
-      createElement(ItemWorkspace, { item, sources, peers, edges, gp })
+      createElement(ItemWorkspace, { item, sources, peers, edges, gp, narration })
     )
   );
 }
@@ -52,12 +52,30 @@ test("ItemWorkspace shows an element epoch and age when GP data exists", () => {
           age: "2 h ago",
           position: { latitude: 1.2, longitude: 103.4, altitudeKm: 420, velocityKmS: 7.66 },
         },
+        narration: null,
       })
     )
   );
   assert.match(html, /LIVE ELEMENT SET/);
   assert.match(html, /Element epoch 2026-11-15 10:00 UTC/);
   assert.match(html, /2 h ago/);
+});
+
+test("ItemWorkspace labels generated narration and links its facts", () => {
+  const html = render([], null, {
+    id: "1",
+    text: "A generated museum label grounded in stored facts.",
+    model: "ollama:llama3",
+    prompt_version: "lost-in-space/narration/v1",
+    fact_hash: "abc",
+    is_ai_generated: true,
+    facts_used: ["opp-f1", "opp-f2"],
+    created_at: "2026-11-15T00:00:00.000Z",
+  });
+  assert.match(html, /AI generated/);
+  assert.match(html, /2 facts used/);
+  assert.match(html, /facts used ↗/);
+  assert.match(html, /A generated museum label/);
 });
 
 test("ItemWorkspace renders curated lineage edges", () => {

@@ -205,8 +205,8 @@ reads from PostgreSQL; no generated text is used.
 
 - [x] Canonical facts-snapshot builder and `fact_hash`
 - [x] Provider adapter: `none`, `ollama`, OpenAI-compatible (configuration)
-- [ ] Story generation command and cache keyed by hash
-- [ ] “AI generated” label and link to the facts used
+- [x] Story generation command and cache keyed by hash
+- [x] “AI generated” label and link to the facts used
 - [x] Prompt versioning (`PROMPT_VERSION`)
 - [x] Confirm nothing in comparisons, quizzes or facts reads `story` (snapshot/compare tests)
 

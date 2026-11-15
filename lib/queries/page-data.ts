@@ -1,10 +1,12 @@
 import { buildZoneSummaries, toUiId } from "@/lib/contract";
 import { items as fixtureItems, sources as fixtureSources } from "@/lib/fixtures";
+import { buildFactsSnapshot, factHash, PROMPT_VERSION } from "@/lib/narration";
 import { formatAge } from "@/lib/time";
-import type { GpSummary, Item, LineageEdge, Source, ZoneSummary } from "@/lib/types";
+import type { GpSummary, Item, LineageEdge, NarrationSummary, Source, ZoneSummary } from "@/lib/types";
 import { getItemByAnyId, listItems } from "./items";
 import { getLatestGp } from "./gp";
 import { listEdgesForItem } from "./lineage";
+import { getCachedStory } from "./story";
 import { listSources } from "./sources";
 import { listZones } from "./zones";
 
@@ -16,6 +18,7 @@ export interface ItemPageData {
   peers: Item[];
   edges: LineageEdge[];
   gp: GpSummary | null;
+  narration: NarrationSummary | null;
   dataSource: PageDataSource;
 }
 
@@ -29,11 +32,17 @@ export async function getItemPageData(id: string): Promise<ItemPageData | null> 
     const item = await getItemByAnyId(id);
     if (!item) return null;
 
-    const [items, sources, edges, gp] = await Promise.all([
+    const [items, sources, edges, gp, narration] = await Promise.all([
       listItems(),
       listSources(),
       listEdgesForItem(id),
       item.zone === "earth-orbit" ? getLatestGp(id) : Promise.resolve(null),
+      getCachedStory(
+        item.id,
+        "simple",
+        PROMPT_VERSION,
+        factHash(buildFactsSnapshot(item))
+      ),
     ]);
     return {
       item,
@@ -56,6 +65,7 @@ export async function getItemPageData(id: string): Promise<ItemPageData | null> 
               : null,
           }
         : null,
+      narration,
       dataSource: "database",
     };
   } catch (error) {
@@ -73,6 +83,7 @@ export async function getItemPageData(id: string): Promise<ItemPageData | null> 
     peers: fixtureItems.filter((peer) => peer.id !== item.id),
     edges: [],
     gp: null,
+    narration: null,
     dataSource: "fixtures",
   };
 }

@@ -120,6 +120,17 @@ export interface GpSummary {
   } | null;
 }
 
+export interface NarrationSummary {
+  id: string;
+  text: string;
+  model: string | null;
+  prompt_version: string;
+  fact_hash: string;
+  is_ai_generated: true;
+  facts_used: string[];
+  created_at: string;
+}
+
 export interface CompareRequest {
   aId: string;
   bId: string;

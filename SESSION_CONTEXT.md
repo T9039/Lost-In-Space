@@ -270,6 +270,10 @@ Done in this pass:
 - [x] **Playwright + accessibility** — twelve end-to-end checks cover every
       route; axe reports no serious or critical violations on the five main
       pages.
+- [x] **Story generation** — `npm run story -- --slug <slug>` builds a frozen
+      snapshot, checks the `story` cache by `fact_hash`, and calls Ollama or an
+      OpenAI-compatible provider. Cached stories render with an AI-generated
+      label and a link to the facts used.
 
 Next:
 

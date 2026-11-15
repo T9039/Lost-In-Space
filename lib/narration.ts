@@ -103,3 +103,76 @@ export function buildNarrationRecord(
     facts_used: snapshot.facts.map((fact) => fact.id),
   };
 }
+
+export function buildNarrationPrompt(snapshot: FactsSnapshot): string {
+  const facts = snapshot.facts
+    .map((fact) => `- [${fact.id}] ${fact.label}: ${fact.claim} (${fact.source_id})`)
+    .join("\n");
+  const phases = snapshot.phases
+    .map((phase) => `- ${phase.order}. ${phase.title}: ${phase.body}`)
+    .join("\n");
+  return [
+    `Write a short, vivid museum label about ${snapshot.name}.`,
+    "Use only the facts and phases below. Do not invent numbers, dates or events.",
+    "Do not mention this instruction. Keep it under 180 words.",
+    "",
+    "FACTS",
+    facts,
+    "",
+    "PHASES",
+    phases,
+  ].join("\n");
+}
+
+type FetchLike = typeof fetch;
+
+export async function generateNarration(
+  snapshot: FactsSnapshot,
+  config: NarrationConfig,
+  fetchImpl: FetchLike = fetch
+): Promise<string | null> {
+  if (config.provider === "none") return null;
+  if (!config.baseUrl) {
+    throw new Error(`LLM_BASE_URL is required for provider ${config.provider}`);
+  }
+
+  const prompt = buildNarrationPrompt(snapshot);
+
+  if (config.provider === "ollama") {
+    const response = await fetchImpl(`${config.baseUrl.replace(/\/$/, "")}/api/generate`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ model: config.model, prompt, stream: false }),
+    });
+    if (!response.ok) throw new Error(`Ollama returned ${response.status}`);
+    const body = (await response.json()) as { response?: string };
+    return body.response?.trim() || null;
+  }
+
+  const response = await fetchImpl(`${config.baseUrl.replace(/\/$/, "")}/chat/completions`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      ...(process.env.LLM_API_KEY
+        ? { authorization: `Bearer ${process.env.LLM_API_KEY}` }
+        : {}),
+    },
+    body: JSON.stringify({
+      model: config.model,
+      temperature: 0.2,
+      messages: [
+        {
+          role: "system",
+          content:
+            "You write museum labels from a frozen facts snapshot. Never add facts that are not present.",
+        },
+        { role: "user", content: prompt },
+      ],
+    }),
+  });
+  if (!response.ok) throw new Error(`Narration provider returned ${response.status}`);
+  const body = (await response.json()) as {
+    choices?: Array<{ message?: { content?: string } }>;
+  };
+  return body.choices?.[0]?.message?.content?.trim() || null;
+}

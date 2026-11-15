@@ -49,7 +49,7 @@ export default async function ItemPage({ params }: { params: Promise<{ id: strin
 
   return (
     <div className="container">
-      <ItemWorkspace item={data.item} sources={data.sources} peers={data.peers} edges={data.edges} gp={data.gp} />
+      <ItemWorkspace item={data.item} sources={data.sources} peers={data.peers} edges={data.edges} gp={data.gp} narration={data.narration} />
     </div>
   );
 }

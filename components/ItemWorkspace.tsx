@@ -6,7 +6,7 @@ import { ArrowLeftRight, Expand, RotateCcw, X } from "lucide-react";
 import AIPane from "./AIPane";
 import LabPane from "./LabPane";
 import { useCompare } from "./CompareProvider";
-import type { GpSummary, Item, LineageEdge, Source } from "@/lib/types";
+import type { GpSummary, Item, LineageEdge, NarrationSummary, Source } from "@/lib/types";
 import { ZONES } from "@/lib/types";
 
 type Mode = "split" | "ai" | "lab";
@@ -17,12 +17,14 @@ export default function ItemWorkspace({
   peers,
   edges,
   gp,
+  narration,
 }: {
   item: Item;
   sources: Source[];
   peers: Item[];
   edges: LineageEdge[];
   gp: GpSummary | null;
+  narration: NarrationSummary | null;
 }) {
   const [mode, setMode] = useState<Mode>("split");
   const [swapped, setSwapped] = useState(false);
@@ -75,6 +77,24 @@ export default function ItemWorkspace({
           <div className="card-pad">
             <div className="eyebrow" style={{ marginBottom: 6 }}>Why it was left</div>
             <p style={{ margin: 0 }}>{item.abandonment_reason}</p>
+          </div>
+        </section>
+      ) : null}
+
+      {narration ? (
+        <section className="card" aria-label="AI narration">
+          <div className="card-pad">
+            <div className="eyebrow" style={{ marginBottom: 6 }}>
+              AI GENERATED · {narration.model ?? narration.prompt_version}
+            </div>
+            <p style={{ marginBottom: 10 }}>{narration.text}</p>
+            <div className="row">
+              <span className="chip">AI generated</span>
+              <span className="chip">{narration.facts_used.length} facts used</span>
+              <a className="chip" href={`/api/items/${item.id}/lineage`}>
+                facts used ↗
+              </a>
+            </div>
           </div>
         </section>
       ) : null}
