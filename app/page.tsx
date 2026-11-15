@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getItems, getZones } from "@/lib/api";
+import { getHomeData } from "@/lib/queries/page-data";
 import RelicSolarMapLoader from "@/components/RelicSolarMapLoader";
 import { ArrowRight, Orbit, Satellite, Sparkles } from "lucide-react";
 
@@ -10,8 +10,10 @@ const PORTAL_COPY: Record<string, { kicker: string; description: string }> = {
   "deep-space": { kicker: "VOYAGERS & BEYOND", description: "Pioneering probes, nebulae, the endless frontier." },
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
-  const [zones, items] = await Promise.all([getZones(), getItems()]);
+  const { zones, items } = await getHomeData();
 
   return (
     <div className="museum-home">

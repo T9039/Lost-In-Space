@@ -19,8 +19,8 @@ Related documents:
 | 0 | Foundation | Done |
 | 1 | Ingest | Done; one live check outstanding |
 | 2 | Curate | In progress — 12 artifacts, aligned with the UI |
-| 3 | Application shell | Prototype merged; database/API integration next |
-| 4 | Artifact experience | Prototyped on fixtures; DB-backed work next |
+| 3 | Application shell | All routes read PostgreSQL, with fixtures as the fallback |
+| 4 | Artifact experience | Item profile is DB-backed; lineage and search next |
 | 5 | Live tracking | Not started |
 | 6 | Narration | Not started |
 | 7 | Hardening and release | Not started |
@@ -114,7 +114,7 @@ The remaining alias work belongs in `lib/contract.ts`, not in the database.
 
 ## Phase 3 — Application shell
 
-The prototype exists and builds. It is **fixture-backed**.
+The app builds and every route reads PostgreSQL. Fixtures remain the offline fallback.
 
 - [x] Next.js 15 + TypeScript + Tailwind prototype
 - [x] Routes: `/`, `/archive`, `/item/[id]`, `/compare`, `/test`, `/sources`
@@ -122,22 +122,25 @@ The prototype exists and builds. It is **fixture-backed**.
 - [x] `API_CONTRACT.md`
 - [x] `npm ci` and `npm run build` succeed; all routes return 200
 - [x] Development database provisioned on Neon and loaded with the full dataset
-- [ ] Resolve desktop → Neon São Paulo connectivity (try direct URL, then Frankfurt)
-- [ ] `lib/db.ts` — one `pg` pool, server-only
-- [ ] Typed queries over `v_artifact_card`, `v_artifact_timeline`, `v_artifact_edge`
-- [ ] `app/api/zones`, `items`, `items/[id]`, `items/[id]/lineage`, `sources`
-- [ ] `POST /api/compare` using the SQL diff, not the client-only `lib/compare.ts`
-- [ ] `GET /api/health`
-- [ ] Switch `lib/api.ts` from fixtures to the server API; keep fixtures as fallback
-- [ ] Sources page driven by the `source` table
-- [ ] Loading, empty and error states in the DB-backed flow
-- [ ] Cache headers / `revalidate` for curated facts
+- [x] App reaches Neon over HTTPS; native `psql`/ETL still need a 5432-capable network
+- [x] `lib/db.ts` — one lazy server handle (`neon-http` over HTTPS or a `pg` pool)
+- [x] Typed queries over `v_artifact_card` and `v_artifact_timeline`
+- [ ] Typed lineage query over `v_artifact_edge`
+- [x] `app/api/zones`, `items`, `items/[id]`, `items/[id]/lineage`, `sources`
+- [x] `POST /api/compare` from database records and the deterministic diff
+- [ ] Move comparison arithmetic into SQL, so `lib/compare.ts` is not the runtime path
+- [x] `GET /api/health`
+- [x] Archive, home, item, sources and compare read PostgreSQL with fixture fallback
+- [x] Sources page driven by the `source` table
+- [x] Loading, empty and fallback states in the DB-backed flow
+- [x] Cache headers for curated facts
 - [ ] Accessibility pass
-- [ ] Decide direct server queries vs all-through-`/api` (see contract note)
+- [x] Decide direct server queries vs all-through-`/api`: server components call
+      typed query functions; client components continue to use `lib/api.ts`
 
-**Decision needed:** the contract says the UI never reads Postgres, but server
-components could query it directly. Pick one: server components call typed query
-functions, and client components use `/api`; or every read goes through `/api`.
+**Decision:** server components call typed query functions directly; client
+components keep using `lib/api.ts` and the REST endpoints. `/archive` is the
+reference implementation, with fixtures as the offline fallback.
 
 ---
 
@@ -155,24 +158,24 @@ This is the adapter layer that does not exist yet.
 | Item id | slug-like (`apollo-11-eagle`) | `artifact.slug` (`apollo-11-lunar-module-eagle`) |
 | Models | static `/public/models` + `model_credit` | no model table |
 
-- [ ] Write `lib/contract.ts` with pure mapping functions and tests
-- [ ] Decide whether UI story phases are curated separately or derived from
-      `artifact_phase`
-- [ ] Decide how UI `status` is derived (last phase + mission result)
-- [ ] Align IDs or add a slug alias map
+- [x] Write `lib/contract.ts` with pure mapping functions
+- [ ] Add unit tests for `lib/contract.ts`
+- [x] UI story phases are derived deterministically from `artifact_phase`
+- [x] UI `status` is derived from the final phase code and mission outcome
+- [x] Align IDs with a slug alias map (`apollo-11-eagle`, `skylab-debris`)
 
 ---
 
 ## Phase 4 — Artifact experience
 
-The prototype covers the visual pieces on fixtures.
+The visual pieces exist; the item profile and archive now read PostgreSQL.
 
 - [x] Artifact profile layout (`/item/[id]`)
 - [x] Story-beat timeline component
 - [x] Facts and specs panels
 - [x] Comparison UI (client-side diff)
 - [x] Archive grid and zone filters
-- [ ] DB-backed profile: `v_artifact_card` + `v_artifact_timeline`
+- [x] DB-backed profile: `v_artifact_card` + `v_artifact_timeline`
 - [ ] Per-fact source links from the `fact` table
 - [ ] Lineage UI from `v_artifact_edge`
 - [ ] Server-side search (trigram); current filters are client-side
@@ -224,7 +227,7 @@ reads from PostgreSQL; no generated text is used.
 - [x] CI workflow drafted at `docs/ci-workflow.yml`
 - [ ] Enable CI after `gh auth refresh -s workflow` (workflow files need that scope)
 - [x] `db/migrations/README.md` documents the forward-only convention
-- [ ] No `app/api/` routes and no `lib/db.ts`
+- [x] `app/api/` routes and `lib/db.ts` are in place
 - [x] `npm run typecheck` added
 - [ ] No frontend tests or lint script
 - [x] `.env.example` documents `NEXT_PUBLIC_API_BASE`
@@ -240,12 +243,9 @@ reads from PostgreSQL; no generated text is used.
 
 ## Next three actions
 
-0. **Fix desktop database connectivity** — test `DATABASE_URL_UNPOOLED`, clear any
-   Tailscale exit node, and if São Paulo is unreachable from that network, create
-   a Frankfurt Neon project and reload the data.
-1. **Build the adapter and DB layer** — `lib/contract.ts`, `lib/db.ts`, typed
-   queries, then `/api/items`, `/api/items/:id` and `/api/sources`.
-2. **Switch one page at a time** — archive first, then home, item, sources;
-   keep fixtures as the offline fallback.
-3. **Expand curation** — Moon and deep space to 6–10 artifacts, then add
+1. **Lineage and SQL diff** — use `v_artifact_edge` for `/api/items/:id/lineage`
+   and move comparison arithmetic into SQL.
+2. **Expand curation** — Moon and deep space to 6–10 artifacts, then add
    `artifact_relation` edges.
+3. **Harden the DB-backed flow** — contract tests, frontend tests and the
+   accessibility pass; then enable CI.

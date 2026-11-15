@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { getItems } from "@/lib/api";
+import { getComparePageData } from "@/lib/queries/page-data";
 import { compareItems, KIND_LABEL } from "@/lib/compare";
 import type { Item } from "@/lib/types";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Compare — Lost in Space",
@@ -40,7 +42,7 @@ function Select({
 
 export default async function ComparePage({ searchParams }: { searchParams: SearchParams }) {
   const { a, b, deep } = await searchParams;
-  const items = await getItems();
+  const { items, dataSource } = await getComparePageData();
 
   const itemA = items.find((i) => i.id === a) ?? items[0];
   const itemB = items.find((i) => i.id === b && i.id !== itemA.id) ?? items.find((i) => i.id !== itemA.id);
@@ -59,6 +61,11 @@ export default async function ComparePage({ searchParams }: { searchParams: Sear
           Pick any two objects, even from different zones. The comparison is computed directly
           from stored facts — not generated — so every difference is checkable.
         </p>
+        <div className="row">
+          <span className="chip">
+            {dataSource === "database" ? "DATABASE" : "OFFLINE FIXTURES"}
+          </span>
+        </div>
       </section>
 
       <div className="stack">

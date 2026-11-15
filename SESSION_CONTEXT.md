@@ -21,8 +21,9 @@ Narration is generated separately from a frozen facts snapshot and never feeds
 facts, comparisons or quizzes.
 
 Current phase: **3 — frontend integration**. The database, ETL and a curated set
-of 12 artifacts are in place. A Next.js 15 prototype exists but still runs on
-fixture data.
+of 12 artifacts are in place. The archive and item pages are now server-rendered
+from PostgreSQL, and home, sources and compare now do too. Fixtures remain the
+offline fallback.
 
 ## Current state
 
@@ -32,8 +33,11 @@ fixture data.
 | ETL | Download, staging, VagueDate parser, transform, curate, validate, CelesTrak refresh |
 | Curation | 12 artifacts: 3 Moon, 4 Mars, 3 Earth orbit, 2 deep space |
 | Facts | 24 sourced facts, 12 credited media rows |
-| Frontend | Next.js 15, 6 routes, 3D map, workspace, compare, sources — fixture-backed |
 | Database | Neon project `royal-sea-92317290` (PostgreSQL 18.7), schema and data loaded |
+| Database driver | `lib/db.ts` — `neon-http` (HTTPS/443) or `pg` (TCP), auto-selected from the host |
+| Queries | `lib/queries/` — `archive`, `items`, `lineage`, `sources`, `zones`, `compare`, `health`, `page-data` |
+| API | `app/api/` — `zones`, `items`, `items/[id]`, `items/[id]/lineage`, `sources`, `POST /api/compare`, `GET /api/health` |
+| Frontend | All routes DB-backed with fixture fallback (archive, home, item, sources, compare) |
 | Docs | 79-page Typst PDF, ADRs, ROADMAP |
 | CI | Draft workflow at `docs/ci-workflow.yml`; needs a token with `workflow` scope to enable |
 
@@ -69,36 +73,37 @@ and the full dataset (12 artifacts, 29 phases, 24 facts, 12 media, 76,029
 launches, 4,145 organizations, 712 sites). Do not reload it unless the data
 changes.
 
-### Desktop connectivity problem (15 Nov 2026)
+### Desktop connectivity problem (resolved for the app, 15 Nov 2026)
 
 The laptop can reach Neon São Paulo and loaded the data. The desktop
-(`armomarchy`, `100.66.8.105`) cannot:
+(`armomarchy`, `100.66.8.105`) blocks outbound TCP/5432: both the pooled and
+direct hosts time out over IPv4, and IPv6 has no route. HTTPS/443 works.
 
-```text
-connection to server at "2600:1f1e:...": Network is unreachable
-hostaddr 15.228.0.140 / 56.125.127.1 / 15.229.115.3: connection timeout expired
-```
+`lib/db.ts` therefore sends `*.neon.tech` URLs through
+`@neondatabase/serverless` over HTTPS (`neon-http`) and uses a `pg` pool only
+for hosts that speak the native protocol. `DB_DRIVER` overrides the choice;
+`npm run db:check` reports the transport, TCP reachability and HTTPS latency.
 
-This is a routing/firewall problem, not a bad password. Try in this order:
+The app, API, build and ETL-independent routes work. `psql`, `pg_dump` and the
+Python ETL still need a network or tunnel that permits 5432. No Frankfurt
+project or reload is needed for the web app.
 
-1. **Use the direct URL** in `.env.local` for the test:
-   `DATABASE_URL="$DATABASE_URL_UNPOOLED"` — the pooler host may be the blocked one.
-2. **Test reachability**:
-   `nc -vz ep-rough-rice-b6jyqn9d.c-2.sa-east-1.aws.neon.tech 5432`
-   and the `-pooler` host.
-3. **Check Tailscale exit node**:
-   `tailscale status`, then `tailscale set --exit-node=` to clear an exit node,
-   and retry.
-4. **Force IPv4** in the connection string with `hostaddr=<A record>` after
-   `dig +short A <host>` (libpq otherwise tries IPv6 first and fails).
-5. **If São Paulo is unreachable from that network, create a Frankfurt project**
-   (same region as Render production), copy its URL into `.env.local`, apply
-   `db/schema.sql`, the seed and staging, then run the ETL. The data is
-   reproducible from GCAT; no dump is needed. Frankfurt is the recommended
-   fallback.
+Verified on the current machine:
 
-Do not change the laptop's working São Paulo project until the Frankfurt
-replacement is loaded and verified.
+- `npm run typecheck` and `npm run build` pass.
+- `npm run db:check` reaches Neon over HTTPS (`neon-http`, about 1.5 s, `db=neondb`).
+  Native TCP/5432 is blocked on this network; `psql`, `pg_dump` and the Python
+  ETL need a network or tunnel that permits 5432.
+- The live database returns 12 artifacts and 8 sources through the API.
+- All pages return 200: `/`, `/archive`, `/sources`, `/compare`, `/test` and
+  `/item/{opportunity,apollo-11-eagle,hubble-space-telescope}`.
+- Home, sources and compare render from PostgreSQL; archive, sources and compare
+  show a `DATABASE` chip, and home uses the DB portal data.
+- API checks: unknown zone and malformed compare body return `400`, a missing
+  item returns `404`, and `POST /api/compare` returns the deterministic diff.
+- `app/api/zones`, `app/api/items`, `app/api/items/[id]`, `app/api/items/[id]/lineage`
+  and `app/api/sources` send `Cache-Control: public, s-maxage=3600, stale-while-revalidate=86400`;
+  `compare` and `health` do not.
 
 ## How to run
 
@@ -110,9 +115,12 @@ npm run dev          # http://localhost:3000
 npm run typecheck
 npm run build
 npm start
+npm run db:check     # connectivity diagnostic; prints host, driver and latency
 ```
 
 `lib/api.ts` uses `lib/fixtures.ts` when `NEXT_PUBLIC_API_BASE` is unset.
+`lib/db.ts` selects `neon-http` automatically for `*.neon.tech` hosts and `pg`
+otherwise; set `DB_DRIVER=pg` or `DB_DRIVER=neon-http` to override.
 
 ### Python ETL
 
@@ -183,26 +191,29 @@ See `.env.example`.
 
 ## Immediate next work
 
-0. **Fix the desktop database connection** (see the Neon section above). The
-   code step cannot be verified against the real schema until `SELECT 1` works.
-1. **`lib/contract.ts`** — map:
-   - zones: `earth-orbit` ↔ `earth_orbit`, `deep-space` ↔ `deep_space`
-   - status: UI `active|inactive|derelict|destroyed` from phase/mission data
-   - facts: `fact_type`/`fact_text` → `kind|label|value|claim`
-   - phases: decide whether UI story beats are curated or derived from
-     `artifact_phase`
-   - slugs: `apollo-11-eagle` → `apollo-11-lunar-module-eagle`,
-     `skylab-debris` → `skylab`
-2. **`lib/db.ts` and `lib/queries/`** — one `pg` pool, typed rows over
-   `v_artifact_card`, `v_artifact_timeline`, `v_artifact_edge`.
-3. **`app/api/`** — implement `API_CONTRACT.md`:
-   `/api/zones`, `/api/items`, `/api/items/:id`, `/api/items/:id/lineage`,
-   `/api/sources`, `POST /api/compare`, `GET /api/health`.
-4. **Switch pages one at a time** — archive first, then home, item, sources.
-   Keep fixtures as the offline fallback.
+Done in this pass:
 
-Then: expand curation (Moon and deep space), add relations, Phase 4 provenance
-and search, Phase 5 live tracking, Phase 6 narration.
+- [x] **`lib/contract.ts`** — zones, status, facts, phases, catalogue and slug
+      aliases (`apollo-11-eagle` ↔ `apollo-11-lunar-module-eagle`,
+      `skylab-debris` ↔ `skylab`).
+- [x] **`lib/db.ts` and `lib/queries/`** — one lazy database handle, typed reads
+      over `v_artifact_card` and `v_artifact_timeline`.
+- [x] **`app/api/`** — every endpoint in `API_CONTRACT.md`, including
+      `POST /api/compare` and `GET /api/health`.
+- [x] **Archive off fixtures** — server-rendered from PostgreSQL, fixtures kept
+      as the offline fallback.
+- [x] **Item pages DB-aware** — both slug forms resolve; fixtures remain the
+      fallback.
+- [x] **Home, sources and compare off fixtures** — all three read PostgreSQL
+      with fixture fallback; sources and compare show a `DATABASE` chip.
+
+Next:
+
+1. Use `v_artifact_edge` for the lineage graph; `/api/items/:id/lineage`
+   currently returns the fact/phase/source buckets only.
+2. Move comparison arithmetic into SQL so `lib/compare.ts` is not the runtime path.
+3. Expand curation (Moon and deep space), then Phase 4 provenance and search,
+   Phase 5 live tracking, Phase 6 narration.
 
 ## Database hosting decision
 
@@ -274,6 +285,13 @@ Neon URL into `render.yaml`.
 2. **Rootless Podman on the desktop** — viable later for a self-hosted dev
    database, exposed over Tailscale only; not needed now.
 3. **Laptop-hosted** — rejected; the laptop must stay online.
+
+**Desktop → Neon on this network:** outbound TCP/5432 is blocked (IPv6 has no
+route either), while HTTPS/443 works. `lib/db.ts` therefore sends `*.neon.tech`
+URLs through `@neondatabase/serverless` over HTTPS and uses `pg` everywhere else;
+`DB_DRIVER` overrides the choice. The app, API and build work, but `psql`,
+`pg_dump` and the Python ETL still need a network or tunnel that permits 5432.
+Run `npm run db:check` to see the current state.
 
 ## Known gaps
 

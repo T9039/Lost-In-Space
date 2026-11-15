@@ -85,6 +85,19 @@ export interface ZoneSummary {
   hero_image?: string;
 }
 
+export interface LineageResponse {
+  item_id: string;
+  phases: Phase[];
+  facts: Fact[];
+  sources: Source[];
+}
+
+export interface CompareRequest {
+  aId: string;
+  bId: string;
+  depth: "simple" | "deep";
+}
+
 export const ZONES: Record<Zone, { label: string; blurb: string }> = {
   moon: {
     label: "The Moon",

@@ -1,18 +1,17 @@
 import { notFound } from "next/navigation";
-import { getItem, getItems, getSources } from "@/lib/api";
 import ItemWorkspace from "@/components/ItemWorkspace";
+import { getItemPageData } from "@/lib/queries/page-data";
+
+export const dynamic = "force-dynamic";
 
 export default async function ItemPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const item = await getItem(id);
-  if (!item) notFound();
-
-  const [sources, allItems] = await Promise.all([getSources(), getItems()]);
-  const peers = allItems.filter((i) => i.id !== item.id);
+  const data = await getItemPageData(id);
+  if (!data) notFound();
 
   return (
     <div className="container">
-      <ItemWorkspace item={item} sources={sources} peers={peers} />
+      <ItemWorkspace item={data.item} sources={data.sources} peers={data.peers} />
     </div>
   );
 }

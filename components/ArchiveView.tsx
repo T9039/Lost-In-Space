@@ -4,24 +4,33 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import ItemCard from "./ItemCard";
 import SectorMap from "./SectorMap";
-import { getItems, getZones } from "@/lib/api";
 import { ZONES, type Item, type Zone, type ZoneSummary } from "@/lib/types";
 import { hallTelemetry, zoneMeta } from "@/lib/zones";
 import { GalleryVerticalEnd, MapPinned } from "lucide-react";
 
 const ZONE_IDS = Object.keys(ZONES) as Zone[];
 
-export default function ArchiveView() {
+export default function ArchiveView({
+  initialItems,
+  initialZones,
+  dataSource,
+}: {
+  initialItems: Item[];
+  initialZones: ZoneSummary[];
+  dataSource: "database" | "fixtures";
+}) {
   const params = useSearchParams();
   const router = useRouter();
   const zoneParam = params.get("zone");
   const activeZone =
     zoneParam && (ZONE_IDS as string[]).includes(zoneParam) ? (zoneParam as Zone) : null;
 
-  const [items, setItems] = useState<Item[]>([]);
-  const [allItems, setAllItems] = useState<Item[]>([]);
-  const [zones, setZones] = useState<ZoneSummary[]>([]);
-  const [loading, setLoading] = useState(true);
+  const allItems = initialItems;
+  const zones = initialZones;
+  const items = useMemo(
+    () => (activeZone ? allItems.filter((item) => item.zone === activeZone) : allItems),
+    [activeZone, allItems]
+  );
   const [query, setQuery] = useState("");
   const [view, setView] = useState<"map" | "gallery" | "data">(
     params.get("view") === "map" ? "map" : params.get("view") === "data" ? "data" : "gallery"
@@ -30,23 +39,6 @@ export default function ArchiveView() {
   useEffect(() => {
     setView(params.get("view") === "map" ? "map" : params.get("view") === "data" ? "data" : "gallery");
   }, [params]);
-
-  useEffect(() => {
-    let alive = true;
-    setLoading(true);
-    Promise.all([getItems(activeZone ?? undefined), getItems(), getZones()]).then(
-      ([list, all, zoneList]) => {
-        if (!alive) return;
-        setItems(list);
-        setAllItems(all);
-        setZones(zoneList);
-        setLoading(false);
-      }
-    );
-    return () => {
-      alive = false;
-    };
-  }, [activeZone]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -77,7 +69,12 @@ export default function ArchiveView() {
   return (
     <div className="stack archive-explorer">
       <header className="archive-title-block">
-        <div className="eyebrow">MISSION ARCHIVE <span>/</span> EXHIBIT GALLERY</div>
+        <div className="eyebrow">
+          MISSION ARCHIVE <span>/</span> EXHIBIT GALLERY
+          <span className="chip" style={{ marginLeft: 12 }}>
+            {dataSource === "database" ? "DATABASE" : "OFFLINE FIXTURES"}
+          </span>
+        </div>
         <h1>ZONE EXPLORER:<br /><span>ABANDONED ARTIFACTS ON {meta?.label.toUpperCase() ?? "ALL ZONES"}</span></h1>
         <p>Explore the historic traces of robotic exploration across the solar system.</p>
       </header>
@@ -175,11 +172,11 @@ export default function ArchiveView() {
           onChange={(e) => setQuery(e.target.value)}
         />
         <span className="muted" style={{ fontSize: 13 }}>
-          {loading ? "Loading…" : `${filtered.length} of ${items.length} shown`}
+          {`${filtered.length} of ${items.length} shown`}
         </span>
       </div>
 
-      {!loading && filtered.length === 0 ? (
+      {filtered.length === 0 ? (
         <div className="empty-state">
           No machines match that search.{" "}
           <button className="tab" onClick={() => setQuery("")} style={{ marginLeft: 8 }}>

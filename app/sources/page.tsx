@@ -1,5 +1,4 @@
-import { getSources } from "@/lib/api";
-import { USING_MOCK } from "@/lib/api";
+import { getSourcesPageData } from "@/lib/queries/page-data";
 
 const KIND_LABEL: Record<string, string> = {
   "mission-page": "Mission pages",
@@ -8,12 +7,14 @@ const KIND_LABEL: Record<string, string> = {
   "press-kit": "Press kits",
 };
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Sources — Lost in Space",
 };
 
 export default async function SourcesPage() {
-  const sources = await getSources();
+  const { sources, dataSource } = await getSourcesPageData();
   const kinds = Array.from(new Set(sources.map((s) => s.kind)));
 
   return (
@@ -28,7 +29,7 @@ export default async function SourcesPage() {
         </p>
         <div className="row" style={{ marginTop: 10 }}>
           <span className="chip">{sources.length} sources</span>
-          <span className="chip">{USING_MOCK ? "fixture data" : "live API"}</span>
+          <span className="chip">{dataSource === "database" ? "DATABASE" : "OFFLINE FIXTURES"}</span>
           <span className="chip">no AI-generated imagery</span>
         </div>
       </section>
