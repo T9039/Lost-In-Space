@@ -90,7 +90,7 @@ project or reload is needed for the web app.
 
 Verified on the current machine:
 
-- `npm run typecheck`, `npm test` (14 unit/component tests) and `npm run build` pass.
+- `npm run typecheck`, `npm test` (unit, component and real-database query tests) and `npm run build` pass.
 - `npm run test:system` passes 14 checks against the production server, including
   every page, API status codes and the compare body.
 - `npm run db:check` reaches Neon over HTTPS (`neon-http`, about 1.5 s, `db=neondb`).

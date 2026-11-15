@@ -160,6 +160,7 @@ This is the adapter layer that does not exist yet.
 
 - [x] Write `lib/contract.ts` with pure mapping functions
 - [x] Add unit tests for `lib/contract.ts`
+- [x] Add real-database integration tests for the query layer
 - [x] UI story phases are derived deterministically from `artifact_phase`
 - [x] UI `status` is derived from the final phase code and mission outcome
 - [x] Align IDs with a slug alias map (`apollo-11-eagle`, `skylab-debris`)

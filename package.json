@@ -8,7 +8,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "db:check": "node scripts/check-db.mjs",
-    "test": "TSX_TSCONFIG_PATH=tsconfig.test.json node --import tsx --test lib/*.test.ts components/__tests__/*.test.tsx",
+    "test": "TSX_TSCONFIG_PATH=tsconfig.test.json node --import tsx --test lib/*.test.ts lib/queries/*.test.ts components/__tests__/*.test.tsx",
     "test:system": "node scripts/system-test.mjs",
     "test:all": "npm test && npm run build && npm run test:system"
   },
