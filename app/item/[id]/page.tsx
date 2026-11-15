@@ -18,7 +18,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const description =
     item.abandonment_reason ||
     `${item.short_name} in ${item.location.label}. ${item.facts.length} sourced facts and ${item.phases.length} mission phases.`;
-  const image = item.images[0]?.src;
+  const imagePath = item.images[0]?.src;
+  const image = imagePath
+    ? new URL(imagePath, process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000").toString()
+    : undefined;
 
   return {
     title,

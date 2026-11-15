@@ -109,7 +109,7 @@ An `Item` response contains the three related data buckets: `facts`, `phases`, a
 
 ### Media and 3D assets
 
-- `images` is `ItemImage[]`. `src` is the browser-loadable NASA image path or URL; `caption` is the image attribution/context shown by the gallery; `source_id` links to `/api/sources`.
+- `images` is `ItemImage[]`. `src` is the browser-loadable image path or URL; remote NASA assets are rewritten to `/api/image?url=...`, which is allowlisted and cached. `caption` is the image attribution/context shown by the gallery; `source_id` links to `/api/sources`.
 - `model_url` is optional and points to a browser-loadable GLB model (for example, `/models/opportunity.glb`). `model_credit` is the optional display credit. The `<model-viewer>` UI derives a PNG poster path by replacing `.glb` with `.png`; provide that sibling asset when available.
 - `hero_image` on `ZoneSummary` is an optional browser-loadable image path/URL used for the Home zone portal.
 

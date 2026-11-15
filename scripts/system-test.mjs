@@ -95,6 +95,7 @@ try {
       assert.match(html, /Why it was left/);
       assert.match(html, /Provenance/);
       assert.match(html, /Lineage/);
+      assert.match(html, /property="og:image" content="https?:\/\//);
     })
   );
   checks.push(
@@ -112,6 +113,22 @@ try {
     })
   );
   checks.push(await check("/api/items?zone=pluto", 400));
+  checks.push(
+    await check(
+      "/api/image?url=" +
+        encodeURIComponent("https://images-assets.nasa.gov/image/PIA20285/PIA20285~orig.jpg"),
+      200,
+      async (response) => {
+        assert.match(response.headers.get("content-type") ?? "", /^image\//);
+      }
+    )
+  );
+  checks.push(
+    await check(
+      "/api/image?url=" + encodeURIComponent("https://example.com/a.jpg"),
+      400
+    )
+  );
   checks.push(
     await check("/api/items?q=opportunity", 200, async (response) => {
       const items = await response.json();

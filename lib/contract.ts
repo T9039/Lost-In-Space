@@ -1,3 +1,4 @@
+import { imageProxySrc } from "./images";
 import {
   ZONES,
   type Fact,
@@ -412,7 +413,7 @@ function toMedia(row: MediaRow): ItemImage | null {
   if (row.media_type && row.media_type !== "image") return null;
   if (!row.url) return null;
   const caption = [row.title, row.credit].filter(Boolean).join(" — ");
-  return { src: row.url, caption: caption || "NASA image", source_id: row.source_id };
+  return { src: imageProxySrc(row.url), caption: caption || "NASA image", source_id: row.source_id };
 }
 
 /* ------------------------------------------------------------------ */

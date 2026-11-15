@@ -238,7 +238,7 @@ reads from PostgreSQL; no generated text is used.
 - [x] Branding is Lost in Space; the museum name is gone from the UI
 - [ ] The 30 unmatched lander rows and `UNK` launch tag are still open
 - [ ] CelesTrak refresh is not exercised live
-- [ ] Image proxy is not implemented; images are bundled in `public/`
+- [x] Image proxy implemented for remote NASA assets; bundled images stay local
 - [ ] No narration provider or snapshot builder
 
 ---

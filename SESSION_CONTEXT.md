@@ -228,6 +228,8 @@ Done in this pass:
 - [x] **Models in the database** — six `media` rows (`media_type = 'model'`)
       carry the GLB URL and NASA 3D Resources credit; the adapter falls back to
       the old static map only when a row is absent.
+- [x] **Image proxy** — `/api/image` allowlists NASA image hosts, forwards a
+      descriptive user agent and sets a long cache; local `/img` paths bypass it.
 
 Next:
 
