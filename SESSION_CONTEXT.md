@@ -212,6 +212,8 @@ Done in this pass:
       in PostgreSQL; highlights remain deterministic presentation.
 - [x] **Item metadata and provenance** — share/index metadata, a “Why it was
       left” panel, and per-fact source links.
+- [x] **Contract tests** — six `node:test` cases over the pure mapping
+      functions; run with `npm test`.
 
 Next:
 

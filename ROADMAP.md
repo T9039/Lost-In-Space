@@ -159,7 +159,7 @@ This is the adapter layer that does not exist yet.
 | Models | static `/public/models` + `model_credit` | no model table |
 
 - [x] Write `lib/contract.ts` with pure mapping functions
-- [ ] Add unit tests for `lib/contract.ts`
+- [x] Add unit tests for `lib/contract.ts`
 - [x] UI story phases are derived deterministically from `artifact_phase`
 - [x] UI `status` is derived from the final phase code and mission outcome
 - [x] Align IDs with a slug alias map (`apollo-11-eagle`, `skylab-debris`)
@@ -213,7 +213,8 @@ reads from PostgreSQL; no generated text is used.
 ## Phase 7 — Hardening and release
 
 - [ ] Enable the drafted CI workflow (`.github/workflows` needs workflow scope)
-- [ ] Add `lint`, `typecheck`, `test` scripts (Vitest, Playwright assumed)
+- [x] Add `typecheck` and `test` scripts (node:test + tsx)
+- [ ] Add a lint script (and Playwright when the DB-backed flow stabilises)
 - [ ] Backup and restore drill
 - [ ] Accessibility, responsive and performance passes
 - [ ] Deploy to Render with a paid database and cron
