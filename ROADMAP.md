@@ -135,7 +135,7 @@ The app builds and every route reads PostgreSQL. Fixtures remain the offline fal
 - [x] Sources page driven by the `source` table
 - [x] Loading, empty and fallback states in the DB-backed flow
 - [x] Cache headers for curated facts
-- [ ] Accessibility pass
+- [x] Accessibility pass (axe: no serious/critical violations on home, archive, sources, compare, item)
 - [x] Decide direct server queries vs all-through-`/api`: server components call
       typed query functions; client components continue to use `lib/api.ts`
 
@@ -219,7 +219,7 @@ reads from PostgreSQL; no generated text is used.
 - [x] Add a lint script (`oxlint`)
 - [x] Add Playwright end-to-end coverage
 - [x] Backup and restore drill (12 MB dump restored into a temporary Neon database)
-- [ ] Accessibility, responsive and performance passes
+- [ ] Responsive and performance passes
 - [ ] Deploy to Render with a paid database and cron
 - [x] Verify attribution and licences on every page (footer + sources page system tests)
 - [ ] Tag `v1.0`; attach the documentation PDF

@@ -267,6 +267,9 @@ Done in this pass:
 - [x] **Attribution audit** — every page is covered by the footer credits, and
       the sources page is checked by the system test. All 12 unique fact source
       URLs resolve (three only via the laptop network).
+- [x] **Playwright + accessibility** — twelve end-to-end checks cover every
+      route; axe reports no serious or critical violations on the five main
+      pages.
 
 Next:
 

@@ -15,7 +15,7 @@ export default function ItemCard({ item }: { item: Item }) {
 
   return (
     <article className={`card artifact-card zone-${item.zone}`}>
-      <Link href={`/item/${item.id}`} className="card-media-link" aria-label={item.name}>
+      <Link href={`/item/${item.id}`} className="card-media-link">
         <div className="card-media">
           {img ? (
             <img
