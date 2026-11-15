@@ -67,6 +67,7 @@ interface Phase {
   body: string;
   stat_value: string;
   stat_label: string;
+  source_id?: string;
 }
 
 interface ItemImage {

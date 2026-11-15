@@ -48,6 +48,8 @@ export interface Phase {
   body: string;
   stat_value: string;
   stat_label: string;
+  /** GCAT row that produced this phase, when available. */
+  source_id?: string;
 }
 
 export interface ItemImage {

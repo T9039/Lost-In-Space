@@ -179,7 +179,7 @@ The visual pieces exist; the item profile and archive now read PostgreSQL.
 - [x] Per-fact source links from the `fact` table
 - [x] Lineage UI from `v_artifact_edge` (empty until curated relations exist)
 - [ ] Server-side search (trigram); current filters are client-side
-- [ ] Provenance panel for phases and media
+- [x] Provenance panel for phases and media
 - [x] “Why it was abandoned” from `mission.abandonment_reason`
 - [x] `generateMetadata` for sharing and indexing
 
@@ -230,7 +230,7 @@ reads from PostgreSQL; no generated text is used.
 - [x] `db/migrations/README.md` documents the forward-only convention
 - [x] `app/api/` routes and `lib/db.ts` are in place
 - [x] `npm run typecheck` added
-- [ ] No frontend tests or lint script
+- [ ] No lint script (unit, component and system tests exist)
 - [x] `.env.example` documents `NEXT_PUBLIC_API_BASE`
 - [x] `ATTRIBUTION.md` includes NASA mission pages
 - [x] Technical docs point at `app/`, `components/` and `lib/`

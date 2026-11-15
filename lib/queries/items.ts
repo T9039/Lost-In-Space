@@ -98,11 +98,14 @@ async function hydrate(cards: CardRow[]): Promise<Item[]> {
       [slugs]
     ),
     query<TimelineRow>(
-      `SELECT slug, seq, phase_key, launch_id, start_best, end_best,
-              status_code, status_description, dest_raw, zone
-         FROM v_artifact_timeline
-        WHERE slug = ANY($1::text[])
-        ORDER BY slug, seq`,
+      `SELECT t.slug, t.seq, t.phase_key, t.launch_id, t.start_best, t.end_best,
+              t.status_code, t.status_description, t.dest_raw, t.zone,
+              ph.source_id
+         FROM v_artifact_timeline t
+         JOIN artifact a ON a.slug = t.slug
+         JOIN artifact_phase ph ON ph.phase_key = t.phase_key
+        WHERE t.slug = ANY($1::text[])
+        ORDER BY t.slug, t.seq`,
       [slugs]
     ),
   ]);

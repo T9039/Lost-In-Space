@@ -97,6 +97,7 @@ export interface TimelineRow {
   status_description: string | null;
   dest_raw: string | null;
   zone: DbZone | null;
+  source_id?: string | null;
 }
 
 export interface SourceRow {
@@ -363,6 +364,7 @@ function toPhase(
     body: description ? `${window}. ${description}` : `${window}.`,
     stat_value: window,
     stat_label: "Phase window",
+    source_id: row.source_id ?? undefined,
   };
 }
 

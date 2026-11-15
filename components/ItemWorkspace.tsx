@@ -33,6 +33,12 @@ export default function ItemWorkspace({
   const queued = has(item.id);
   const peer = peers.find((p) => p.id === peerId) ?? peers[0];
   const compareHref = peer ? `/compare?a=${item.id}&b=${peer.id}` : "/compare";
+  const sourceById = new Map(sources.map((source) => [source.id, source]));
+  const phaseSources = Array.from(
+    new Set(item.phases.map((phase) => phase.source_id).filter((id): id is string => Boolean(id)))
+  )
+    .map((id) => sourceById.get(id))
+    .filter((source): source is Source => Boolean(source));
 
   return (
     <div className="workspace-shell">
@@ -88,6 +94,47 @@ export default function ItemWorkspace({
               No curated parent/child edges yet. Facts and phases still carry their own
               provenance.
             </p>
+          )}
+        </div>
+      </section>
+
+      <section className="card" aria-label="Provenance">
+        <div className="card-pad">
+          <div className="eyebrow" style={{ marginBottom: 6 }}>Provenance</div>
+          <p className="muted" style={{ marginBottom: 10 }}>
+            Phases and media carry their own source ids, separate from the facts.
+          </p>
+          {phaseSources.length ? (
+            <div className="row" style={{ marginBottom: 10 }}>
+              <span className="muted" style={{ fontSize: 13 }}>Phase records:</span>
+              {phaseSources.map((source) => (
+                <a key={source.id} className="chip" href={source.url} target="_blank" rel="noreferrer">
+                  {source.publisher} ↗
+                </a>
+              ))}
+            </div>
+          ) : null}
+          {item.images.length ? (
+            <ul style={{ margin: 0, paddingLeft: 18 }}>
+              {item.images.map((image) => {
+                const source = sourceById.get(image.source_id);
+                return (
+                  <li key={image.src}>
+                    {image.caption}
+                    {source ? (
+                      <>
+                        {" "}
+                        <a href={source.url} target="_blank" rel="noreferrer">
+                          {source.publisher} ↗
+                        </a>
+                      </>
+                    ) : null}
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className="muted" style={{ margin: 0 }}>No media rows for this artifact.</p>
           )}
         </div>
       </section>

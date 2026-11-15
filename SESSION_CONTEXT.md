@@ -90,7 +90,9 @@ project or reload is needed for the web app.
 
 Verified on the current machine:
 
-- `npm run typecheck` and `npm run build` pass.
+- `npm run typecheck`, `npm test` (14 unit/component tests) and `npm run build` pass.
+- `npm run test:system` passes 14 checks against the production server, including
+  every page, API status codes and the compare body.
 - `npm run db:check` reaches Neon over HTTPS (`neon-http`, about 1.5 s, `db=neondb`).
   Native TCP/5432 is blocked on this network; `psql`, `pg_dump` and the Python
   ETL need a network or tunnel that permits 5432.
@@ -116,6 +118,9 @@ npm run typecheck
 npm run build
 npm start
 npm run db:check     # connectivity diagnostic; prints host, driver and latency
+npm test             # unit + component tests (node:test + tsx)
+npm run build && npm run test:system   # start the server and exercise every route/API
+npm run test:all     # tests, build and system checks in one command
 ```
 
 `lib/api.ts` uses `lib/fixtures.ts` when `NEXT_PUBLIC_API_BASE` is unset.
@@ -216,6 +221,8 @@ Done in this pass:
       functions; run with `npm test`.
 - [x] **Lineage UI** — item pages render direct `v_artifact_edge` links and show
       an explicit empty state until curated relations are added.
+- [x] **Phase and media provenance** — item pages show the source behind each
+      phase (`artifact_phase.source_id`) and each media row.
 
 Next:
 
@@ -305,7 +312,7 @@ Run `npm run db:check` to see the current state.
 ## Known gaps
 
 - No `app/api/` routes and no `lib/db.ts` yet.
-- No frontend tests or lint script; `typecheck` exists.
+- No lint script. Unit, component and system tests exist; `typecheck` is clean.
 - CI is drafted but not enabled; the gh token lacks the `workflow` scope.
 - `db/migrations/` only documents the convention; no migrations yet.
 - 30 lander rows have no object row (`lcat`/`rcat` not loaded).
