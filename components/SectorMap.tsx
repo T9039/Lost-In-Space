@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ArrowUpRight, Crosshair, MapPin } from "lucide-react";
+import { displayText } from "@/lib/displayText";
 import { useMemo, useState } from "react";
 import type { Item, Zone, ZoneSummary } from "@/lib/types";
 
@@ -45,7 +46,7 @@ function Marker({
       transform={`translate(${point.x} ${point.y})`}
       role="button"
       tabIndex={0}
-      aria-label={`Select ${item.short_name}`}
+      aria-label={`Select ${displayText(item.short_name)}`}
       onClick={onSelect}
       onKeyDown={(event) => {
         if (event.key === "Enter" || event.key === " ") {
@@ -54,7 +55,7 @@ function Marker({
         }
       }}
     >
-      <title>{item.short_name} · {item.location.label}</title>
+      <title>{displayText(item.short_name)} · {displayText(item.location.label)}</title>
       <circle className="pin-wave" r="16" />
       <circle className="pin-core" r="8" />
       <text className="pin-index" x="0" y="3">{String(index + 1).padStart(2, "0")}</text>
@@ -134,7 +135,7 @@ export default function SectorMap({
                 onClick={() => onZoneSelect(entry.id)}
               >
                 <span className="zone-option-signal" />
-                <span>{entry.label.toUpperCase()}</span>
+                <span>{displayText(entry.label.toUpperCase())}</span>
                 <small>{String(entry.item_count).padStart(2, "0")}</small>
               </button>
             ))}
@@ -144,15 +145,15 @@ export default function SectorMap({
             {items.map((item, index) => (
               <button key={item.id} className={`sector-map-legend-item ${selected?.id === item.id ? "is-active" : ""}`} onClick={() => setSelectedId(item.id)}>
                 <span className="legend-number">{String(index + 1).padStart(2, "0")}</span>
-                <span className="legend-copy"><b>{item.short_name}</b><small>{item.location.label}</small></span>
+                <span className="legend-copy"><b>{displayText(item.short_name)}</b><small>{displayText(item.location.label)}</small></span>
               </button>
             ))}
           </div>
           {selected ? (
             <div className="sector-map-selected">
               <span className="selected-kicker">SELECTED OBJECT</span>
-              <strong>{selected.short_name}</strong>
-              <span>{selected.years_active}</span>
+              <strong>{displayText(selected.short_name)}</strong>
+              <span>{displayText(selected.years_active)}</span>
               <Link href={`/item/${selected.id}`}>OPEN MISSION DOSSIER <ArrowUpRight size={13} /></Link>
             </div>
           ) : <div className="sector-map-empty">No artifacts are mapped in this hall yet.</div>}

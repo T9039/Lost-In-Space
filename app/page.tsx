@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getHomeData } from "@/lib/queries/page-data";
 import RelicSolarMapLoader from "@/components/RelicSolarMapLoader";
+import SolarSystemHero from "@/components/SolarSystemHero";
 import { ArrowRight, Orbit, Satellite, Sparkles } from "lucide-react";
 
 const PORTAL_COPY: Record<string, { kicker: string; description: string }> = {
@@ -18,7 +19,7 @@ export default async function HomePage() {
   return (
     <div className="museum-home">
       <section className="home-hero targeting-frame">
-        <div className="home-hero-media" aria-hidden="true" />
+        <SolarSystemHero />
         <div className="home-hero-content">
           <div className="hero-collection-mark"><Orbit size={14} /> LOST IN SPACE <span>·</span> ABANDONED HARDWARE ARCHIVE</div>
           <h1>LOST IN<br />SPACE</h1>
@@ -85,7 +86,7 @@ export default async function HomePage() {
         <div className="home-story-image"><img src="/img/opportunity-2.jpg" alt="Dust on a Mars rover solar array" /></div>
         <div className="home-story-copy">
           <div className="eyebrow">WHY MACHINES STAY</div>
-          <h2>Space is a one-way museum.</h2>
+          <h2>Space is a one way museum.</h2>
           <p>Some spacecraft run out of power. Some are too far away to bring home. Others keep travelling, long after the people who launched them have gone.</p>
           <p>Every exhibit links its story to sourced facts, mission chapters, and the photographs that brought it back to us.</p>
           <Link href="/sources" className="text-link">Explore the source archive <ArrowRight size={15} /></Link>

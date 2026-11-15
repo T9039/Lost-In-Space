@@ -2,11 +2,12 @@ import Link from "next/link";
 import { getComparePageData } from "@/lib/queries/page-data";
 import { compareItems, KIND_LABEL } from "@/lib/compare";
 import type { Item } from "@/lib/types";
+import { displayText } from "@/lib/displayText";
 
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Compare — Lost in Space",
+  title: "Compare | Lost in Space",
 };
 
 type SearchParams = Promise<{ a?: string; b?: string; deep?: string }>;
@@ -32,7 +33,7 @@ function Select({
       <select id={name} name={name} defaultValue={selected} className="select">
         {items.map((i) => (
           <option key={i.id} value={i.id} disabled={i.id === exclude}>
-            {i.short_name} — {i.zone.replace("-", " ")}
+            {displayText(i.short_name)} | {displayText(i.zone.replace(/-/g, " "))}
           </option>
         ))}
       </select>
@@ -58,8 +59,7 @@ export default async function ComparePage({ searchParams }: { searchParams: Sear
         <div className="eyebrow">Story engine</div>
         <h1 style={{ fontSize: "clamp(28px, 4vw, 40px)" }}>Compare two machines</h1>
         <p className="lead">
-          Pick any two objects, even from different zones. The comparison is computed directly
-          from stored facts — not generated — so every difference is checkable.
+          Compare any two space relics through their verified mission records; every difference is computed from stored facts and sources.
         </p>
         <div className="row">
           <span className="chip">
@@ -105,7 +105,7 @@ export default async function ComparePage({ searchParams }: { searchParams: Sear
             <div className="card">
               <div className="card-pad">
                 <div className="eyebrow" style={{ marginBottom: 8 }}>
-                  {result.a.short_name} vs {result.b.short_name}
+                  {displayText(result.a.short_name)} vs {displayText(result.b.short_name)}
                 </div>
                 <div className="row" style={{ marginBottom: 14 }}>
                   <span className="chip">{result.sharedCount} shared attributes</span>
@@ -116,7 +116,7 @@ export default async function ComparePage({ searchParams }: { searchParams: Sear
                 </div>
                 <ul className="highlight-list">
                   {result.highlights.map((h, i) => (
-                    <li key={i}>{h}</li>
+                    <li key={i}>{displayText(h)}</li>
                   ))}
                 </ul>
               </div>
@@ -126,13 +126,13 @@ export default async function ComparePage({ searchParams }: { searchParams: Sear
               {[result.a, result.b].map((item) => (
                 <div key={item.id}>
                   <div className="column-head">
-                    <Link href={`/item/${item.id}`}>{item.short_name} →</Link>
+                    <Link href={`/item/${item.id}`}>{displayText(item.short_name)} →</Link>
                   </div>
                   <div className="card">
                     <div className="card-pad">
-                      <p style={{ marginBottom: 10 }}>{item.abandonment_reason}</p>
+                      <p style={{ marginBottom: 10 }}>{displayText(item.abandonment_reason)}</p>
                       <div className="card-meta">
-                        {item.location.label} · {item.years_active}
+                        {displayText(item.location.label)} · {displayText(item.years_active)}
                       </div>
                     </div>
                   </div>
@@ -150,20 +150,20 @@ export default async function ComparePage({ searchParams }: { searchParams: Sear
                     <thead>
                       <tr>
                         <th>Attribute</th>
-                        <th>{result.a.short_name}</th>
-                        <th>{result.b.short_name}</th>
+                        <th>{displayText(result.a.short_name)}</th>
+                        <th>{displayText(result.b.short_name)}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {result.specs.map((row) => (
                         <tr key={row.key}>
-                          <td>{row.key}</td>
+                          <td>{displayText(row.key)}</td>
                           <td>
-                            {row.a}
+                            {displayText(row.a)}
                             {row.same ? <span className="diff-same">same</span> : null}
                           </td>
                           <td>
-                            {row.b}
+                            {displayText(row.b)}
                             {row.same ? null : <span className="diff-diff">differs</span>}
                           </td>
                         </tr>
@@ -189,7 +189,7 @@ export default async function ComparePage({ searchParams }: { searchParams: Sear
                           { item: result.b, rows: group.b },
                         ].map(({ item, rows }) => (
                           <div key={item.id}>
-                            <div className="column-head">{item.short_name}</div>
+                            <div className="column-head">{displayText(item.short_name)}</div>
                             {rows.length === 0 ? (
                               <p className="muted" style={{ fontSize: 13 }}>
                                 No facts of this kind.
@@ -199,11 +199,11 @@ export default async function ComparePage({ searchParams }: { searchParams: Sear
                                 <div key={f.id} className="fact">
                                   <div>
                                     <div style={{ fontSize: 13, color: "var(--muted)" }}>
-                                      {f.label}
+                                      {displayText(f.label)}
                                     </div>
-                                    <p className="fact-claim">{f.claim}</p>
+                                    <p className="fact-claim">{displayText(f.claim)}</p>
                                   </div>
-                                  <div className="fact-value">{f.value}</div>
+                                  <div className="fact-value">{displayText(f.value)}</div>
                                 </div>
                               ))
                             )}

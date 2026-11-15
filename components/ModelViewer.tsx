@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { displayText } from "@/lib/displayText";
 
 const MV_SRC = "https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js";
 
@@ -44,7 +45,7 @@ export default function ModelViewer({ src, poster, fallback, alt, credit }: Prop
       <div className="viewer viewer-fallback targeting-frame">
         {img ? <img src={img} alt={alt} /> : <div style={{ height: "100%" }} />}
         <span className="viewer-label">
-          {failed ? "3D model unavailable — showing NASA imagery" : "Showing NASA imagery"}
+          {failed ? "3D model unavailable. Showing NASA imagery." : "Showing NASA imagery"}
         </span>
       </div>
     );
@@ -71,7 +72,7 @@ export default function ModelViewer({ src, poster, fallback, alt, credit }: Prop
     <div className="viewer targeting-frame">
       <Mv ref={ref as unknown as React.Ref<HTMLElement>} {...attrs} />
       <span className="viewer-hint">drag to rotate</span>
-      <span className="viewer-label">{credit ?? "NASA 3D Resources"}</span>
+       <span className="viewer-label">{displayText(credit ?? "NASA 3D Resources")}</span>
     </div>
   );
 }

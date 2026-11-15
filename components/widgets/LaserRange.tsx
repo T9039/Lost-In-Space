@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { displayText } from "@/lib/displayText";
 
 const C_KM_PER_S = 299792.458;
 
@@ -48,10 +49,10 @@ export default function LaserRange({ missionName }: { missionName?: string }) {
     <div className="widget widget-laser">
       <div className="widget-head">
         <div>
-          <div className="widget-title">{missionName ? `${missionName} · Lunar Laser Ranging` : "Lunar Laser Ranging Experiment"}</div>
+          <div className="widget-title">{missionName ? `${displayText(missionName)} · Lunar Laser Ranging` : "Lunar Laser Ranging Experiment"}</div>
           <div className="widget-sub">
-            {missionName ? `${missionName} corner-cube array` : "Lunar retroreflector experiment"} · alignment {offsetDeg.toFixed(2)}°{" "}
-            <span className={optimal ? "tag-ok" : "tag-warn"}>{optimal ? "OPTIMAL" : "OFF-AXIS"}</span>
+            {missionName ? `${displayText(missionName)} corner cube array` : "Lunar retroreflector experiment"} · alignment {offsetDeg.toFixed(2)}°{" "}
+            <span className={optimal ? "tag-ok" : "tag-warn"}>{optimal ? "OPTIMAL" : "OFF AXIS"}</span>
           </div>
         </div>
       </div>
@@ -66,13 +67,14 @@ export default function LaserRange({ missionName }: { missionName?: string }) {
         </div>
         <div className="laser-station">
           <span className="laser-icon">▣</span>
-          <span>Apollo array</span>
+          <span>{missionName ? `${displayText(missionName)} array` : "Lunar reflector"}</span>
         </div>
       </div>
 
-      <p className="laser-explanation">
-        Earth observatories fire laser pulses at mirror panels left on the Moon and time the reflection to measure the Moon&apos;s exact distance.
-      </p>
+      <div className="experiment-story-box">
+        <span>WHAT IS THIS EXPERIMENT?</span>
+        <p>Earth observatories fire laser pulses at mirror panels left on the Moon and time the reflection. The Moon&apos;s distance follows from the round-trip travel time: d = c × t / 2. This control is a simulation, not a live telescope measurement.</p>
+      </div>
       <div className="widget-row">
         <label className="field-label" htmlFor="laser-align">
           Optics alignment
@@ -93,11 +95,11 @@ export default function LaserRange({ missionName }: { missionName?: string }) {
 
       <div className="widget-stats">
         <div className="widget-stat">
-          <span className="widget-stat-value">{roundTrip ? `${roundTrip.toFixed(4)} s` : "—"}</span>
-          <span className="widget-stat-label">Round-trip time</span>
+        <span className="widget-stat-value">{roundTrip ? `${roundTrip.toFixed(4)} s` : "Waiting for pulse"}</span>
+        <span className="widget-stat-label">Round trip time</span>
         </div>
         <div className="widget-stat">
-          <span className="widget-stat-value">{distance ? `${distance.toFixed(1)} km` : "—"}</span>
+        <span className="widget-stat-value">{distance ? `${distance.toFixed(1)} km` : "Not measured yet"}</span>
           <span className="widget-stat-label">Distance d = c·t / 2</span>
         </div>
         <div className={`widget-status ${photons > 0 ? "is-ok" : ""}`}>

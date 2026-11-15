@@ -124,13 +124,19 @@ export default function DustCanvas({
     <div className="widget">
       <div className="widget-head">
         <div>
-          <div className="widget-title">Opportunity · solar array recovery</div>
+          <div className="widget-title">Mars Solar Dust &amp; Power</div>
           <div className="widget-sub">Drag to sweep away simulated Martian regolith · 85 μm dust layer</div>
         </div>
-        <div className="dust-actions">
-          <button className="btn btn-blue btn-sm" onClick={operateWindCleaner}>OPERATE WIND CLEANER</button>
-          <button className="btn btn-sm" onClick={() => { setCompletionToast(false); setSeed((s) => s + 1); }}>RESET DUST</button>
-        </div>
+      </div>
+
+      <div className="experiment-story-box">
+        <span>WHAT IS THIS EXPERIMENT?</span>
+        <p>Mars can be swept by fine red dust that coats solar panels and cuts the sunlight a rover can use. Wipe the simulated dust or run the wind cleaner, then watch the power efficiency readout respond.</p>
+      </div>
+
+      <div className="dust-actions">
+        <button className="btn btn-blue btn-sm" onClick={operateWindCleaner}>OPERATE WIND CLEANER</button>
+        <button className="btn btn-sm" onClick={() => { setCompletionToast(false); setSeed((s) => s + 1); }}>RESET DUST</button>
       </div>
 
       <div className="dust-wrap" ref={wrapRef}>
@@ -169,7 +175,7 @@ export default function DustCanvas({
           <span className="widget-stat-label">POWER EFFICIENCY</span>
         </div>
         <div className={`widget-status ${done ? "is-ok" : ""}`}>
-          {done ? `Arrays cleared · ${power} Wh/day restored.` : `Power output ${power} Wh/day · clear dust to recharge.`}
+          {done ? `Arrays cleared. ${power} Wh per day restored.` : `Power output ${power} Wh per day. Clear dust to recharge.`}
         </div>
       </div>
       {completionToast ? <div className="dust-toast" role="status">Solar arrays cleared · power restored to {maxPower} Wh/day</div> : null}

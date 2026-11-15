@@ -5,7 +5,7 @@ import { getArchiveData } from "@/lib/queries/archive";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Archive — Lost in Space",
+  title: "Archive | Lost in Space",
 };
 
 type SearchParams = Promise<{ q?: string }>;

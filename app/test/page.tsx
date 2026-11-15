@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Mission Test — Lost in Space",
+  title: "Mission Test | Lost in Space",
 };
 
 export default function TestPage() {
@@ -11,8 +11,7 @@ export default function TestPage() {
         <div className="eyebrow">Mission Test</div>
         <h1 style={{ fontSize: "clamp(28px, 4vw, 40px)" }}>Test what you learned</h1>
         <p className="lead">
-          Five questions, generated only from the stored NASA facts. Finish with a Mission Report
-          that shows your score, your streak and the ideas you missed.
+          Revisit the mission record in five questions, then see which sourced ideas stayed with you.
         </p>
         <div className="empty-state" style={{ marginTop: 24 }}>
           Not wired up yet in this prototype. The questions and scoring are built from the same

@@ -22,18 +22,19 @@ function render(edges: LineageEdge[], gp = null, narration: NarrationSummary | n
   );
 }
 
-test("ItemWorkspace renders abandonment, lineage and provenance", () => {
+test("ItemWorkspace renders the three-act story, location and archive photographs", () => {
   const html = render([]);
-  assert.match(html, /Why it was left/);
-  assert.match(html, /Lineage/);
-  assert.match(html, /No curated parent\/child edges yet/);
-  assert.match(html, /Provenance/);
-  assert.match(html, /LAST KNOWN POSITION/);
+  assert.match(html, /THE MISSION &amp; THE MACHINE|MISSION STORY \/ THREE ACTS/);
+  assert.match(html, /INTO THE UNKNOWN/);
+  assert.match(html, /SILENT, NOT GONE/);
+  assert.match(html, /dust storm/i);
+  assert.match(html, /LAST RECORDED LOCATION/);
   assert.match(html, /-2\.2500°/);
+  assert.match(html, /No linked carrier or related spacecraft is recorded/);
   assert.match(html, /PIA20285|Potts/);
 });
 
-test("ItemWorkspace shows an element epoch and age when GP data exists", () => {
+test("ItemWorkspace shows live element age when GP data exists", () => {
   const orbiting = items.find((candidate) => candidate.id === "skylab-debris");
   assert.ok(orbiting);
   const html = renderToStaticMarkup(
@@ -56,9 +57,9 @@ test("ItemWorkspace shows an element epoch and age when GP data exists", () => {
       })
     )
   );
-  assert.match(html, /LIVE ELEMENT SET/);
-  assert.match(html, /Element epoch 2026-11-15 10:00 UTC/);
+  assert.match(html, /420 km altitude/);
   assert.match(html, /2 h ago/);
+  assert.match(html, /15 November 2026/);
 });
 
 test("ItemWorkspace labels generated narration and links its facts", () => {
@@ -94,5 +95,5 @@ test("ItemWorkspace renders curated lineage edges", () => {
   ]);
   assert.match(html, /Apollo 15 Lunar Roving Vehicle/);
   assert.match(html, /Opportunity Rover/);
-  assert.match(html, /deployed_from/);
+  assert.match(html, /deployed from/);
 });

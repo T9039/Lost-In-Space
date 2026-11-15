@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { getItems } from "@/lib/api";
+import { displayText } from "@/lib/displayText";
 import type { Item } from "@/lib/types";
 import { useCompare } from "./CompareProvider";
 
@@ -47,13 +48,13 @@ export default function CompareTray() {
           <div key={item.id} className="compare-tray-item">
             {item.images[0] ? <img src={item.images[0].src} alt="" /> : <div className="thumb-empty" />}
             <div className="compare-tray-meta">
-              <strong>{item.short_name}</strong>
-              <span>{item.years_active}</span>
+               <strong>{displayText(item.short_name)}</strong>
+               <span>{displayText(item.years_active)}</span>
             </div>
             <button
               className="compare-tray-remove"
               onClick={() => remove(item.id)}
-              aria-label={`Remove ${item.short_name}`}
+               aria-label={`Remove ${displayText(item.short_name)}`}
             >
               ✕
             </button>

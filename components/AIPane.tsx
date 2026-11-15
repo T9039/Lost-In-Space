@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { answerQuestion, PROMPT_CHIPS, type AIAnswer } from "@/lib/missionAI";
+import { displayText } from "@/lib/displayText";
 import type { Item, Source } from "@/lib/types";
 
 interface Turn {
@@ -11,13 +12,26 @@ interface Turn {
   answer?: AIAnswer;
 }
 
-export default function AIPane({ item, sources }: { item: Item; sources: Source[] }) {
+export default function AIPane({
+  item,
+  sources,
+  suggestedQuestion,
+  onSuggestedQuestionApplied,
+}: {
+  item: Item;
+  sources: Source[];
+  suggestedQuestion?: string;
+  onSuggestedQuestionApplied?: () => void;
+}) {
   const [turns, setTurns] = useState<Turn[]>([]);
   const [input, setInput] = useState("");
   const counter = useRef(0);
-  const storyPhases = [...item.phases].sort((a, b) => a.order - b.order);
-  const sourceById = new Map(sources.map((source) => [source.id, source]));
-  const storyFacts = item.facts.filter((fact) => fact.kind === "mission" || fact.kind === "discovery").slice(0, 2);
+
+  useEffect(() => {
+    if (!suggestedQuestion) return;
+    setInput(displayText(suggestedQuestion));
+    onSuggestedQuestionApplied?.();
+  }, [suggestedQuestion, onSuggestedQuestionApplied]);
 
   const ask = (raw: string) => {
     const question = raw.trim();
@@ -34,49 +48,25 @@ export default function AIPane({ item, sources }: { item: Item; sources: Source[
 
   return (
     <div className="ai-pane">
-      <section className="mission-narrative-card">
-        <div className="story-label">{item.type === "rover" ? "A BOT'S JOURNEY" : "A MISSION'S JOURNEY"} <span>/</span> THE STORY OF {item.short_name.toUpperCase()}</div>
-        <div className="mission-story-copy">
-          {storyPhases.map((phase, index) => (
-            <p key={phase.id} className={phase.key === "abandoned" ? "story-silent-beat" : ""}>
-              <span>{String(index + 1).padStart(2, "0")}</span>{phase.body}
-            </p>
-          ))}
-        </div>
-        {storyFacts.length ? (
-          <div className="story-fact-notes">
-            {storyFacts.map((fact) => {
-              const source = sourceById.get(fact.source_id);
-              return (
-                <div key={fact.id} className="story-fact-note">
-                  <b>{fact.value}</b><span>{fact.claim}</span>
-                  {source ? <a href={source.url} target="_blank" rel="noreferrer">{source.publisher} ↗</a> : null}
-                </div>
-              );
-            })}
-          </div>
-        ) : null}
-      </section>
-
       <div className="pane-head">
         <div>
           <div className="eyebrow" style={{ marginBottom: 2 }}>
             Mission AI
           </div>
-          <h3>{item.short_name} archive assistant</h3>
+          <h3>{displayText(item.short_name)} archive assistant</h3>
         </div>
       </div>
 
       <p className="ai-scope">
-        Scoped to {item.facts.length} facts, {item.phases.length} phases and{" "}
-        {new Set(item.facts.map((f) => f.source_id)).size} NASA sources. It cannot answer outside
-        this record.
+        Ask about how it was built, what rocket launched it, what it discovered, or why it went
+        silent. Every answer is pulled strictly from verified NASA records.
       </p>
+      <p className="ai-record-scope">Scoped to {item.facts.length} facts, {item.phases.length} mission phases, and {new Set(item.facts.map((fact) => fact.source_id)).size} sources.</p>
 
       <div className="ai-thread">
         <div className="ai-msg ai-msg-bot">
           <p>
-            I am the mission AI for <strong>{item.short_name}</strong>. I use its saved facts and
+            I am the mission AI for <strong>{displayText(item.short_name)}</strong>. I use its saved facts and
             mission phases only. Ask about its design, discoveries, or where the record places it today.
           </p>
         </div>
@@ -84,15 +74,15 @@ export default function AIPane({ item, sources }: { item: Item; sources: Source[
         {turns.map((turn) =>
           turn.role === "user" ? (
             <div key={turn.id} className="ai-msg ai-msg-user">
-              <p>{turn.text}</p>
+              <p>{displayText(turn.text)}</p>
             </div>
           ) : (
             <div key={turn.id} className="ai-msg ai-msg-bot">
-              <p>{turn.text}</p>
+              <p>{displayText(turn.text)}</p>
               {turn.answer?.bullets.length ? (
                 <ul>
                   {turn.answer.bullets.map((b, i) => (
-                    <li key={i}>{b}</li>
+                    <li key={i}>{displayText(b)}</li>
                   ))}
                 </ul>
               ) : null}
@@ -100,8 +90,8 @@ export default function AIPane({ item, sources }: { item: Item; sources: Source[
                 <div className="ai-quiz">
                   {turn.answer.quiz.map((q, i) => (
                     <details key={i}>
-                      <summary>{q.question}</summary>
-                      <p>{q.answer}</p>
+                      <summary>{displayText(q.question)}</summary>
+                      <p>{displayText(q.answer)}</p>
                     </details>
                   ))}
                 </div>
@@ -110,7 +100,7 @@ export default function AIPane({ item, sources }: { item: Item; sources: Source[
                 <div className="ai-cites">
                   {turn.answer.citations.map((c) => (
                     <a key={c.id} href={c.url} target="_blank" rel="noreferrer" className="ai-cite">
-                      {c.publisher} ↗
+                      {displayText(c.publisher)} ↗
                     </a>
                   ))}
                 </div>
@@ -139,7 +129,7 @@ export default function AIPane({ item, sources }: { item: Item; sources: Source[
           className="input"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder={`Ask about ${item.short_name}…`}
+          placeholder={`Ask about ${displayText(item.short_name)}…`}
         />
         <button className="btn btn-primary btn-sm" type="submit">
           Ask

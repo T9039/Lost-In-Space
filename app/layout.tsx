@@ -27,9 +27,9 @@ const telemetryFont = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Lost in Space — The hardware humans left behind",
+  title: "Lost in Space | The hardware humans left behind",
   description:
-    "An open archive of the machines humans left behind on the Moon, Mars, in Earth orbit and beyond — built on real NASA data.",
+    "An open archive of the machines humans left behind on the Moon, Mars, in Earth orbit and beyond, built on real NASA data.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -57,7 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </a>
               </span>
               <span>
-                Prototype · fixture data · no AI-generated imagery · <a href="/sources">all sources</a>
+                Prototype · fixture data · no AI generated imagery · <a href="/sources">all sources</a>
               </span>
             </div>
           </footer>

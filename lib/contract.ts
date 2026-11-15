@@ -356,7 +356,17 @@ function phaseWindow(row: TimelineRow): string {
   if (start && end) return `${start}`;
   if (start) return `${start} – present`;
   if (end) return `${end}`;
-  return "Undated phase";
+  return "Phase timing not specified";
+}
+
+function phaseDescription(raw: string | null | undefined): string | null {
+  const value = raw?.trim();
+  if (!value) return null;
+  return value
+    .replace(/^Docked with the destination object at t2\.?$/i, "Docked with its destination spacecraft.")
+    .replace(/^Grappled the destination object at t2\.?$/i, "Grappled the destination spacecraft.")
+    .replace(/\bat t1\b/gi, "during the earlier recorded phase")
+    .replace(/\bat t2\b/gi, "during the later recorded phase");
 }
 
 function toPhase(
@@ -368,7 +378,7 @@ function toPhase(
 ): Phase {
   const key = derivePhaseKey(row, index === total - 1, abandonmentReason);
   const window = phaseWindow(row);
-  const description = row.status_description?.trim();
+  const description = phaseDescription(row.status_description);
   const title = key === "worked" && row.dest_raw ? `Cruise to ${row.dest_raw}` : PHASE_TITLE[key];
   return {
     id: row.phase_key,
