@@ -73,16 +73,29 @@ try {
     })
   );
 
-  checks.push(await check("/", 200, async (response) => assert.match(await response.text(), /LOST IN/)));
   checks.push(
-    await check("/archive", 200, async (response) =>
-      assert.match(await response.text(), /DATABASE|OFFLINE FIXTURES/)
-    )
+    await check("/", 200, async (response) => {
+      const html = await response.text();
+      assert.match(html, /LOST IN/);
+      assert.match(html, /Data and imagery:/);
+      assert.match(html, /NASA/);
+    })
   );
   checks.push(
-    await check("/sources", 200, async (response) =>
-      assert.match(await response.text(), /DATABASE|OFFLINE FIXTURES/)
-    )
+    await check("/archive", 200, async (response) => {
+      const html = await response.text();
+      assert.match(html, /DATABASE|OFFLINE FIXTURES/);
+      assert.match(html, /Data and imagery:/);
+    })
+  );
+  checks.push(
+    await check("/sources", 200, async (response) => {
+      const html = await response.text();
+      assert.match(html, /DATABASE|OFFLINE FIXTURES/);
+      assert.match(html, /Provenance/);
+      assert.match(html, /NASA mission pages/);
+      assert.match(html, /NASA Image and Video Library/);
+    })
   );
   checks.push(
     await check("/compare?a=opportunity&b=insight", 200, async (response) =>

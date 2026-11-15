@@ -263,6 +263,9 @@ Done in this pass:
 - [x] **Narration foundation** — canonical facts snapshot, SHA-256 `fact_hash`,
       prompt version, provider configuration and a guard that `story` never
       enters facts or comparisons.
+- [x] **Attribution audit** — every page is covered by the footer credits, and
+      the sources page is checked by the system test. All 12 unique fact source
+      URLs resolve (three only via the laptop network).
 
 Next:
 

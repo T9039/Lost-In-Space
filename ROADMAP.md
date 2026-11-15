@@ -89,7 +89,8 @@ The set is aligned with the UI fixtures.
 - [ ] Add `artifact_relation` edges (`deployed_from`, `component_of`,
       `left_behind_by`, `landed_with`)
 - [ ] Resolve parent links across selected artifacts
-- [ ] Review every fact against its source page
+- [x] Verify every fact source URL resolves (12 unique; 3 checked via the laptop)
+- [ ] Read every fact against its source page
 - [x] Add model rows to `media` (`media_type = 'model'`)
 
 ### Fixture coverage
@@ -220,7 +221,7 @@ reads from PostgreSQL; no generated text is used.
 - [x] Backup and restore drill (12 MB dump restored into a temporary Neon database)
 - [ ] Accessibility, responsive and performance passes
 - [ ] Deploy to Render with a paid database and cron
-- [ ] Verify attribution and licences on every page
+- [x] Verify attribution and licences on every page (footer + sources page system tests)
 - [ ] Tag `v1.0`; attach the documentation PDF
 
 ---
@@ -241,7 +242,7 @@ reads from PostgreSQL; no generated text is used.
 - [x] CelesTrak refresh exercised live (manual run; scheduling remains open)
 - [x] Image proxy implemented for remote NASA assets; bundled images stay local
 - [x] Countermeasure for blocked TCP/5432: HTTPS SQL runner + SSH tunnel helper
-- [ ] No narration provider or snapshot builder
+- [x] Narration snapshot builder and provider configuration exist; generation command remains
 
 ---
 
