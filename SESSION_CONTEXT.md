@@ -39,7 +39,7 @@ offline fallback.
 | API | `app/api/` — `zones`, `items`, `items/[id]`, `items/[id]/lineage`, `sources`, `POST /api/compare`, `GET /api/health` |
 | Frontend | All routes DB-backed with fixture fallback (archive, home, item, sources, compare) |
 | Docs | 79-page Typst PDF, ADRs, ROADMAP |
-| CI | GitHub Actions at `.github/workflows/ci.yml` — app, ETL, database and docs jobs |
+| CI | GitHub Actions: `ci.yml` (app, E2E, ETL, database, docs) and `celestrak.yml` (2-hourly GP refresh) |
 
 Verified on the previous machine:
 
@@ -274,6 +274,9 @@ Done in this pass:
       horizontal overflow; curated page reads are cached for an hour. Lighthouse
       on the archive: accessibility/best-practices/SEO 100, performance 100 warm
       and 75 cold.
+- [x] **Free deployment path** — the Render blueprint is free-only (no paid
+      cron); the CelesTrak refresh runs in GitHub Actions every two hours. The
+      web service uses the loaded Neon database over HTTPS.
 - [x] **Playwright + accessibility** — twelve end-to-end checks cover every
       route; axe reports no serious or critical violations on the five main
       pages.

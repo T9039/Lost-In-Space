@@ -1,32 +1,24 @@
 # ---------------------------------------------------------------------------
-# Render blueprint — production topology
+# Render blueprint — free demo topology
 #
-# The Next.js app, PostgreSQL schema and ETL are in the repository. Deploy this
-# blueprint from the Render dashboard, then apply the schema once with
-# `psql "$DATABASE_URL" -f db/schema.sql`, the seed and the staging schema.
+# Free Render instances support web services, Postgres and Key Value. Cron jobs
+# do NOT have a free tier, so the CelesTrak refresh runs in GitHub Actions
+# (.github/workflows/celestrak.yml) instead.
 #
-# Notes:
-#   - Free web services spin down when idle. Use a paid instance for a demo.
-#   - Free PostgreSQL expires after 30 days. Long-lived deployments need a
-#     paid database plan or a self-hosted Postgres service with a disk.
-#   - Cron services require a paid plan on Render.
-#   - Render's managed PostgreSQL cannot install Apache AGE. That is fine:
-#     the graph is optional and lives in recursive SQL.
+# This blueprint intentionally creates no Render database: the already-loaded
+# Neon database is supplied through DATABASE_URL. The app detects Neon and uses
+# the HTTPS driver, so it works from Render's network on port 443.
+#
+# Production upgrade: move DATABASE_URL to a paid Render Postgres instance,
+# move the web service to a paid plan (no spin-down), and either add a paid cron
+# service or keep the GitHub Actions schedule.
 # ---------------------------------------------------------------------------
-
-databases:
-  - name: lost-in-space-db
-    databaseName: lost_in_space
-    user: lost_in_space
-    plan: free # free PostgreSQL expires after 30 days; use a paid plan for production
-    postgresMajorVersion: "16"
-    region: frankfurt
 
 services:
   - type: web
     name: lost-in-space
     runtime: node
-    plan: free # use starter/basic for a demo that must stay warm
+    plan: free
     region: frankfurt
     branch: main
     autoDeploy: true
@@ -35,32 +27,8 @@ services:
     healthCheckPath: /api/health
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: lost-in-space-db
-          property: connectionString
+        sync: false
       - key: NODE_VERSION
         value: "22"
-      - key: NEXT_PUBLIC_APP_URL
-        sync: false
       - key: NASA_API_KEY
-        sync: false
-
-  - type: cron
-    name: lost-in-space-celestrak
-    runtime: python
-    plan: starter
-    region: frankfurt
-    branch: main
-    autoDeploy: false
-    schedule: "0 */2 * * *"
-    buildCommand: pip install -r etl/requirements.txt
-    startCommand: python -m etl.celestrak_refresh
-    envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: lost-in-space-db
-          property: connectionString
-      - key: PYTHON_VERSION
-        value: "3.13.0"
-      - key: CELESTRAK_USER_AGENT
         sync: false
