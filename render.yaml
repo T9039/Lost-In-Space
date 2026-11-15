@@ -30,5 +30,3 @@ services:
         sync: false
       - key: NODE_VERSION
         value: "22"
-      - key: NASA_API_KEY
-        sync: false
