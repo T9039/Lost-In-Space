@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LOST IN SPACE — NASA Mission Telemetry & Timeline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #030712;
+      --card-bg: rgba(15, 23, 42, 0.85);
+      --card-border: rgba(56, 189, 248, 0.22);
+      --neon-cyan: #00f0ff;
+      --signal-green: #00ff88;
+      --achievement-gold: #ffd700;
+      --ended-grey: #64748b;
+      --dull-border: rgba(100, 116, 139, 0.35);
+      --font-display: 'Orbitron', monospace;
+      --font-body: 'Rajdhani', sans-serif;
+      --font-telemetry: 'Share Tech Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: #e2e8f0;
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.5;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Cyber scanlines */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                  linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      background-size: 100% 3px, 6px 100%;
+      opacity: 0.7;
+    }
+
+    /* Cyber grid */
+    .cyber-grid {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: 
+        radial-gradient(circle at 50% 10%, rgba(0, 240, 255, 0.08) 0%, transparent 60%),
+        linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+      background-size: 100% 100%, 48px 48px, 48px 48px;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Top Nav */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: rgba(10, 15, 30, 0.85);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.1);
+      margin-bottom: 32px;
+      backdrop-filter: blur(8px);
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-title .badge {
+      font-size: 10px;
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--neon-cyan);
+      border: 1px solid var(--neon-cyan);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: var(--font-telemetry);
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+    }
+    .nav-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #94a3b8;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-family: var(--font-telemetry);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      letter-spacing: 1px;
+    }
+    .nav-btn:hover, .nav-btn.active {
+      color: var(--neon-cyan);
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+      background: rgba(0, 240, 255, 0.08);
+    }
+
+    /* Mission Hero Banner */
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 30px 20px;
+      border: 1px solid rgba(0, 240, 255, 0.15);
+      background: radial-gradient(circle at center, rgba(15, 23, 42, 0.9) 0%, rgba(3, 7, 18, 0.95) 100%);
+      border-radius: 12px;
+      box-shadow: inset 0 0 40px rgba(0, 240, 255, 0.05);
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      text-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+    }
+    .hero p {
+      font-family: var(--font-telemetry);
+      color: #94a3b8;
+      font-size: 15px;
+      max-width: 780px;
+      margin: 0 auto 16px;
+      letter-spacing: 0.5px;
+    }
+
+    .telemetry-strip {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      padding: 8px 24px;
+      border-radius: 6px;
+      font-family: var(--font-telemetry);
+      font-size: 13px;
+      justify-content: center;
+    }
+    .telemetry-strip span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Filter Controls */
+    .timeline-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .filter-group {
+      display: flex;
+      gap: 10px;
+    }
+    .filter-chip {
+      padding: 6px 14px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(0, 0, 0, 0.4);
+      color: #94a3b8;
+      font-family: var(--font-telemetry);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-chip.active {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--neon-cyan);
+      border-color: var(--neon-cyan);
+    }
+
+    /* Interactive Timeline */
+    .timeline-container {
+      position: relative;
+      margin-left: 20px;
+      padding-left: 36px;
+    }
+    .timeline-container::before {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--signal-green) 0%, rgba(0, 240, 255, 0.6) 50%, var(--ended-grey) 100%);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+    }
+
+    .mission-entry {
+      position: relative;
+      margin-bottom: 40px;
+      transition: transform 0.2s;
+    }
+    .mission-entry:hover {
+      transform: translateX(4px);
+    }
+
+    /* Timeline marker node */
+    .node-pin {
+      position: absolute;
+      left: -43px;
+      top: 24px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #030712;
+      border: 3px solid var(--ended-grey);
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+      z-index: 2;
+    }
+    .mission-entry.is-active .node-pin {
+      border-color: var(--signal-green);
+      background: var(--signal-green);
+      box-shadow: 0 0 16px var(--signal-green), 0 0 30px var(--signal-green);
+      animation: pulse-node 1.5s infinite;
+    }
+    @keyframes pulse-node {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    /* Craft Card */
+    .mission-card {
+      background: var(--card-bg);
+      border: 1px solid var(--dull-border);
+      border-radius: 10px;
+      padding: 24px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+    }
+
+    /* Active craft styling (electric neon green) */
+    .mission-entry.is-active .mission-card {
+      border-color: rgba(0, 255, 136, 0.45);
+      box-shadow: 0 0 25px rgba(0, 255, 136, 0.15), inset 0 0 20px rgba(0, 255, 136, 0.04);
+    }
+    .mission-entry.is-active .mission-card::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--signal-green), transparent);
+    }
+
+    /* Inactive / dead craft styling (dull graphite grey) */
+    .mission-entry.is-ended .mission-card {
+      border-color: rgba(71, 85, 105, 0.4);
+      background: rgba(15, 23, 42, 0.55);
+    }
+    .mission-entry.is-ended .mission-card::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--ended-grey);
+    }
+
+    /* Card Image Box */
+    .craft-visual {
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      height: 260px;
+    }
+    .craft-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .craft-visual:hover img {
+      transform: scale(1.05);
+    }
+    .craft-visual .schematic-view {
+      display: none;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, #091a28 0%, #030712 100%);
+      padding: 16px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .visual-toggle-bar {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      right: 8px;
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      background: rgba(3, 7, 18, 0.85);
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-family: var(--font-telemetry);
+      font-size: 11px;
+    }
+    .visual-toggle-bar button {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .visual-toggle-bar button.active {
+      color: var(--neon-cyan);
+      background: rgba(0, 240, 255, 0.15);
+    }
+
+    /* Card Info */
+    .craft-details {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .craft-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    .craft-header h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+    .status-badge {
+      font-family: var(--font-telemetry);
+      font-size: 11px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+    .status-badge.active {
+      background: rgba(0, 255, 136, 0.15);
+      border: 1px solid var(--signal-green);
+      color: var(--signal-green);
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+    }
+    .status-badge.inactive, .status-badge.derelict, .status-badge.destroyed {
+      background: rgba(100, 116, 139, 0.15);
+      border: 1px solid var(--ended-grey);
+      color: var(--ended-grey);
+    }
+
+    .service-years {
+      font-family: var(--font-telemetry);
+      color: var(--neon-cyan);
+      font-size: 14px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mission-entry.is-ended .service-years {
+      color: #94a3b8;
+    }
+
+    .craft-summary {
+      color: #cbd5e1;
+      font-size: 15px;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+    }
+    .spec-item .label {
+      font-family: var(--font-telemetry);
+      font-size: 11px;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+    .spec-item .value {
+      font-family: var(--font-telemetry);
+      font-size: 13px;
+      color: #e2e8f0;
+      font-weight: bold;
+    }
+
+    /* Gold Achievement Bar */
+    .achievement-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(90deg, rgba(255, 215, 0, 0.12), rgba(255, 215, 0, 0.03));
+      border: 1px solid rgba(255, 215, 0, 0.35);
+      border-radius: 6px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .achievement-trigger:hover {
+      background: rgba(255, 215, 0, 0.18);
+      border-color: var(--achievement-gold);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.25);
+    }
+    .achievement-trigger .title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .achievement-trigger .gold-icon {
+      color: var(--achievement-gold);
+      font-size: 18px;
+    }
+    .achievement-trigger .gold-text {
+      font-family: var(--font-display);
+      font-size: 13px;
+      color: var(--achievement-gold);
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+    .achievement-trigger .view-btn {
+      font-family: var(--font-telemetry);
+      font-size: 12px;
+      color: #fff;
+      background: rgba(255, 215, 0, 0.2);
+      border: 1px solid var(--achievement-gold);
+      padding: 4px 12px;
+      border-radius: 4px;
+    }
+
+    /* Floating Astronaut Guide ("Lex") */
+    .astronaut-guide {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+      pointer-events: auto;
+    }
+
+    .speech-bubble {
+      background: rgba(10, 15, 30, 0.95);
+      border: 1px solid var(--neon-cyan);
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.25);
+      border-radius: 8px;
+      padding: 16px 20px;
+      max-width: 380px;
+      position: relative;
+      font-size: 14px;
+      backdrop-filter: blur(12px);
+    }
+    .speech-bubble::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      bottom: 24px;
+      border-width: 8px 0 8px 10px;
+      border-style: solid;
+      border-color: transparent transparent transparent var(--neon-cyan);
+    }
+    .bubble-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+      padding-bottom: 6px;
+    }
+    .guide-callsign {
+      font-family: var(--font-display);
+      font-size: 12px;
+      color: var(--neon-cyan);
+      letter-spacing: 1.5px;
+      font-weight: 700;
+    }
+    .radio-waves {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .wave-bar {
+      width: 3px;
+      height: 12px;
+      background: var(--neon-cyan);
+      border-radius: 2px;
+      animation: sound-bounce 1s infinite alternate ease-in-out;
+    }
+    .wave-bar:nth-child(2) { animation-delay: 0.2s; height: 16px; }
+    .wave-bar:nth-child(3) { animation-delay: 0.4s; height: 9px; }
+    @keyframes sound-bounce {
+      0% { height: 6px; }
+      100% { height: 18px; }
+    }
+
+    .bubble-text {
+      font-family: var(--font-telemetry);
+      color: #e2e8f0;
+      line-height: 1.5;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+    .bubble-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cycle-btn {
+      background: rgba(0, 240, 255, 0.12);
+      border: 1px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      font-family: var(--font-telemetry);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cycle-btn:hover {
+      background: rgba(0, 240, 255, 0.25);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+    }
+
+    .astronaut-avatar-wrap {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.2) 0%, rgba(3, 7, 18, 0.9) 70%);
+      border: 2px solid var(--neon-cyan);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      animation: float-astro 3s ease-in-out infinite;
+    }
+    @keyframes float-astro {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .astro-svg {
+      width: 48px;
+      height: 48px;
+    }
+
+    /* Modal for Gold Achievements */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal-box {
+      background: #0b1329;
+      border: 2px solid var(--achievement-gold);
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+      border-radius: 12px;
+      max-width: 650px;
+      width: 100%;
+      padding: 28px;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: transparent;
+      border: 1px solid rgba(255, 215, 0, 0.4);
+      color: var(--achievement-gold);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      color: var(--achievement-gold);
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+    .modal-subtitle {
+      font-family: var(--font-telemetry);
+      color: #94a3b8;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+    .modal-facts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+    .fact-card {
+      background: rgba(255, 215, 0, 0.05);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 6px;
+      padding: 12px 16px;
+    }
+    .fact-card .fact-claim {
+      font-weight: 700;
+      color: #fff;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+    .fact-card .fact-stat {
+      font-family: var(--font-telemetry);
+      color: var(--achievement-gold);
+      font-size: 13px;
+    }
+
+    /* Quiz Tab Modal/View */
+    .quiz-view {
+      display: none;
+      background: var(--card-bg);
+      border: 1px solid var(--neon-cyan);
+      border-radius: 10px;
+      padding: 32px;
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
+      margin-bottom: 40px;
+    }
+    .quiz-view.open {
+      display: block;
+    }
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+      padding-bottom: 12px;
+    }
+    .quiz-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      color: #fff;
+      letter-spacing: 2px;
+    }
+    .quiz-stats {
+      font-family: var(--font-telemetry);
+      color: var(--neon-cyan);
+      font-size: 14px;
+      display: flex;
+      gap: 18px;
+    }
+    .quiz-q-box {
+      margin-bottom: 24px;
+    }
+    .quiz-q-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      margin-bottom: 16px;
+      color: #f8fafc;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .quiz-opt-btn {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      color: #cbd5e1;
+      padding: 14px 18px;
+      border-radius: 6px;
+      font-family: var(--font-telemetry);
+      font-size: 14px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .quiz-opt-btn:hover {
+      border-color: var(--neon-cyan);
+      background: rgba(0, 240, 255, 0.1);
+    }
+    .quiz-opt-btn.correct {
+      background: rgba(0, 255, 136, 0.25) !important;
+      border-color: var(--signal-green) !important;
+      color: #fff !important;
+    }
+    .quiz-opt-btn.wrong {
+      background: rgba(239, 68, 68, 0.25) !important;
+      border-color: #ef4444 !important;
+      color: #fff !important;
+    }
+    .quiz-feedback {
+      margin-top: 18px;
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-family: var(--font-telemetry);
+      font-size: 13px;
+      display: none;
+    }
+
+    @media (max-width: 860px) {
+      .mission-card {
+        grid-template-columns: 1fr;
+      }
+      .specs-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .quiz-options {
+        grid-template-columns: 1fr;
+      }
+      .speech-bubble {
+        max-width: 260px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cyber-grid"></div>
+
+  <div class="container">
+    <header>
+      <div class="brand-title">
+        <span>LOST IN SPACE</span>
+        <span class="badge">NASA MISSION ARCHIVE</span>
+      </div>
+      <div class="nav-links">
+        <button class="nav-btn active" id="btn-timeline" onclick="switchTab('timeline')">TIMELINE (1958–2026)</button>
+        <button class="nav-btn" id="btn-quiz" onclick="switchTab('quiz')">S6 TACTICAL QUIZ</button>
+      </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero">
+      <h1>LOST IN SPACE</h1>
+      <p>Tracking 68 years of NASA spaceflight lineage: Active exploration crafts, historic planetary landers, and preserved deep space machines across the cosmos.</p>
+      <div class="telemetry-strip">
+        <span><strong style="color:var(--signal-green)">●</strong> ACTIVE: 1 FLEET PROBE</span>
+        <span><strong style="color:var(--ended-grey)">■</strong> PRESERVED / INACTIVE: 7 MACHINES</span>
+        <span><strong style="color:var(--achievement-gold)">★</strong> GOLD MILESTONES: VERIFIED</span>
+        <span><strong style="color:var(--neon-cyan)">⚡</strong> PROTOCOL: DEEP SPACE TELEMETRY</span>
+      </div>
+    </section>
+
+    <!-- Quiz Terminal (Switchable) -->
+    <div class="quiz-view" id="quiz-container">
+      <div class="quiz-header">
+        <div class="quiz-title">S6 RETRIEVAL VERIFICATION TERMINAL</div>
+        <div class="quiz-stats">
+          <span>SCORE: <strong id="quiz-score" style="color:var(--signal-green)">0</strong></span>
+          <span>STREAK: <strong id="quiz-streak" style="color:var(--achievement-gold)">0x</strong></span>
+        </div>
+      </div>
+      <div class="quiz-q-box" id="quiz-body">
+        <!-- populated by js -->
+      </div>
+      <div class="quiz-feedback" id="quiz-feedback"></div>
+    </div>
+
+    <!-- Timeline Main View -->
+    <div id="timeline-view">
+      <div class="timeline-controls">
+        <span style="font-family:var(--font-telemetry); font-size:13px; color:#94a3b8;">FILTERS:</span>
+        <div class="filter-group">
+          <button class="filter-chip active" onclick="filterMissions('all', this)">ALL CRAFTS (8)</button>
+          <button class="filter-chip" onclick="filterMissions('active', this)">STILL ACTIVE (1)</button>
+          <button class="filter-chip" onclick="filterMissions('inactive', this)">DECOMMISSIONED (7)</button>
+        </div>
+      </div>
+
+      <div class="timeline-container" id="timeline-list">
+        <!-- Mission entries rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Astronaut Lex Guide -->
+  <div class="astronaut-guide">
+    <div class="speech-bubble" id="lex-bubble">
+      <div class="bubble-header">
+        <span class="guide-callsign">ASTRONAUT GUIDE — LEX</span>
+        <div class="radio-waves">
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+        </div>
+      </div>
+      <div class="bubble-text" id="lex-fact">
+        "Greetings Commander! Voyager 1 is our furthest active herald at over 24 billion kilometers out in interstellar space. Click on any craft to hear its story!"
+      </div>
+      <div class="bubble-footer">
+        <span style="font-family:var(--font-telemetry); font-size:11px; color:#64748b;" id="fact-counter">TRANSMISSION 1/8</span>
+        <button class="cycle-btn" onclick="nextLexFact()">NEXT TRANSMISSION ⟳</button>
+      </div>
+    </div>
+    <div class="astronaut-avatar-wrap" onclick="toggleLex()">
+      <svg class="astro-svg" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="10" r="7"/>
+        <path d="M9 9h6v3a3 3 0 0 1-6 0V9z" fill="var(--achievement-gold)" stroke="none" opacity="0.85"/>
+        <path d="M12 3v2"/>
+        <path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/>
+        <circle cx="18" cy="18" r="1.5" fill="var(--signal-green)"/>
+        <circle cx="6" cy="18" r="1.5" fill="var(--neon-cyan)"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Gold Achievement Modal -->
+  <div class="modal-overlay" id="achievement-modal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-title" id="modal-craft-name">CRAFT ACHIEVEMENTS</div>
+      <div class="modal-subtitle" id="modal-service-dates">NASA PROVENANCE ARCHIVE RECORD</div>
+      <div class="modal-facts-list" id="modal-facts"></div>
+    </div>
+  </div>
+
+  <script>
+    let itemsData = [];
+
+    const factsPool = [
+      { craft: "Voyager 1", text: "Voyager 1 launched in 1977 and entered interstellar space in August 2012. It still transmits scientific telemetry from 160+ AU away." },
+      { craft: "Opportunity (MER-B)", text: "Opportunity was engineered for a 90-sol exploration window on Mars but persevered for 5,111 sols (over 14 Earth years), driving 45.16 kilometers." },
+      { craft: "Apollo 11 Eagle", text: "The Apollo 11 Lunar Module Descent Stage has rested in Tranquility Base on the lunar regolith since July 20, 1969, complete with the Plaque of Peace." },
+      { craft: "Apollo 15 Rover", text: "The Lunar Roving Vehicle reached a top speed of 13 km/h across the Moon's Hadley-Apennine region and was left parked with its high-gain antenna pointed home." },
+      { craft: "InSight Lander", text: "InSight captured over 1,300 marsquakes on the Red Planet before dust storm deposition finally obscured its solar arrays in December 2022." },
+      { craft: "Vanguard 1", text: "Launched on St. Patrick's Day 1958, Vanguard 1 is humanity's oldest artifact in orbit, with an orbital stability expected to last over 240 years." },
+      { craft: "Skylab", text: "Skylab was America's first crewed space station, hosting three astronaut expeditions across 1973–1974 and logging 2,000+ hours of microgravity research." },
+      { craft: "Pioneer 10", text: "Pioneer 10 was the first spacecraft to navigate the Asteroid Belt and achieve close-up imaging of Jupiter in December 1973." }
+    ];
+
+    let currentFactIndex = 0;
+
+    function nextLexFact() {
+      currentFactIndex = (currentFactIndex + 1) % factsPool.length;
+      const f = factsPool[currentFactIndex];
+      document.getElementById('lex-fact').innerText = '"' + f.text + '"';
+      document.getElementById('fact-counter').innerText = 'TRANSMISSION ' + (currentFactIndex + 1) + '/' + factsPool.length;
+    }
+
+    function toggleLex() {
+      const bubble = document.getElementById('lex-bubble');
+      bubble.style.display = bubble.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function selectCraftFact(craftId) {
+      const match = factsPool.find(f => f.craft.toLowerCase().includes(craftId.split('-')[0]));
+      if (match) {
+        document.getElementById('lex-fact').innerText = '"[' + match.craft + '] ' + match.text + '"';
+        document.getElementById('lex-bubble').style.display = 'block';
+      }
+    }
+
+    // Render Timeline Missions
+    function renderTimeline(filter) {
+      if (!filter) filter = 'all';
+      const list = document.getElementById('timeline-list');
+      list.innerHTML = '';
+
+      const filtered = itemsData.filter(function(i) {
+        if (filter === 'active') return i.status === 'active';
+        if (filter === 'inactive') return i.status !== 'active';
+        return true;
+      });
+
+      // Sort by chronological launch year
+      filtered.sort(function(a, b) {
+        const yA = parseInt((a.years_active.match(/\d{4}/) || ['1970'])[0]);
+        const yB = parseInt((b.years_active.match(/\d{4}/) || ['1970'])[0]);
+        return yA - yB;
+      });
+
+      filtered.forEach(function(item) {
+        const isActive = item.status === 'active';
+        const photoUrl = item.images && item.images.length > 0 ? item.images[0].url : 'https://images.nasa.gov';
+        const photoCredit = item.images && item.images.length > 0 ? item.images[0].credit : 'NASA';
+
+        const entry = document.createElement('div');
+        entry.className = 'mission-entry ' + (isActive ? 'is-active' : 'is-ended');
+        entry.id = 'entry-' + item.id;
+
+        let specsHtml = '';
+        if (item.specs) {
+          const keys = Object.keys(item.specs).slice(0, 4);
+          keys.forEach(function(k) {
+            specsHtml += '<div class="spec-item"><div class="label">' + k.replace(/_/g, ' ') + '</div><div class="value">' + item.specs[k] + '</div></div>';
+          });
+        }
+
+        entry.innerHTML = 
+          '<div class="node-pin"></div>' +
+          '<div class="mission-card" onclick="selectCraftFact(\'' + item.id + '\')">' +
+            '<div class="craft-visual">' +
+              '<img id="img-' + item.id + '" src="' + photoUrl + '" alt="' + item.name + '" onerror="this.src=\'https://images-assets.nasa.gov/image/PIA01322/PIA01322~orig.jpg\'">' +
+              '<div class="schematic-view" id="schematic-' + item.id + '">' +
+                '<svg width="120" height="120" viewBox="0 0 100 100" fill="none" stroke="' + (isActive ? 'var(--signal-green)' : 'var(--neon-cyan)') + '" stroke-width="2">' +
+                  '<circle cx="50" cy="50" r="30" stroke-dasharray="4 2"/>' +
+                  '<circle cx="50" cy="50" r="10" fill="rgba(0,240,255,0.2)"/>' +
+                  '<line x1="50" y1="10" x2="50" y2="90"/>' +
+                  '<line x1="10" y1="50" x2="90" y2="50"/>' +
+                  '<circle cx="50" cy="50" r="45" stroke-dasharray="8 6" opacity="0.4"/>' +
+                '</svg>' +
+              '</div>' +
+              '<div class="visual-toggle-bar">' +
+                '<span style="color:#64748b;">' + photoCredit + '</span>' +
+                '<div>' +
+                  '<button class="active" id="btn-photo-' + item.id + '" onclick="event.stopPropagation(); setMode(\'' + item.id + '\', \'photo\')">PHOTO</button>' +
+                  '<button id="btn-sch-' + item.id + '" onclick="event.stopPropagation(); setMode(\'' + item.id + '\', \'schematic\')">SCHEMATIC</button>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="craft-details">' +
+              '<div>' +
+                '<div class="craft-header">' +
+                  '<h3>' + item.name + '</h3>' +
+                  '<span class="status-badge ' + item.status + '">' + (isActive ? '● IN SERVICE (ACTIVE)' : '■ ' + item.status.toUpperCase()) + '</span>' +
+                '</div>' +
+                '<div class="service-years">' +
+                  '<span>⏱ SERVICE SPAN: <strong>' + item.years_active + '</strong></span>' +
+                  '<span>•</span>' +
+                  '<span>ZONE: <strong>' + item.zone.toUpperCase() + '</strong></span>' +
+                '</div>' +
+                '<div class="craft-summary">' + (item.abandonment_reason || (isActive ? 'Still conducting primary telemetry and interstellar boundary exploration.' : 'Preserved on-site in historic configuration.')) + '</div>' +
+                '<div class="specs-grid">' + specsHtml + '</div>' +
+              '</div>' +
+              '<div class="achievement-trigger" onclick="event.stopPropagation(); openAchievements(\'' + item.id + '\')">' +
+                '<div class="title-wrap">' +
+                  '<span class="gold-icon">★</span>' +
+                  '<span class="gold-text">PULL UP ACHIEVEMENTS & DISCOVERIES (' + (item.facts ? item.facts.length : 0) + ' RECORDED)</span>' +
+                '</div>' +
+                '<button class="view-btn">EXPAND TELEMETRY ↗</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+
+        list.appendChild(entry);
+      });
+    }
+
+    function setMode(id, mode) {
+      const img = document.getElementById('img-' + id);
+      const sch = document.getElementById('schematic-' + id);
+      const btnPhoto = document.getElementById('btn-photo-' + id);
+      const btnSch = document.getElementById('btn-sch-' + id);
+      if (mode === 'photo') {
+        img.style.display = 'block';
+        sch.style.display = 'none';
+        btnPhoto.classList.add('active');
+        btnSch.classList.remove('active');
+      } else {
+        img.style.display = 'none';
+        sch.style.display = 'flex';
+        btnPhoto.classList.remove('active');
+        btnSch.classList.add('active');
+      }
+    }
+
+    function filterMissions(type, btn) {
+      document.querySelectorAll('.filter-chip').forEach(function(c) { c.classList.remove('active'); });
+      btn.classList.add('active');
+      renderTimeline(type);
+    }
+
+    // Modal
+    function openAchievements(id) {
+      const item = itemsData.find(function(i) { return i.id === id; });
+      if (!item) return;
+
+      document.getElementById('modal-craft-name').innerText = '★ ' + item.name + ' — KEY ACHIEVEMENTS';
+      document.getElementById('modal-service-dates').innerText = 'SERVICE TIMELINE: ' + item.years_active + ' | ZONE: ' + item.zone.toUpperCase() + ' | RECORD PROVENANCE: NASA JPL / ARCHIVES';
+
+      const factsContainer = document.getElementById('modal-facts');
+      factsContainer.innerHTML = '';
+
+      if (item.facts && item.facts.length > 0) {
+        item.facts.forEach(function(f) {
+          const card = document.createElement('div');
+          card.className = 'fact-card';
+          card.innerHTML = 
+            '<div class="fact-claim">' + f.claim + '</div>' +
+            '<div class="fact-stat">TELEMETRY RECORD: ' + f.value + ' | PHASE: ' + (f.phase_key || 'EXPLORATION') + '</div>';
+          factsContainer.appendChild(card);
+        });
+      } else {
+        factsContainer.innerHTML = '<div style="color:#94a3b8; font-family:var(--font-telemetry)">No telemetry records cataloged for this phase.</div>';
+      }
+
+      document.getElementById('achievement-modal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('achievement-modal').classList.remove('open');
+    }
+
+    // S6 Tactical Quiz
+    const quizQuestions = [
+      {
+        question: "How long did Opportunity (MER-B) operate on Mars beyond its original 90-sol primary mission?",
+        options: ["180 sols (6 months)", "1 Earth year", "5,111 sols (over 14 Earth years)", "8 years"],
+        answer: 2,
+        explanation: "Opportunity lasted 5,111 sols (over 14 years) on Mars, traveling 45.16 km until the June 2018 planet-wide dust storm."
+      },
+      {
+        question: "Which craft is humanity's oldest artifact still in orbital motion?",
+        options: ["Sputnik 1", "Vanguard 1 (1958)", "Explorer 1", "Telstar 1"],
+        answer: 1,
+        explanation: "Launched on March 17, 1958, Vanguard 1 remains in high-stability orbit and is predicted to remain aloft for over two centuries."
+      },
+      {
+        question: "What is the operational status of Voyager 1 in 2026?",
+        options: ["Derelict in the Kuiper Belt", "Lost contact in 1999", "Active and transmitting from interstellar space (>160 AU)", "De-orbited into Jupiter"],
+        answer: 2,
+        explanation: "Voyager 1 crossed the heliopause in August 2012 and remains in active communication via the Deep Space Network."
+      },
+      {
+        question: "How many marsquakes did the InSight lander detect before dust choked its solar panels in 2022?",
+        options: ["12 quakes", "Over 1,300 marsquakes", "Zero quakes", "86 quakes"],
+        answer: 1,
+        explanation: "InSight's SEIS seismometer detected 1,319 marsquakes, mapping Mars' crust, mantle, and molten liquid core."
+      },
+      {
+        question: "Where did the Apollo 11 Lunar Module Descent Stage remain permanently preserved?",
+        options: ["Mare Tranquillitatis (Tranquility Base)", "Oceanus Procellarum", "Fra Mauro", "Hadley Rille"],
+        answer: 0,
+        explanation: "The Apollo 11 Descent Stage has stood at Tranquility Base since July 20, 1969, commemorating humanity's first lunar landing."
+      }
+    ];
+
+    let currentQ = 0;
+    let quizScore = 0;
+    let quizStreak = 0;
+
+    function renderQuestion() {
+      const q = quizQuestions[currentQ];
+      const body = document.getElementById('quiz-body');
+      let optionsHtml = '';
+      q.options.forEach(function(opt, idx) {
+        optionsHtml += '<button class="quiz-opt-btn" onclick="submitAnswer(' + idx + ')">' + String.fromCharCode(65 + idx) + '. ' + opt + '</button>';
+      });
+
+      body.innerHTML = 
+        '<div class="quiz-q-title">[' + (currentQ + 1) + '/' + quizQuestions.length + '] ' + q.question + '</div>' +
+        '<div class="quiz-options">' + optionsHtml + '</div>';
+
+      document.getElementById('quiz-feedback').style.display = 'none';
+    }
+
+    function submitAnswer(chosenIdx) {
+      const q = quizQuestions[currentQ];
+      const buttons = document.querySelectorAll('.quiz-opt-btn');
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.style.display = 'block';
+
+      if (chosenIdx === q.answer) {
+        buttons[chosenIdx].classList.add('correct');
+        quizScore += 100 * (1 + quizStreak * 0.2);
+        quizStreak++;
+        feedback.style.background = 'rgba(0, 255, 136, 0.15)';
+        feedback.style.border = '1px solid var(--signal-green)';
+        feedback.style.color = '#fff';
+        feedback.innerHTML = '<strong style="color:var(--signal-green)">✓ VERIFICATION CONFIRMED:</strong> ' + q.explanation;
+      } else {
+        buttons[chosenIdx].classList.add('wrong');
+        buttons[q.answer].classList.add('correct');
+        quizStreak = 0;
+        feedback.style.background = 'rgba(239, 68, 68, 0.15)';
+        feedback.style.border = '1px solid #ef4444';
+        feedback.style.color = '#fff';
+        feedback.innerHTML = '<strong style="color:#ef4444">✕ TELEMETRY MISMATCH:</strong> ' + q.explanation;
+      }
+
+      document.getElementById('quiz-score').innerText = Math.round(quizScore);
+      document.getElementById('quiz-streak').innerText = quizStreak + 'x';
+
+      setTimeout(function() {
+        currentQ = (currentQ + 1) % quizQuestions.length;
+        renderQuestion();
+      }, 4000);
+    }
+
+    function switchTab(tab) {
+      if (tab === 'quiz') {
+        document.getElementById('quiz-container').classList.add('open');
+        document.getElementById('timeline-view').style.display = 'none';
+        document.getElementById('btn-quiz').classList.add('active');
+        document.getElementById('btn-timeline').classList.remove('active');
+        renderQuestion();
+      } else {
+        document.getElementById('quiz-container').classList.remove('open');
+        document.getElementById('timeline-view').style.display = 'block';
+        document.getElementById('btn-quiz').classList.remove('active');
+        document.getElementById('btn-timeline').classList.add('active');
+      }
+    }
+
+    // Fetch live data from server API
+    fetch('/api/items')
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        itemsData = data;
+        renderTimeline('all');
+      })
+      .catch(function(err) {
+        console.error('Failed to load items:', err);
+      });
+  </script>
+</body>
+</html>
