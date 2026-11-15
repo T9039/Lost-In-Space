@@ -233,6 +233,9 @@ Done in this pass:
 - [x] **SGP4 wrapper** — `lib/orbit.ts` propagates a CelesTrak OMM record to
       geodetic coordinates with `satellite.js`; deterministic tests use a real
       ISS element set.
+- [x] **GP endpoint** — `/api/artifacts/:slug/gp` returns the latest stored OMM
+      and a propagated position with a five-minute cache; `gp_element` is still
+      empty until `celestrak_refresh` can write from this network.
 
 Next:
 

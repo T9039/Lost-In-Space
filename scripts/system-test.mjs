@@ -151,6 +151,9 @@ try {
   );
   checks.push(await check("/api/items/does-not-exist", 404));
   checks.push(
+    await check("/api/artifacts/hubble-space-telescope/gp", 404)
+  );
+  checks.push(
     await check("/api/items/opportunity/lineage", 200, async (response) => {
       const lineage = await response.json();
       assert.equal(lineage.item_id, "opportunity");

@@ -23,6 +23,7 @@ Set the variable to the API origin without a trailing slash, for example `NEXT_P
 | `GET /api/items/:id` | URL-encoded item ID | One `Item` | Backend endpoint contract. Current `getItem()` searches the list from `/api/items`. |
 | `GET /api/items/:id/lineage` | URL-encoded item ID | `LineageResponse` below | Backend endpoint contract for the provenance graph; not currently called by the UI. |
 | `GET /api/sources` | None | `Source[]` | Called by `getSources()` and `getSource()`. |
+| `GET /api/artifacts/:slug/gp` | URL-encoded slug | Latest OMM element set plus a propagated position, or `404` | Phase 5 contract; short cache (`s-maxage=300`). |
 | `POST /api/compare` | `CompareRequest` below | `CompareResult` below | Backend endpoint contract. The current compare page calls `compareItems()` locally and does not POST. |
 
 All successful responses are JSON. IDs in paths must be URL-encoded. A missing item should return HTTP `404`; invalid query/body fields should return HTTP `400`. Fixture fallback applies to GETs made through the current `lib/api.ts` helper. `POST /api/compare` is documented for backend integration and has no client fallback wired yet.
