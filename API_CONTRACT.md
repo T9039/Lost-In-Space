@@ -19,7 +19,7 @@ Set the variable to the API origin without a trailing slash, for example `NEXT_P
 |---|---|---|---|
 | `GET /api/zones` | None | `ZoneSummary[]` | Backend endpoint contract. `getZones()` currently derives summaries from `/api/items` and local `ZONES`; it does not call this endpoint. |
 | `GET /api/items` | None | `Item[]` | Called by `getItems()`, `getItem()`, and indirectly by `getZones()`. |
-| `GET /api/items?zone={zone}` | Optional zone filter | `Item[]` | Supported backend contract. The current `getItems(zone)` fetches the unfiltered list and filters locally. |
+| `GET /api/items?zone={zone}&q={query}` | Optional zone and trigram search filters | `Item[]` | Supported backend contract. The archive uses server-side search. |
 | `GET /api/items/:id` | URL-encoded item ID | One `Item` | Backend endpoint contract. Current `getItem()` searches the list from `/api/items`. |
 | `GET /api/items/:id/lineage` | URL-encoded item ID | `LineageResponse` below | Backend endpoint contract for the provenance graph; not currently called by the UI. |
 | `GET /api/sources` | None | `Source[]` | Called by `getSources()` and `getSource()`. |

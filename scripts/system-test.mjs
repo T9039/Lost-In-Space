@@ -113,6 +113,18 @@ try {
   );
   checks.push(await check("/api/items?zone=pluto", 400));
   checks.push(
+    await check("/api/items?q=opportunity", 200, async (response) => {
+      const items = await response.json();
+      assert.ok(items.length >= 1);
+      assert.ok(items.every((item) => /opportunity/i.test(item.name)));
+    })
+  );
+  checks.push(
+    await check("/archive?q=opportunity", 200, async (response) =>
+      assert.match(await response.text(), /Opportunity/)
+    )
+  );
+  checks.push(
     await check("/api/items/apollo-11-eagle", 200, async (response) => {
       const item = await response.json();
       assert.equal(item.id, "apollo-11-eagle");

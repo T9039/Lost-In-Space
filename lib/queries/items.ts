@@ -126,18 +126,30 @@ async function hydrate(cards: CardRow[]): Promise<Item[]> {
   );
 }
 
-export async function listItems(zone?: Zone): Promise<Item[]> {
+export async function listItems(zone?: Zone, search?: string): Promise<Item[]> {
   const params: unknown[] = [];
-  let zoneClause = "";
+  let where = "c.is_curated = true AND c.primary_zone <> 'other'";
+
   if (zone) {
     params.push(toDbZone(zone));
-    zoneClause = ` AND c.primary_zone = $${params.length}::zone_kind`;
+    where += ` AND c.primary_zone = $${params.length}::zone_kind`;
+  }
+
+  const term = search?.trim();
+  if (term) {
+    params.push(term);
+    const p = `$${params.length}`;
+    where += ` AND (
+      c.canonical_name ILIKE '%' || ${p} || '%'
+      OR coalesce(c.short_name, '') ILIKE '%' || ${p} || '%'
+      OR coalesce(c.primary_location_name, '') ILIKE '%' || ${p} || '%'
+      OR c.canonical_name % ${p}
+    )`;
   }
 
   const cards = await query<CardRow>(
     `SELECT ${CARD_COLUMNS} ${CARD_FROM}
-      WHERE c.is_curated = true
-        AND c.primary_zone <> 'other'${zoneClause}
+      WHERE ${where}
       ${CARD_ORDER}`,
     params
   );

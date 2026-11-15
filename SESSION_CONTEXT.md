@@ -223,6 +223,8 @@ Done in this pass:
       an explicit empty state until curated relations are added.
 - [x] **Phase and media provenance** — item pages show the source behind each
       phase (`artifact_phase.source_id`) and each media row.
+- [x] **Server-side search** — `/api/items?q=` and `/archive?q=` use trigram
+      search; the archive debounces the query into the URL.
 
 Next:
 

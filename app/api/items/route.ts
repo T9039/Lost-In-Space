@@ -12,8 +12,13 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: `Unknown zone: ${zone}` }, { status: 400 });
   }
 
+  const search = request.nextUrl.searchParams.get("q") ?? undefined;
+  if (search && search.length > 80) {
+    return NextResponse.json({ error: "Search query is too long" }, { status: 400 });
+  }
+
   try {
-    const items = await listItems(zone ?? undefined);
+    const items = await listItems(zone ?? undefined, search);
     return NextResponse.json(items, { headers: { "Cache-Control": CACHE } });
   } catch (error) {
     console.error("[api/items]", error);

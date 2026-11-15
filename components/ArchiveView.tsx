@@ -13,10 +13,12 @@ const ZONE_IDS = Object.keys(ZONES) as Zone[];
 export default function ArchiveView({
   initialItems,
   initialZones,
+  initialQuery,
   dataSource,
 }: {
   initialItems: Item[];
   initialZones: ZoneSummary[];
+  initialQuery: string;
   dataSource: "database" | "fixtures";
 }) {
   const params = useSearchParams();
@@ -31,7 +33,7 @@ export default function ArchiveView({
     () => (activeZone ? allItems.filter((item) => item.zone === activeZone) : allItems),
     [activeZone, allItems]
   );
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const [view, setView] = useState<"map" | "gallery" | "data">(
     params.get("view") === "map" ? "map" : params.get("view") === "data" ? "data" : "gallery"
   );
@@ -39,6 +41,18 @@ export default function ArchiveView({
   useEffect(() => {
     setView(params.get("view") === "map" ? "map" : params.get("view") === "data" ? "data" : "gallery");
   }, [params]);
+
+  useEffect(() => {
+    const current = params.get("q") ?? "";
+    if (query.trim() === current.trim()) return;
+    const timer = setTimeout(() => {
+      const next = new URLSearchParams(params.toString());
+      if (query.trim()) next.set("q", query.trim());
+      else next.delete("q");
+      router.replace(next.size ? `/archive?${next}` : "/archive", { scroll: false });
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [params, query, router]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -52,6 +66,7 @@ export default function ArchiveView({
     const next = new URLSearchParams();
     if (zone) next.set("zone", zone);
     if (view !== "gallery" && zone) next.set("view", view);
+    if (query.trim()) next.set("q", query.trim());
     router.replace(next.size ? `/archive?${next}` : "/archive", { scroll: false });
   };
 
@@ -60,6 +75,7 @@ export default function ArchiveView({
     const next = new URLSearchParams();
     if (activeZone) next.set("zone", activeZone);
     if (nextView !== "gallery") next.set("view", nextView);
+    if (query.trim()) next.set("q", query.trim());
     router.replace(next.size ? `/archive?${next}` : "/archive", { scroll: false });
   };
 

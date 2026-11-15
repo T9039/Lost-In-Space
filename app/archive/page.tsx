@@ -8,13 +8,16 @@ export const metadata = {
   title: "Archive — Lost in Space",
 };
 
-export default async function ArchivePage() {
-  const { items, zones, dataSource } = await getArchiveData();
+type SearchParams = Promise<{ q?: string }>;
+
+export default async function ArchivePage({ searchParams }: { searchParams: SearchParams }) {
+  const { q } = await searchParams;
+  const { items, zones, dataSource } = await getArchiveData(q);
 
   return (
     <div className="container">
       <Suspense fallback={<div className="empty-state">Loading archive…</div>}>
-        <ArchiveView initialItems={items} initialZones={zones} dataSource={dataSource} />
+        <ArchiveView initialItems={items} initialZones={zones} initialQuery={q ?? ""} dataSource={dataSource} />
       </Suspense>
     </div>
   );
