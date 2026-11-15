@@ -60,6 +60,15 @@ export default function ItemWorkspace({
         </div>
       </header>
 
+      {item.abandonment_reason ? (
+        <section className="card" aria-label="Why it was left">
+          <div className="card-pad">
+            <div className="eyebrow" style={{ marginBottom: 6 }}>Why it was left</div>
+            <p style={{ margin: 0 }}>{item.abandonment_reason}</p>
+          </div>
+        </section>
+      ) : null}
+
       <div className="peer-bar">
         <label className="field-label" htmlFor="peer-select" style={{ margin: 0 }}>
           Compare with

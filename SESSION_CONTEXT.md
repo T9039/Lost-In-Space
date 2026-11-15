@@ -210,6 +210,8 @@ Done in this pass:
       `v_artifact_edge`, joined to parent/child slugs and names.
 - [x] **SQL comparison diff** — the spec FULL JOIN and same/different counts run
       in PostgreSQL; highlights remain deterministic presentation.
+- [x] **Item metadata and provenance** — share/index metadata, a “Why it was
+      left” panel, and per-fact source links.
 
 Next:
 

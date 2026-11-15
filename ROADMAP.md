@@ -176,12 +176,12 @@ The visual pieces exist; the item profile and archive now read PostgreSQL.
 - [x] Comparison UI (client-side diff)
 - [x] Archive grid and zone filters
 - [x] DB-backed profile: `v_artifact_card` + `v_artifact_timeline`
-- [ ] Per-fact source links from the `fact` table
+- [x] Per-fact source links from the `fact` table
 - [ ] Lineage UI from `v_artifact_edge`
 - [ ] Server-side search (trigram); current filters are client-side
 - [ ] Provenance panel for phases and media
-- [ ] “Why it was abandoned” from `mission.abandonment_reason`
-- [ ] `generateMetadata` for sharing and indexing
+- [x] “Why it was abandoned” from `mission.abandonment_reason`
+- [x] `generateMetadata` for sharing and indexing
 
 **Exit criterion:** facts, provenance, timeline and comparison are deterministic
 reads from PostgreSQL; no generated text is used.
