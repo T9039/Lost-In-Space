@@ -68,12 +68,19 @@ python3 -m venv .venv
 
 ### Database
 
-PostgreSQL 16+ is required. Apply:
+PostgreSQL 16+ is required. Apply (with `psql`):
 
 ```bash
 psql "$DATABASE_URL" -f db/schema.sql
 psql "$DATABASE_URL" -f db/seed/001_lookups.sql
 psql "$DATABASE_URL" -f db/staging.sql
+```
+
+Or apply without `psql`, using the Python driver:
+
+```bash
+.venv/bin/python scripts/apply_sql.py \
+  db/schema.sql db/seed/001_lookups.sql db/staging.sql
 ```
 
 Then:
@@ -142,16 +149,50 @@ and search, Phase 5 live tracking, Phase 6 narration.
 ## Database hosting decision
 
 The curated data is reproducible from GCAT plus `curation/artifacts.json`; no
-dump needs to move. Options:
+dump needs to move.
 
-1. **Managed PostgreSQL** (Neon, Supabase, Render) — reachable from any device,
-   simplest for a shared dev database. Recommended for development.
-2. **Rootless Podman/Docker on the desktop** — PostgreSQL on the workstation,
-   exposed over Tailscale only. Good for sovereignty, needs user-level setup.
-3. **Laptop-hosted** — laptop must stay online; not suitable for “any device”.
+**Decision:** managed PostgreSQL for development, Render PostgreSQL for
+production. The local database is not exposed over Tailscale.
 
-For production, the planned target is Render with a paid PostgreSQL instance
-(`render.yaml`). Keep `DATABASE_URL` as the only switch.
+### Development: Neon (or another managed Postgres)
+
+1. Create a project at <https://neon.tech> (free tier is enough).
+2. Copy the connection string from the dashboard. It looks like:
+
+   ```text
+   postgresql://USER:PASSWORD@HOST/DATABASE?sslmode=require
+   ```
+
+3. Put it in `.env.local` (gitignored), never in the repository:
+
+   ```bash
+   cd ~/Projects/lost-in-space
+   printf 'DATABASE_URL=%s\n' 'postgresql://...' > .env.local
+   ```
+
+4. Apply the schema:
+
+   ```bash
+   set -a; source .env.local; set +a
+   .venv/bin/python scripts/apply_sql.py \
+     db/schema.sql db/seed/001_lookups.sql db/staging.sql
+   ```
+
+5. Run the ETL, then `etl.validate`.
+
+### Production: Render
+
+`render.yaml` already declares the database and injects `DATABASE_URL` into the
+web and cron services. For a durable instance, change the database plan from
+`free` to a paid plan; the free database expires after 30 days. Do not put the
+Neon URL into `render.yaml`.
+
+### Options considered
+
+1. **Managed PostgreSQL** — chosen for development; reachable from any device.
+2. **Rootless Podman on the desktop** — viable later for a self-hosted dev
+   database, exposed over Tailscale only; not needed now.
+3. **Laptop-hosted** — rejected; the laptop must stay online.
 
 ## Known gaps
 

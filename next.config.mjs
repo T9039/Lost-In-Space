@@ -7,6 +7,9 @@ const threeRoot = path.resolve(path.dirname(require.resolve("three")), "..");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Keep output tracing inside this repository, even if a parent directory
+  // happens to contain another package-lock.json.
+  outputFileTracingRoot: path.resolve("."),
   webpack: (config) => {
     // Keep a single copy of three.js by resolving bare "three" to the package
     // root (never to the CommonJS build, which references Node globals).

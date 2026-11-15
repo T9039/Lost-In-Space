@@ -73,6 +73,17 @@ psql "$DATABASE_URL" -f db/seed/001_lookups.sql
 psql "$DATABASE_URL" -f db/staging.sql
 ```
 
+No `psql` client? Apply the same files with the Python driver:
+
+```bash
+.venv/bin/python scripts/apply_sql.py \
+  db/schema.sql db/seed/001_lookups.sql db/staging.sql
+```
+
+For a managed development database (Neon, Supabase, Render), set
+`DATABASE_URL` to the provider's connection string and use the same commands.
+See `SESSION_CONTEXT.md` for the current decision.
+
 Verify:
 
 ```bash

@@ -86,8 +86,10 @@ Done. The project is at:
   $PROJECT_DIR
 
 Next:
-  1. Set DATABASE_URL and apply db/schema.sql, db/seed/001_lookups.sql,
-     db/staging.sql.
+  1. Set DATABASE_URL (managed Postgres for development, Render for production)
+     and apply the schema:
+       .venv/bin/python scripts/apply_sql.py \
+         db/schema.sql db/seed/001_lookups.sql db/staging.sql
   2. Run the ETL:
        .venv/bin/python -m etl.download_gcat
        .venv/bin/python -m etl.load_staging
