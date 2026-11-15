@@ -1,7 +1,8 @@
 import { buildZoneSummaries, toUiId } from "@/lib/contract";
 import { items as fixtureItems, sources as fixtureSources } from "@/lib/fixtures";
-import type { Item, Source, ZoneSummary } from "@/lib/types";
+import type { Item, LineageEdge, Source, ZoneSummary } from "@/lib/types";
 import { getItemByAnyId, listItems } from "./items";
+import { listEdgesForItem } from "./lineage";
 import { listSources } from "./sources";
 import { listZones } from "./zones";
 
@@ -11,6 +12,7 @@ export interface ItemPageData {
   item: Item;
   sources: Source[];
   peers: Item[];
+  edges: LineageEdge[];
   dataSource: PageDataSource;
 }
 
@@ -24,11 +26,16 @@ export async function getItemPageData(id: string): Promise<ItemPageData | null> 
     const item = await getItemByAnyId(id);
     if (!item) return null;
 
-    const [items, sources] = await Promise.all([listItems(), listSources()]);
+    const [items, sources, edges] = await Promise.all([
+      listItems(),
+      listSources(),
+      listEdgesForItem(id),
+    ]);
     return {
       item,
       sources,
       peers: items.filter((peer) => peer.id !== item.id),
+      edges,
       dataSource: "database",
     };
   } catch (error) {
@@ -44,6 +51,7 @@ export async function getItemPageData(id: string): Promise<ItemPageData | null> 
     item,
     sources: fixtureSources,
     peers: fixtureItems.filter((peer) => peer.id !== item.id),
+    edges: [],
     dataSource: "fixtures",
   };
 }

@@ -177,7 +177,7 @@ The visual pieces exist; the item profile and archive now read PostgreSQL.
 - [x] Archive grid and zone filters
 - [x] DB-backed profile: `v_artifact_card` + `v_artifact_timeline`
 - [x] Per-fact source links from the `fact` table
-- [ ] Lineage UI from `v_artifact_edge`
+- [x] Lineage UI from `v_artifact_edge` (empty until curated relations exist)
 - [ ] Server-side search (trigram); current filters are client-side
 - [ ] Provenance panel for phases and media
 - [x] “Why it was abandoned” from `mission.abandonment_reason`

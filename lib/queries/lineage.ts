@@ -14,30 +14,24 @@ interface EdgeRow {
   child_name: string;
 }
 
-export async function getLineage(id: string): Promise<LineageResponse | null> {
-  const item = await getItemByAnyId(id);
-  if (!item) return null;
+export async function listEdgesForItem(id: string): Promise<LineageEdge[]> {
+  const rows = await query<EdgeRow>(
+    `SELECT e.kind,
+            e.label,
+            e.via,
+            parent.slug          AS parent_slug,
+            parent.canonical_name AS parent_name,
+            child.slug           AS child_slug,
+            child.canonical_name AS child_name
+       FROM v_artifact_edge e
+       JOIN artifact parent ON parent.artifact_id = e.parent_id
+       JOIN artifact child  ON child.artifact_id  = e.child_id
+      WHERE parent.slug = $1 OR child.slug = $1
+      ORDER BY e.kind, e.label, parent.canonical_name, child.canonical_name`,
+    [toDbSlug(id)]
+  );
 
-  const [sources, edgeRows] = await Promise.all([
-    sourcesForIds(sourceIdsForItem(item)),
-    query<EdgeRow>(
-      `SELECT e.kind,
-              e.label,
-              e.via,
-              parent.slug          AS parent_slug,
-              parent.canonical_name AS parent_name,
-              child.slug           AS child_slug,
-              child.canonical_name AS child_name
-         FROM v_artifact_edge e
-         JOIN artifact parent ON parent.artifact_id = e.parent_id
-         JOIN artifact child  ON child.artifact_id  = e.child_id
-        WHERE parent.slug = $1 OR child.slug = $1
-        ORDER BY e.kind, e.label, parent.canonical_name, child.canonical_name`,
-      [toDbSlug(id)]
-    ),
-  ]);
-
-  const edges: LineageEdge[] = edgeRows.map((row) => ({
+  return rows.map((row) => ({
     kind: row.kind,
     label: row.label,
     via: row.via,
@@ -48,6 +42,16 @@ export async function getLineage(id: string): Promise<LineageResponse | null> {
     child_slug: row.child_slug,
     child_name: row.child_name,
   }));
+}
+
+export async function getLineage(id: string): Promise<LineageResponse | null> {
+  const item = await getItemByAnyId(id);
+  if (!item) return null;
+
+  const [sources, edges] = await Promise.all([
+    sourcesForIds(sourceIdsForItem(item)),
+    listEdgesForItem(id),
+  ]);
 
   return {
     item_id: item.id,

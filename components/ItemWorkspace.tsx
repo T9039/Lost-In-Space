@@ -6,7 +6,7 @@ import { ArrowLeftRight, Expand, RotateCcw, X } from "lucide-react";
 import AIPane from "./AIPane";
 import LabPane from "./LabPane";
 import { useCompare } from "./CompareProvider";
-import type { Item, Source } from "@/lib/types";
+import type { Item, LineageEdge, Source } from "@/lib/types";
 import { ZONES } from "@/lib/types";
 
 type Mode = "split" | "ai" | "lab";
@@ -15,10 +15,12 @@ export default function ItemWorkspace({
   item,
   sources,
   peers,
+  edges,
 }: {
   item: Item;
   sources: Source[];
   peers: Item[];
+  edges: LineageEdge[];
 }) {
   const [mode, setMode] = useState<Mode>("split");
   const [swapped, setSwapped] = useState(false);
@@ -68,6 +70,27 @@ export default function ItemWorkspace({
           </div>
         </section>
       ) : null}
+
+      <section className="card" aria-label="Lineage">
+        <div className="card-pad">
+          <div className="eyebrow" style={{ marginBottom: 6 }}>Lineage</div>
+          {edges.length ? (
+            <ul style={{ margin: 0, paddingLeft: 18 }}>
+              {edges.map((edge) => (
+                <li key={`${edge.parent_slug}:${edge.child_slug}:${edge.label}`}>
+                  {edge.parent_name} → <strong>{edge.child_name}</strong>{" "}
+                  <span className="muted">({edge.label})</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="muted" style={{ margin: 0 }}>
+              No curated parent/child edges yet. Facts and phases still carry their own
+              provenance.
+            </p>
+          )}
+        </div>
+      </section>
 
       <div className="peer-bar">
         <label className="field-label" htmlFor="peer-select" style={{ margin: 0 }}>

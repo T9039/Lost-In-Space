@@ -214,6 +214,8 @@ Done in this pass:
       left” panel, and per-fact source links.
 - [x] **Contract tests** — six `node:test` cases over the pure mapping
       functions; run with `npm test`.
+- [x] **Lineage UI** — item pages render direct `v_artifact_edge` links and show
+      an explicit empty state until curated relations are added.
 
 Next:
 
