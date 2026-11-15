@@ -135,6 +135,7 @@ npm run typecheck
 npm run build
 npm start
 npm run db:check     # connectivity diagnostic; prints host, driver and latency
+npm run lint         # oxlint
 npm test             # unit + component tests (node:test + tsx)
 npm run build && npm run test:system   # start the server and exercise every route/API
 npm run test:all     # tests, build and system checks in one command
@@ -348,7 +349,7 @@ Run `npm run db:check` to see the current state.
 ## Known gaps
 
 - No `app/api/` routes and no `lib/db.ts` yet.
-- No lint script. Unit, component and system tests exist; `typecheck` is clean.
+- Unit, component, database and system tests exist; `typecheck` and `lint` are clean.
 - CI is drafted but not enabled; the gh token lacks the `workflow` scope.
 - `db/migrations/` only documents the convention; no migrations yet.
 - 30 lander rows have no object row; loading `lcat`/`rcat` is deferred (see `docs/DATABASE.md`).

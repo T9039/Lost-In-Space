@@ -215,7 +215,8 @@ reads from PostgreSQL; no generated text is used.
 
 - [ ] Enable the drafted CI workflow (`.github/workflows` needs workflow scope)
 - [x] Add `typecheck` and `test` scripts (node:test + tsx)
-- [ ] Add a lint script (and Playwright when the DB-backed flow stabilises)
+- [x] Add a lint script (`oxlint`)
+- [ ] Add Playwright end-to-end coverage
 - [x] Backup and restore drill (12 MB dump restored into a temporary Neon database)
 - [ ] Accessibility, responsive and performance passes
 - [ ] Deploy to Render with a paid database and cron
@@ -231,7 +232,7 @@ reads from PostgreSQL; no generated text is used.
 - [x] `db/migrations/README.md` documents the forward-only convention
 - [x] `app/api/` routes and `lib/db.ts` are in place
 - [x] `npm run typecheck` added
-- [ ] No lint script (unit, component and system tests exist)
+- [x] Lint, typecheck, unit, component and system tests exist
 - [x] `.env.example` documents `NEXT_PUBLIC_API_BASE`
 - [x] `ATTRIBUTION.md` includes NASA mission pages
 - [x] Technical docs point at `app/`, `components/` and `lib/`

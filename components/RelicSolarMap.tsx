@@ -34,12 +34,6 @@ function makeWorldMaps(kind: WorldKind) {
     seed = (seed * 16807) % 2147483647;
     return (seed - 1) / 2147483646;
   };
-  const fillBase = (color: string, relief = "#808080") => {
-    map.fillStyle = color;
-    map.fillRect(0, 0, width, height);
-    bump.fillStyle = relief;
-    bump.fillRect(0, 0, width, height);
-  };
   const polygon = (ctx: CanvasRenderingContext2D, points: [number, number][], color: string) => {
     ctx.beginPath();
     points.forEach(([x, y], index) => {
