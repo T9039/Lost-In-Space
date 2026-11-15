@@ -4,13 +4,22 @@ This directory contains the technical system documentation for **Lost in Space**
 written in [Typst](https://typst.app/) and adapted from the `swdocs` structure in
 [sipho-mokoena/typst-scaffold](https://github.com/sipho-mokoena/typst-scaffold).
 
-The compiled output is `main.pdf` (A4, Arial 11 pt, numbered headings, revision
-history, table of contents, lists of figures and tables, IEEE bibliography).
+Compiled outputs:
+
+- `main.pdf` — the 79-page technical system document (A4, Arial, numbered headings, IEEE bibliography).
+- `testing.pdf` — test pyramid, inventory, failures and resolutions, coverage and commands.
+- `performance.pdf` — Lighthouse method, cold/warm results, responsiveness, failure modes and improvements.
+- `architecture-visual.pdf` — context, runtime, component, data-model and deployment diagrams.
+
+The three companion reports share `report.typ`.
 
 ## Build
 
 ```bash
-typst compile main.typ         # writes main.pdf
+typst compile main.typ main.pdf
+typst compile testing.typ testing.pdf
+typst compile performance.typ performance.pdf
+typst compile architecture-visual.typ architecture-visual.pdf
 typst watch main.typ           # rebuild on change
 ```
 
@@ -24,6 +33,10 @@ the local package cache.
 | Path | Purpose |
 |---|---|
 | `main.typ` | Page setup, title page, revision history, TOC, list of figures and tables, section includes, bibliography |
+| `report.typ` | Shared page, table and callout style for the three companion reports |
+| `testing.typ` | Testing mechanisms, inventory, failure/resolution log and coverage |
+| `performance.typ` | Performance measurement method, results and improvement budget |
+| `architecture-visual.typ` | Cetz diagrams for context, runtime, components, data model and deployment |
 | `pages/01_introduction.typ` | Purpose, scope, statuses, constraints, conventions, system summary, non-goals |
 | `pages/02_architecture.typ` | Runtime topology, layers, request/batch/live paths, facts-vs-narration invariant, environments |
 | `pages/03_core_platform.typ` | ADR-001 to ADR-010: PostgreSQL, Next.js, TypeScript, React/Tailwind, `pg`, migrations, graph, search, cache, auth |
@@ -68,5 +81,7 @@ The PDF is a build artefact. Rebuild it before a release and attach it to the
 release; do not hand-edit it.
 
 ```bash
-typst compile main.typ main.pdf
+for f in main testing performance architecture-visual; do
+  typst compile "$f.typ" "$f.pdf"
+done
 ```

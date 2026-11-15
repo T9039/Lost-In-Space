@@ -94,6 +94,10 @@ jobs:
       - uses: typst-community/setup-typst@v3
         with:
           typst-version: "0.15.1"
-      - name: Compile the technical document
+      - name: Compile the technical documents
         working-directory: docs/technical
-        run: typst compile main.typ
+        run: |
+          typst compile main.typ main.pdf
+          typst compile testing.typ testing.pdf
+          typst compile performance.typ performance.pdf
+          typst compile architecture-visual.typ architecture-visual.pdf

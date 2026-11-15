@@ -33,19 +33,19 @@ graph server, a message queue, or a per-user upstream API call.
     content("web", align(center, text(size: 8pt)[Render web service\ Next.js server]))
 
     rect((5.0, 1.8), (8.4, 2.9), name: "db", radius: 2pt)
-    content("db", align(center, text(size: 8pt)[Render PostgreSQL 16\ canonical tables + views]))
+    content("db", align(center, text(size: 8pt)[Neon PostgreSQL 16\ canonical tables + views]))
 
     rect((11.2, 4.0), (14.6, 5.1), name: "sources", radius: 2pt)
     content("sources", align(center, text(size: 8pt)[External sources\ GCAT · NSSDCA · SA · NASA]))
 
     rect((11.2, 1.8), (14.6, 2.9), name: "cron", radius: 2pt)
-    content("cron", align(center, text(size: 8pt)[Render cron\ ETL + CelesTrak refresh]))
+    content("cron", align(center, text(size: 8pt)[GitHub Actions\ ETL + CelesTrak refresh]))
 
     line("browser.east", "web.west", mark: (end: ">"))
     content((4.1, 4.78), text(size: 7pt)[HTTPS])
 
     line("web.south", "db.north", mark: (end: ">"))
-    content((7.15, 3.45), text(size: 7pt)[SQL])
+    content((7.15, 3.45), text(size: 7pt)[SQL / HTTPS])
 
     line("sources.south", "cron.north", mark: (end: ">"))
     content((13.55, 3.45), text(size: 7pt)[bulk fetch])
@@ -156,7 +156,7 @@ requires a re-download, and so a release can be audited after the fact.
 
 == Live tracking path
 
-1. A Render cron job fetches OMM records from CelesTrak @celestrak on a schedule.
+1. A GitHub Actions workflow fetches OMM records from CelesTrak @celestrak on a schedule.
 2. Records are upserted into `gp_element` on `(satcat_no, epoch)`.
 3. The API returns the latest element set for a curated artifact.
 4. The browser propagates and draws the position.

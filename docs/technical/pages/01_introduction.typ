@@ -18,9 +18,10 @@ retrofitting a rationale onto whatever gets built first.
 
 == Scope and status
 
-The project is at *phase 0*. The database schema, source audit, attribution
-model and deployment target are pinned. The web application, ETL loader and
-curated dataset are not implemented yet.
+The project is at *phase 7 — release*. The schema, ETL, database-backed
+application, API, tests, CI and a free Render deployment are in place. Version
+1.0.1 is tagged. The curated set contains 26 artifacts: Moon 7, Mars 7, Earth
+orbit 6 and deep space 6, with 66 sourced facts and 32 media rows.
 
 Each decision in this document carries one of four statuses:
 
@@ -120,11 +121,11 @@ unambiguously.
     align: (left, left),
     table.header([*Dimension*], [*Summary*]),
     [Product], [A curated, sourced archive of abandoned or still-present space hardware, navigated by four zones: Moon, Mars, Earth orbit, deep space.],
-    [Runtime], [Next.js server rendering @nextjs, querying PostgreSQL 16 @postgresql directly.],
-    [Data], [GCAT @gcat as the backbone; NSSDCA, Space Artefacts, NASA imagery and JPL Horizons as enrichment.],
-    [Live layer], [CelesTrak OMM element sets @celestrak, propagated in the browser with SGP4 @satellitejs.],
-    [Narration], [An LLM writes story text from a frozen facts snapshot. It never writes facts.],
-    [Deployment], [Render web service, Render PostgreSQL, and scheduled jobs. Docker Compose for local development.],
+    [Runtime], [Next.js server rendering @nextjs, querying PostgreSQL 16 @postgresql through typed server functions. Neon uses HTTPS; native hosts use a `pg` pool.],
+    [Data], [26 curated artifacts, 66 facts and 32 media rows. GCAT @gcat is the backbone; NSSDCA, Space Artefacts, NASA imagery and JPL Horizons enrich it.],
+    [Live layer], [CelesTrak OMM element sets @celestrak, refreshed by GitHub Actions and propagated on demand with SGP4 @satellitejs.],
+    [Narration], [An LLM writes story text from a frozen facts snapshot. It never writes facts. The provider is optional.],
+    [Deployment], [Render free web service on the loaded Neon database; GitHub Actions runs CI and the two-hourly GP refresh. Docker Compose remains the local path.],
     [Graph], [No graph server. Recursive SQL over phase and relation edges. Apache AGE is optional.],
     [Code licence], [MIT. Project data is CC-BY-4.0. Imported data keeps its source licence.],
   ),
@@ -141,6 +142,9 @@ unambiguously.
 
 == Related documents
 
+- `docs/technical/architecture-visual.pdf` — visual system structure, components and data model.
+- `docs/technical/testing.pdf` — test mechanisms, run history, failures and resolutions.
+- `docs/technical/performance.pdf` — Lighthouse baseline, responsiveness and improvement plan.
 - `docs/ARCHITECTURE.md` — short-form architecture quick reference.
 - `docs/DATABASE.md` — data dictionary and identity rules.
 - `docs/DATA-SOURCES.md` — source endpoints, column maps and licence notes.

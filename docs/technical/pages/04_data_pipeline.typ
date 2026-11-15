@@ -81,7 +81,7 @@ re-runnable, and none of them writes to a canonical table except `transform`.
 == ADR-011 — Python for the ingestion runtime
 
 *Decision.* The ETL is written in Python 3.13 with `requests` @requests, `psycopg` @psycopg and the
-standard library. It runs as a Render cron service and as CLI commands locally.
+standard library. It runs as a GitHub Actions workflow and as CLI commands locally.
 The web application remains TypeScript.
 
 *Context.* Ingestion is dominated by text parsing, HTTP fetching, and batch SQL.
@@ -539,7 +539,7 @@ that can simply be retried on the next schedule.
 
 *How it is used.*
 
-- Render cron services invoke the `python -m etl.*` commands.
+- GitHub Actions invokes the `python -m etl.*` commands on a schedule.
 - Each run writes an `etl_run` row with status and counts.
 - Overlapping runs are prevented by a PostgreSQL advisory lock keyed on the job
   name.

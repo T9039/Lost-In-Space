@@ -63,7 +63,11 @@ npm run build
 npm start
 
 # Documentation
-cd docs/technical && typst compile main.typ
+cd docs/technical
+typst compile main.typ
+typst compile testing.typ
+typst compile performance.typ
+typst compile architecture-visual.typ
 ```
 
 ## Non-negotiable rules

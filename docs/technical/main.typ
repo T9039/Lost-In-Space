@@ -57,9 +57,9 @@
   #block(height: 1.2cm)
 
   #text(size: 12pt)[
-    Version 1.0 \
+    Version 1.1 \
     Prepared by T9039 \
-    14 November 2026
+    15 November 2026
   ]
 
   #block(height: 2cm)
@@ -92,6 +92,9 @@
     [Initial technical documentation: stack, decisions, alternatives, data model, deployment],
     [1.0],
     [14 November 2026],
+    [Adds visual architecture, testing and performance reports; updates deployment, curation and test tooling],
+    [1.1],
+    [15 November 2026],
   ),
 )
 

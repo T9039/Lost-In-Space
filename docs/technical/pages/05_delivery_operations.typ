@@ -10,9 +10,9 @@ Render is the default operator, not a platform the software depends on.
 
 == ADR-021 — Render as the deployment target
 
-*Decision.* Production runs on Render @render: one long-lived Node web service, one
-managed PostgreSQL 16 instance in the same private network, and one Python cron
-service. Local development uses Docker Compose.
+*Decision.* Production runs on Render @render as a free Node web service backed by
+the loaded Neon PostgreSQL database. Cron jobs have no free Render tier, so the
+CelesTrak refresh runs in GitHub Actions. Local development uses Docker Compose.
 
 *Context.* The application is a server-rendered Next.js app with a persistent
 database connection pool, a scheduled ETL and a small live-data endpoint. It is
@@ -22,14 +22,13 @@ the topology in version control.
 
 *How it is used.*
 
-- `render.yaml` declares the database, web service and cron service.
-- `DATABASE_URL` is injected from the database resource; no connection string is
-  committed.
+- `render.yaml` declares only the free web service; it creates no paid resource.
+- `DATABASE_URL` is supplied as a dashboard secret and points at Neon; no
+  connection string is committed.
 - `healthCheckPath: /api/health` gates deploys.
-- `autoDeploy: true` on `main` for the web service; the cron service deploys only
-  when its own configuration changes.
-- Region is Frankfurt for both database and services, so traffic stays inside the
-  private network and close to the primary audience.
+- `autoDeploy: true` on `main`.
+- The web service uses the Neon HTTPS driver, so it does not need private-network
+  access to PostgreSQL.
 
 *Alternatives considered.*
 
@@ -56,9 +55,10 @@ the topology in version control.
 
 *Consequences.*
 
-- Free Render web services spin down when idle, and free PostgreSQL expires
-  after 30 days. A demo or long-lived instance needs paid plans; this is a cost
-  decision, not an architectural one.
+- Free Render web services spin down when idle (about a minute to wake). The
+  demo accepts that; a paid instance is the production upgrade.
+- Neon is external, so the free Render database's 30-day expiry does not apply.
+  A paid Render database and paid cron remain the fully self-contained option.
 - Render's managed PostgreSQL does not allow arbitrary extensions, which is why
   Apache AGE is optional and the graph is SQL.
 - The exit path is a Docker image plus `DATABASE_URL`; nothing in the application
@@ -136,11 +136,11 @@ additional account.
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Job*], [*Runs*], [*Fails when*]),
-    [`app`], [`npm ci`, `tsc --noEmit`, `next build`], [Type error, lint error or build error],
-    [`db`], [PostgreSQL 16 service, `schema.sql`, seed, staging, query tests], [Schema does not apply or a query test fails],
-    [`etl`], [`pip install`, `pytest` with fixture TSVs], [Parser or resolver regression],
+    [`app`], [`npm ci`, lint, typecheck, unit/component/DB tests, `next build`], [Type, lint, test or build error],
+    [`database`], [PostgreSQL 16 service, schema, seed, staging, view checks], [Schema does not apply or a view is missing],
+    [`etl`], [`pip install`, `pytest etl/tests`], [Parser, CelesTrak or resolver regression],
     [`docs`], [`typst compile main.typ`], [Documentation does not compile],
-    [`e2e`], [Playwright against a built app and test database], [Critical route or API contract breaks],
+    [`e2e`], [Playwright + axe against a built app], [Route, API, accessibility or responsive contract breaks],
   ),
 )
 
@@ -171,16 +171,15 @@ additional account.
   a reduced job runs on `main`.
 - Secrets for deployment live in GitHub, not in the repository.
 
-== ADR-024 — Vitest, Playwright and pytest
+== ADR-024 — node:test, Playwright and pytest
 
-*Decision.* Unit and integration tests use Vitest @vitest for TypeScript, pytest @pytest for
-Python, and Playwright @playwright for end-to-end browser tests. Database tests run against a
-real PostgreSQL instance, not a mock.
+*Decision.* Unit, component and database-integration tests use `node:test` with
+`tsx`; pytest covers the ETL; Playwright covers browser E2E, responsiveness and
+axe accessibility. Database tests run against real PostgreSQL, not a mock.
 
 *Context.* The riskiest logic is in SQL, dates, identity resolution and
-propagation. Mocking the database would test the mocks. Vitest is fast and
-native to the Vite/Next.js toolchain; Playwright exercises the routes a reader
-actually uses.
+propagation. Mocking the database would test the mocks. `node:test` avoids a
+second test runtime; Playwright exercises the routes a reader actually uses.
 
 *How it is used.*
 
@@ -194,10 +193,12 @@ actually uses.
     stroke: 0.5pt,
     align: (left, left, left),
     table.header([*Layer*], [*Tool*], [*Covers*]),
-    [Unit], [Vitest], [Date formatting, zone derivation helpers, SGP4 wrapper, comparison diffs],
-    [Database], [pytest + `psycopg`], [Schema applies, constraints hold, views return the expected shape, lineage recursion is cycle-safe],
-    [ETL], [pytest], [VagueDate parser, flag parsing, identity rules, idempotent re-runs],
-    [End to end], [Playwright], [Zone navigation, artifact page, comparison, live map with a fixture element set, sources page],
+    [Unit], [`node:test` + `tsx`], [Contract mapping, comparison, narration snapshot, SGP4 wrapper, image allowlist],
+    [Component], [`react-dom/server`], [Cards, workspace, position, lineage, provenance and AI label],
+    [Database], [`node:test`], [Archive reads, aliases, trigram search, zones, sources and lineage against Neon],
+    [ETL], [pytest], [VagueDate parser, flag parsing, CelesTrak batching and prune allowlist],
+    [End to end], [Playwright + axe], [All routes, search, comparison, MapLibre, accessibility, responsiveness],
+    [System], [`scripts/system-test.mjs`], [Production server, status codes, alias resolution, GP endpoint],
     [Documentation], [Typst compile], [Citations resolve, diagrams render, PDF builds],
   ),
 )
@@ -215,7 +216,7 @@ actually uses.
     align: (left, left, left),
     table.header([*Option*], [*Licence*], [*Why it was not chosen*]),
     [Jest], [MIT], [Mature, but slower and more configuration-heavy with modern ESM and TypeScript.],
-    [node:test], [MIT], [Built in and adequate for pure functions, but lacks the ergonomics and watch mode the team expects.],
+    [node:test], [MIT], [Chosen. Built in, fast, and runs TypeScript through `tsx` without a second config surface.],
     [Cypress], [MIT], [Excellent developer experience, but a heavier runner and a different execution model from Playwright.],
     [Testing Library only], [MIT], [Covers components, not real browser routes or API boundaries.],
     [Mocked database tests], [—], [Would not catch schema drift, constraint or SQL errors — the most likely failures.],
@@ -225,9 +226,9 @@ actually uses.
 
 *Consequences.*
 
-- CI needs a PostgreSQL service. That is the same dependency production has.
-- End-to-end tests are the slowest job and run on pull requests, not on every
-  commit.
+- CI needs a PostgreSQL service for the schema job. The app job's DB tests skip
+  when `DATABASE_URL` is unset; E2E deliberately runs with fixtures in CI.
+- End-to-end tests are the slowest job and run on every push and pull request.
 - Fixtures include real GCAT rows so the parser is tested against the real format.
 
 == ADR-025 — Structured logs and health checks first, tracing later
