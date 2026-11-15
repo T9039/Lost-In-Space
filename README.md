@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/T9039/Lost-In-Space/actions/workflows/ci.yml/badge.svg)](https://github.com/T9039/Lost-In-Space/actions/workflows/ci.yml)
 
+**Live demo:** <https://lost-in-space-cm35.onrender.com> (free Render instance; first request may take a minute to wake).
+
 An open, self-hostable archive of the hardware humans left behind — on the Moon,
 on Mars, in Earth orbit, and on the way out of the Solar System.
 

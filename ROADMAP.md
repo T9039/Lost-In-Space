@@ -222,7 +222,7 @@ reads from PostgreSQL; no generated text is used.
 - [x] Responsive and performance passes — 12 viewport checks; cached reads; Lighthouse 100 warm / 75 cold
 - [x] Deploy a free Render web demo on Neon; paid database/cron is a production upgrade
 - [x] Verify attribution and licences on every page (footer + sources page system tests)
-- [ ] Tag `v1.0`; attach the documentation PDF
+- [x] Tag `v1.0`; attach the documentation PDF
 
 ---
 

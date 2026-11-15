@@ -40,6 +40,7 @@ offline fallback.
 | Frontend | All routes DB-backed with fixture fallback (archive, home, item, sources, compare) |
 | Docs | 79-page Typst PDF, ADRs, ROADMAP |
 | CI | GitHub Actions: `ci.yml` (app, E2E, ETL, database, docs) and `celestrak.yml` (2-hourly GP refresh) |
+| Deployment | <https://lost-in-space-cm35.onrender.com> (`srv-dbsjcimi0phs73dann7g`, free Render web, Neon DB) |
 
 Verified on the previous machine:
 
@@ -277,6 +278,9 @@ Done in this pass:
 - [x] **Free deployment path** — the Render blueprint is free-only (no paid
       cron); the CelesTrak refresh runs in GitHub Actions every two hours. The
       web service uses the loaded Neon database over HTTPS.
+- [x] **Deployed and tagged** — <https://lost-in-space-cm35.onrender.com>, tag
+      `v1.0` with the documentation PDF attached to the GitHub release. Free web
+      services spin down after 15 idle minutes and take about a minute to wake.
 - [x] **Playwright + accessibility** — twelve end-to-end checks cover every
       route; axe reports no serious or critical violations on the five main
       pages.
