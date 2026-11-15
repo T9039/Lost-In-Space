@@ -260,6 +260,9 @@ Done in this pass:
       pending.
 - [x] **Element age labels** — Earth-orbit items show the GP epoch and a
       deterministic age label when an element set exists.
+- [x] **Narration foundation** — canonical facts snapshot, SHA-256 `fact_hash`,
+      prompt version, provider configuration and a guard that `story` never
+      enters facts or comparisons.
 
 Next:
 

@@ -202,12 +202,12 @@ reads from PostgreSQL; no generated text is used.
 
 ## Phase 6 — Narration
 
-- [ ] Canonical facts-snapshot builder and `fact_hash`
-- [ ] Provider adapter: `none`, `ollama`, OpenAI-compatible
+- [x] Canonical facts-snapshot builder and `fact_hash`
+- [x] Provider adapter: `none`, `ollama`, OpenAI-compatible (configuration)
 - [ ] Story generation command and cache keyed by hash
 - [ ] “AI generated” label and link to the facts used
-- [ ] Prompt versioning
-- [ ] Confirm nothing in comparisons, quizzes or facts reads `story`
+- [x] Prompt versioning (`PROMPT_VERSION`)
+- [x] Confirm nothing in comparisons, quizzes or facts reads `story` (snapshot/compare tests)
 
 ---
 
