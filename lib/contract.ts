@@ -440,7 +440,10 @@ export function buildItem(input: ItemInput): Item {
   const firstYear = yearOf(card.first_start);
   const lastYear = yearOf(card.last_end);
   const catalog = formatCatalog(card);
-  const model = MODEL_BY_SLUG[card.slug];
+  const modelRow = media.find((row) => row.media_type === "model");
+  const model = modelRow
+    ? { url: modelRow.url, credit: modelRow.credit ?? "NASA 3D Resources" }
+    : MODEL_BY_SLUG[card.slug];
 
   const specs: Record<string, string> = {};
   const mass = formatKg(card.mass_kg);

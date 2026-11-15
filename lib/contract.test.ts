@@ -14,6 +14,7 @@ import {
   type CardRow,
   type FactRow,
   type MissionRow,
+  type MediaRow,
   type TimelineRow,
 } from "./contract";
 
@@ -57,6 +58,19 @@ const facts: FactRow[] = [
     value: null,
     source_id: "nasa",
     source_url: "https://science.nasa.gov/mission/mer-opportunity/",
+  },
+];
+
+const media: MediaRow[] = [
+  {
+    slug: "opportunity",
+    media_id: 1,
+    url: "/models/opportunity.glb",
+    title: "Opportunity 3D model",
+    credit: "NASA 3D Resources — Opportunity",
+    media_type: "model",
+    is_primary: false,
+    source_id: "nasa_3d",
   },
 ];
 
@@ -145,6 +159,13 @@ test("buildItem maps database rows without reading story text", () => {
   );
   assert.equal(item.model_url, "/models/opportunity.glb");
   assert.equal("story" in item, false);
+});
+
+test("media model rows supply the model URL and credit", () => {
+  const item = buildItem({ card, mission, facts, media, timeline });
+  assert.equal(item.model_url, "/models/opportunity.glb");
+  assert.equal(item.model_credit, "NASA 3D Resources — Opportunity");
+  assert.equal(item.images.length, 0);
 });
 
 test("source kinds and zone summaries are deterministic", () => {

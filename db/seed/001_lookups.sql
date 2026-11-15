@@ -63,6 +63,16 @@ INSERT INTO source (
  'continuous',
  NULL),
 
+('nasa_3d',
+ 'NASA 3D Resources',
+ 'https://github.com/nasa/NASA-3D-Resources',
+ 'NASA public domain (per-asset credit)',
+ 'https://www.nasa.gov/nasa-brand-center/images-and-media/',
+ 'NASA 3D Resources, https://github.com/nasa/NASA-3D-Resources.',
+ 'Preserve the per-model credit. Models are served from the application bundle unless a remote asset is used.',
+ 'per asset',
+ NULL),
+
 ('nasa',
  'NASA mission pages',
  'https://science.nasa.gov/',

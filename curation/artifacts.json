@@ -45,6 +45,16 @@
           "media_type": "image",
           "is_primary": true,
           "source_id": "nasa_images"
+        },
+        {
+          "url": "/models/apollo-lm.glb",
+          "title": "Apollo Lunar Module 3D model",
+          "credit": "NASA 3D Resources — Apollo Lunar Module",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "model",
+          "is_primary": false,
+          "source_id": "nasa_3d"
         }
       ],
       "relations": []
@@ -330,6 +340,16 @@
           "media_type": "image",
           "is_primary": true,
           "source_id": "nasa_images"
+        },
+        {
+          "url": "/models/voyager.glb",
+          "title": "Voyager 3D model",
+          "credit": "NASA 3D Resources — Voyager Probe",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "model",
+          "is_primary": false,
+          "source_id": "nasa_3d"
         }
       ],
       "relations": []
@@ -378,6 +398,16 @@
           "media_type": "image",
           "is_primary": true,
           "source_id": "nssdca"
+        },
+        {
+          "url": "/models/pioneer.glb",
+          "title": "Pioneer 10 3D model",
+          "credit": "NASA 3D Resources — Pioneer 10",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "model",
+          "is_primary": false,
+          "source_id": "nasa_3d"
         }
       ],
       "relations": []
@@ -426,6 +456,16 @@
           "media_type": "image",
           "is_primary": true,
           "source_id": "nasa_images"
+        },
+        {
+          "url": "/models/opportunity.glb",
+          "title": "Opportunity 3D model",
+          "credit": "NASA 3D Resources — Mars Exploration Rover Opportunity (MER-B)",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "model",
+          "is_primary": false,
+          "source_id": "nasa_3d"
         }
       ],
       "relations": []
@@ -521,6 +561,16 @@
           "media_type": "image",
           "is_primary": true,
           "source_id": "nasa_images"
+        },
+        {
+          "url": "/models/insight.glb",
+          "title": "InSight lander 3D model",
+          "credit": "NASA 3D Resources — InSight Cruise Lander",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "model",
+          "is_primary": false,
+          "source_id": "nasa_3d"
         }
       ],
       "relations": []
@@ -568,6 +618,16 @@
           "media_type": "image",
           "is_primary": true,
           "source_id": "nasa_images"
+        },
+        {
+          "url": "/models/skylab.glb",
+          "title": "Skylab 3D model",
+          "credit": "NASA 3D Resources — Skylab",
+          "license_name": "NASA public domain (per-asset credit)",
+          "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+          "media_type": "model",
+          "is_primary": false,
+          "source_id": "nasa_3d"
         }
       ],
       "relations": []

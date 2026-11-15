@@ -21,6 +21,8 @@ test("listItems reads the curated archive", { skip: !hasDatabase }, async () => 
   assert.ok(opportunity.facts.length >= 1);
   assert.ok(opportunity.phases.length >= 1);
   assert.ok(opportunity.images.length >= 1);
+  assert.equal(opportunity.model_url, "/models/opportunity.glb");
+  assert.match(opportunity.model_credit ?? "", /NASA 3D Resources/);
 });
 
 test("zone filters and aliases resolve against PostgreSQL", { skip: !hasDatabase }, async () => {

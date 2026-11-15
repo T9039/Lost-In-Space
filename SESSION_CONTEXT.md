@@ -225,6 +225,9 @@ Done in this pass:
       phase (`artifact_phase.source_id`) and each media row.
 - [x] **Server-side search** — `/api/items?q=` and `/archive?q=` use trigram
       search; the archive debounces the query into the URL.
+- [x] **Models in the database** — six `media` rows (`media_type = 'model'`)
+      carry the GLB URL and NASA 3D Resources credit; the adapter falls back to
+      the old static map only when a row is absent.
 
 Next:
 

@@ -90,7 +90,7 @@ The set is aligned with the UI fixtures.
       `left_behind_by`, `landed_with`)
 - [ ] Resolve parent links across selected artifacts
 - [ ] Review every fact against its source page
-- [ ] Add model rows to `media` (`media_type = 'model'`) or keep them static
+- [x] Add model rows to `media` (`media_type = 'model'`)
 
 ### Fixture coverage
 
