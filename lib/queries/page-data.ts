@@ -1,5 +1,6 @@
 import { buildZoneSummaries, toUiId } from "@/lib/contract";
 import { items as fixtureItems, sources as fixtureSources } from "@/lib/fixtures";
+import { unstable_cache } from "next/cache";
 import { buildFactsSnapshot, factHash, PROMPT_VERSION } from "@/lib/narration";
 import { formatAge } from "@/lib/time";
 import type { GpSummary, Item, LineageEdge, NarrationSummary, Source, ZoneSummary } from "@/lib/types";
@@ -95,7 +96,8 @@ export interface HomeData {
   error?: string;
 }
 
-export async function getHomeData(): Promise<HomeData> {
+const cachedHomeData = unstable_cache(
+  async (): Promise<HomeData> => {
   try {
     const [items, zones] = await Promise.all([listItems(), listZones()]);
     if (items.length === 0) throw new Error("database returned no curated artifacts");
@@ -110,6 +112,13 @@ export async function getHomeData(): Promise<HomeData> {
       error: message,
     };
   }
+  },
+  ["home-data"],
+  { revalidate: 3600 }
+);
+
+export function getHomeData(): Promise<HomeData> {
+  return cachedHomeData();
 }
 
 export interface SourcesPageData {
@@ -118,7 +127,8 @@ export interface SourcesPageData {
   error?: string;
 }
 
-export async function getSourcesPageData(): Promise<SourcesPageData> {
+const cachedSourcesData = unstable_cache(
+  async (): Promise<SourcesPageData> => {
   try {
     const sources = await listSources();
     if (sources.length === 0) throw new Error("database returned no sources");
@@ -128,6 +138,13 @@ export async function getSourcesPageData(): Promise<SourcesPageData> {
     console.warn(`[sources] database read failed, using fixtures: ${message}`);
     return { sources: fixtureSources, dataSource: "fixtures", error: message };
   }
+  },
+  ["sources-data"],
+  { revalidate: 3600 }
+);
+
+export function getSourcesPageData(): Promise<SourcesPageData> {
+  return cachedSourcesData();
 }
 
 export interface ComparePageData {
@@ -136,7 +153,8 @@ export interface ComparePageData {
   error?: string;
 }
 
-export async function getComparePageData(): Promise<ComparePageData> {
+const cachedCompareData = unstable_cache(
+  async (): Promise<ComparePageData> => {
   try {
     const items = await listItems();
     if (items.length === 0) throw new Error("database returned no curated artifacts");
@@ -146,4 +164,11 @@ export async function getComparePageData(): Promise<ComparePageData> {
     console.warn(`[compare] database read failed, using fixtures: ${message}`);
     return { items: fixtureItems, dataSource: "fixtures", error: message };
   }
+  },
+  ["compare-data"],
+  { revalidate: 3600 }
+);
+
+export function getComparePageData(): Promise<ComparePageData> {
+  return cachedCompareData();
 }

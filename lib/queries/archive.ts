@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { buildZoneSummaries } from "@/lib/contract";
 import { items as fixtureItems } from "@/lib/fixtures";
 import type { Item, ZoneSummary } from "@/lib/types";
@@ -17,8 +18,9 @@ export interface ArchiveData {
  * The archive is the first DB-backed screen. If PostgreSQL is unreachable the
  * checked-in fixtures keep the page usable and the UI says so.
  */
-export async function getArchiveData(search?: string): Promise<ArchiveData> {
-  const term = search?.trim();
+const cachedArchiveData = unstable_cache(
+  async (search: string): Promise<ArchiveData> => {
+  const term = search.trim() || undefined;
   try {
     const [items, zones] = await Promise.all([listItems(undefined, term), listZones()]);
     if (items.length === 0 && !term) throw new Error("database returned no curated artifacts");
@@ -41,4 +43,11 @@ export async function getArchiveData(search?: string): Promise<ArchiveData> {
       error: message,
     };
   }
+  },
+  ["archive-data"],
+  { revalidate: 3600 }
+);
+
+export function getArchiveData(search?: string): Promise<ArchiveData> {
+  return cachedArchiveData(search?.trim() ?? "");
 }

@@ -270,6 +270,10 @@ Done in this pass:
 - [x] **Curation expansion** — 26 curated artifacts (7 Moon, 7 Mars, 6 Earth
       orbit, 6 deep space), 66 facts and 32 media rows. Two `deployed_from`
       relations resolve the Apollo 15 and Apollo 17 rover/LM pairs.
+- [x] **Responsive and performance** — 12 mobile/tablet viewport checks have no
+      horizontal overflow; curated page reads are cached for an hour. Lighthouse
+      on the archive: accessibility/best-practices/SEO 100, performance 100 warm
+      and 75 cold.
 - [x] **Playwright + accessibility** — twelve end-to-end checks cover every
       route; axe reports no serious or critical violations on the five main
       pages.

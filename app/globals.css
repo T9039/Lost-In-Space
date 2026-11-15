@@ -3928,3 +3928,11 @@ body:has(.workspace-shell) {
 .orbit-readout b { color: var(--text); font-family: var(--font-telemetry), ui-monospace, monospace; }
 .orbit-marker { padding: 4px 8px; border-radius: 999px; background: rgba(4, 6, 13, 0.9); border: 1px solid var(--accent); color: var(--text); font-size: 11px; white-space: nowrap; }
 @media (max-width: 820px) { .orbit-map-grid { grid-template-columns: 1fr; } }
+
+/* ---------- responsive shell ---------- */
+.home-hero { overflow: hidden; }
+@media (max-width: 900px) {
+  .nav-inner { height: auto; flex-wrap: wrap; gap: 8px; padding: 10px 0; }
+  .nav-links { order: 3; width: 100%; overflow-x: auto; gap: 18px; padding-bottom: 4px; }
+  .nav-spacer, .nav-badge { display: none; }
+}

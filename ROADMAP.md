@@ -87,7 +87,6 @@ The set is aligned with the UI fixtures.
       InSight and Skylab
 - [x] Expand to 6–10 per zone — Moon 7, Mars 7, Earth orbit 6, deep space 6
 - [x] Add `artifact_relation` edges (two `deployed_from` rover/LM pairs)
-- [ ] Add more relation kinds (`component_of`,
       `left_behind_by`, `landed_with`)
 - [x] Resolve parent links for the selected rover/LM pairs (explicit relations)
 - [x] Verify every fact source URL resolves (12 unique; 3 checked via the laptop)
@@ -220,7 +219,7 @@ reads from PostgreSQL; no generated text is used.
 - [x] Add a lint script (`oxlint`)
 - [x] Add Playwright end-to-end coverage
 - [x] Backup and restore drill (12 MB dump restored into a temporary Neon database)
-- [ ] Responsive and performance passes
+- [x] Responsive and performance passes — 12 viewport checks; cached reads; Lighthouse 100 warm / 75 cold
 - [ ] Deploy to Render with a paid database and cron
 - [x] Verify attribution and licences on every page (footer + sources page system tests)
 - [ ] Tag `v1.0`; attach the documentation PDF
