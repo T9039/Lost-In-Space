@@ -45,6 +45,61 @@ Verified on the previous machine:
 - Full ETL run: 258,367 staging rows, 392 launch files, 29 phases.
 - `python -m etl.validate` passes with 2 data-completeness warnings.
 
+## Neon database (already provisioned)
+
+| Item | Value |
+|---|---|
+| Project | `royal-sea-92317290` (`royal-sea`) |
+| Organization | `org-billowing-queen-70187418` |
+| Branch | `production` (`br-shiny-credit-b6yatvb7`) |
+| Database | `neondb` |
+| Region | AWS São Paulo (`aws-sa-east-1`) |
+| Server | PostgreSQL 18.7 |
+| Pooled host | `ep-rough-rice-b6jyqn9d-pooler.c-2.sa-east-1.aws.neon.tech` |
+| Direct host | `ep-rough-rice-b6jyqn9d.c-2.sa-east-1.aws.neon.tech` |
+
+`.env.local` holds the connection strings and is gitignored. It defines:
+
+- `DATABASE_URL` — pooled URL, for the web app
+- `DATABASE_URL_UNPOOLED` — direct URL, for schema changes and the ETL
+- `NEON_BRANCH`, `NEON_BRANCH_ID`, `NEON_FUNCTION_HOST_SUFFIX`
+
+Never print or commit these values. The database already contains the schema
+and the full dataset (12 artifacts, 29 phases, 24 facts, 12 media, 76,029
+launches, 4,145 organizations, 712 sites). Do not reload it unless the data
+changes.
+
+### Desktop connectivity problem (15 Nov 2026)
+
+The laptop can reach Neon São Paulo and loaded the data. The desktop
+(`armomarchy`, `100.66.8.105`) cannot:
+
+```text
+connection to server at "2600:1f1e:...": Network is unreachable
+hostaddr 15.228.0.140 / 56.125.127.1 / 15.229.115.3: connection timeout expired
+```
+
+This is a routing/firewall problem, not a bad password. Try in this order:
+
+1. **Use the direct URL** in `.env.local` for the test:
+   `DATABASE_URL="$DATABASE_URL_UNPOOLED"` — the pooler host may be the blocked one.
+2. **Test reachability**:
+   `nc -vz ep-rough-rice-b6jyqn9d.c-2.sa-east-1.aws.neon.tech 5432`
+   and the `-pooler` host.
+3. **Check Tailscale exit node**:
+   `tailscale status`, then `tailscale set --exit-node=` to clear an exit node,
+   and retry.
+4. **Force IPv4** in the connection string with `hostaddr=<A record>` after
+   `dig +short A <host>` (libpq otherwise tries IPv6 first and fails).
+5. **If São Paulo is unreachable from that network, create a Frankfurt project**
+   (same region as Render production), copy its URL into `.env.local`, apply
+   `db/schema.sql`, the seed and staging, then run the ETL. The data is
+   reproducible from GCAT; no dump is needed. Frankfurt is the recommended
+   fallback.
+
+Do not change the laptop's working São Paulo project until the Frankfurt
+replacement is loaded and verified.
+
 ## How to run
 
 ### Frontend
@@ -128,6 +183,8 @@ See `.env.example`.
 
 ## Immediate next work
 
+0. **Fix the desktop database connection** (see the Neon section above). The
+   code step cannot be verified against the real schema until `SELECT 1` works.
 1. **`lib/contract.ts`** — map:
    - zones: `earth-orbit` ↔ `earth_orbit`, `deep-space` ↔ `deep_space`
    - status: UI `active|inactive|derelict|destroyed` from phase/mission data

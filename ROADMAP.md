@@ -122,6 +122,7 @@ The prototype exists and builds. It is **fixture-backed**.
 - [x] `API_CONTRACT.md`
 - [x] `npm ci` and `npm run build` succeed; all routes return 200
 - [x] Development database provisioned on Neon and loaded with the full dataset
+- [ ] Resolve desktop → Neon São Paulo connectivity (try direct URL, then Frankfurt)
 - [ ] `lib/db.ts` — one `pg` pool, server-only
 - [ ] Typed queries over `v_artifact_card`, `v_artifact_timeline`, `v_artifact_edge`
 - [ ] `app/api/zones`, `items`, `items/[id]`, `items/[id]/lineage`, `sources`
@@ -239,6 +240,9 @@ reads from PostgreSQL; no generated text is used.
 
 ## Next three actions
 
+0. **Fix desktop database connectivity** — test `DATABASE_URL_UNPOOLED`, clear any
+   Tailscale exit node, and if São Paulo is unreachable from that network, create
+   a Frankfurt Neon project and reload the data.
 1. **Build the adapter and DB layer** — `lib/contract.ts`, `lib/db.ts`, typed
    queries, then `/api/items`, `/api/items/:id` and `/api/sources`.
 2. **Switch one page at a time** — archive first, then home, item, sources;
